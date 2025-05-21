@@ -17,5 +17,5 @@ setup(
     url="https://github.com/mreiche/owasp-dependency-track-python-client",
     author="Mike Reiche",
     packages=find_packages(),
-    install_requires=["httpx>=0.23.0"],
+    install_requires=["attrs>=22.1.0", "httpx>=0.23.0", "python-dateutil>=2.8.2"],
 )
