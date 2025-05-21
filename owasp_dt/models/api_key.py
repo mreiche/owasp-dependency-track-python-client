@@ -20,8 +20,8 @@ class ApiKey:
         last_used (Union[Unset, datetime.datetime]):
         public_id (Union[Unset, str]):
         key (Union[Unset, str]):
-        legacy (Union[Unset, bool]):
         masked_key (Union[Unset, str]):
+        legacy (Union[Unset, bool]):
     """
 
     comment: Union[Unset, str] = UNSET
@@ -29,8 +29,8 @@ class ApiKey:
     last_used: Union[Unset, datetime.datetime] = UNSET
     public_id: Union[Unset, str] = UNSET
     key: Union[Unset, str] = UNSET
-    legacy: Union[Unset, bool] = UNSET
     masked_key: Union[Unset, str] = UNSET
+    legacy: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,9 +48,9 @@ class ApiKey:
 
         key = self.key
 
-        legacy = self.legacy
-
         masked_key = self.masked_key
+
+        legacy = self.legacy
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -65,10 +65,10 @@ class ApiKey:
             field_dict["publicId"] = public_id
         if key is not UNSET:
             field_dict["key"] = key
-        if legacy is not UNSET:
-            field_dict["legacy"] = legacy
         if masked_key is not UNSET:
             field_dict["maskedKey"] = masked_key
+        if legacy is not UNSET:
+            field_dict["legacy"] = legacy
 
         return field_dict
 
@@ -95,9 +95,9 @@ class ApiKey:
 
         key = d.pop("key", UNSET)
 
-        legacy = d.pop("legacy", UNSET)
-
         masked_key = d.pop("maskedKey", UNSET)
+
+        legacy = d.pop("legacy", UNSET)
 
         api_key = cls(
             comment=comment,
@@ -105,8 +105,8 @@ class ApiKey:
             last_used=last_used,
             public_id=public_id,
             key=key,
-            legacy=legacy,
             masked_key=masked_key,
+            legacy=legacy,
         )
 
         api_key.additional_properties = d
