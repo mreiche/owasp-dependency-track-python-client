@@ -1,1 +1,3 @@
 .idea
+build
+owasp_dependency_track_client.egg-info
