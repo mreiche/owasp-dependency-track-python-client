@@ -13439,28 +13439,16 @@
         "type" : "object",
         "properties" : {
           "component" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "object"
-            }
+            "type" : "object"
           },
           "vulnerability" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "object"
-            }
+            "type" : "object"
           },
           "analysis" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "object"
-            }
+            "type" : "object"
           },
           "attribution" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "object"
-            }
+            "type" : "object"
           },
           "matrix" : {
             "type" : "string"

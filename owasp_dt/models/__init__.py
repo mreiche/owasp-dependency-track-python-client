@@ -46,19 +46,11 @@ from .external_reference import ExternalReference
 from .external_reference_type import ExternalReferenceType
 from .finding import Finding
 from .finding_analysis import FindingAnalysis
-from .finding_analysis_additional_property import FindingAnalysisAdditionalProperty
 from .finding_attrib import FindingAttrib
 from .finding_attrib_analyzer_identity import FindingAttribAnalyzerIdentity
 from .finding_attribution import FindingAttribution
-from .finding_attribution_additional_property import (
-    FindingAttributionAdditionalProperty,
-)
 from .finding_component import FindingComponent
-from .finding_component_additional_property import FindingComponentAdditionalProperty
 from .finding_vulnerability import FindingVulnerability
-from .finding_vulnerability_additional_property import (
-    FindingVulnerabilityAdditionalProperty,
-)
 from .force_change_password_body import ForceChangePasswordBody
 from .framework import Framework
 from .get_all_components_sort_order import GetAllComponentsSortOrder
@@ -244,15 +236,11 @@ __all__ = (
     "ExternalReferenceType",
     "Finding",
     "FindingAnalysis",
-    "FindingAnalysisAdditionalProperty",
     "FindingAttrib",
     "FindingAttribAnalyzerIdentity",
     "FindingAttribution",
-    "FindingAttributionAdditionalProperty",
     "FindingComponent",
-    "FindingComponentAdditionalProperty",
     "FindingVulnerability",
-    "FindingVulnerabilityAdditionalProperty",
     "ForceChangePasswordBody",
     "Framework",
     "GetAllComponentsSortOrder",
