@@ -1,11 +1,12 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, cast
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.finding import Finding
 from ...models.get_findings_by_project_source import GetFindingsByProjectSource
 from ...types import UNSET, Response, Unset
 
@@ -47,13 +48,25 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+) -> Optional[Union[Any, list["Finding"]]]:
+    if response.status_code == 200:
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in _response_200:
+            response_200_item = Finding.from_dict(response_200_item_data)
+
+            response_200.append(response_200_item)
+
+        return response_200
     if response.status_code == 401:
-        return None
+        response_401 = cast(Any, None)
+        return response_401
     if response.status_code == 403:
-        return None
+        response_403 = cast(Any, None)
+        return response_403
     if response.status_code == 404:
-        return None
+        response_404 = cast(Any, None)
+        return response_404
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -62,7 +75,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Any]:
+) -> Response[Union[Any, list["Finding"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -78,7 +91,7 @@ def sync_detailed(
     suppressed: Union[Unset, bool] = UNSET,
     source: Union[Unset, GetFindingsByProjectSource] = UNSET,
     accept: Union[Unset, str] = UNSET,
-) -> Response[Any]:
+) -> Response[Union[Any, list["Finding"]]]:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
     application/sarif+json header is provided
 
@@ -95,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[Union[Any, list['Finding']]]
     """
 
     kwargs = _get_kwargs(
@@ -112,14 +125,14 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
     suppressed: Union[Unset, bool] = UNSET,
     source: Union[Unset, GetFindingsByProjectSource] = UNSET,
     accept: Union[Unset, str] = UNSET,
-) -> Response[Any]:
+) -> Optional[Union[Any, list["Finding"]]]:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
     application/sarif+json header is provided
 
@@ -136,7 +149,43 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Union[Any, list['Finding']]
+    """
+
+    return sync_detailed(
+        uuid=uuid,
+        client=client,
+        suppressed=suppressed,
+        source=source,
+        accept=accept,
+    ).parsed
+
+
+async def asyncio_detailed(
+    uuid: UUID,
+    *,
+    client: AuthenticatedClient,
+    suppressed: Union[Unset, bool] = UNSET,
+    source: Union[Unset, GetFindingsByProjectSource] = UNSET,
+    accept: Union[Unset, str] = UNSET,
+) -> Response[Union[Any, list["Finding"]]]:
+    """Returns a list of all findings for a specific project or generates SARIF file if Accept:
+    application/sarif+json header is provided
+
+     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+
+    Args:
+        uuid (UUID):
+        suppressed (Union[Unset, bool]):
+        source (Union[Unset, GetFindingsByProjectSource]):
+        accept (Union[Unset, str]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Union[Any, list['Finding']]]
     """
 
     kwargs = _get_kwargs(
@@ -149,3 +198,41 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    uuid: UUID,
+    *,
+    client: AuthenticatedClient,
+    suppressed: Union[Unset, bool] = UNSET,
+    source: Union[Unset, GetFindingsByProjectSource] = UNSET,
+    accept: Union[Unset, str] = UNSET,
+) -> Optional[Union[Any, list["Finding"]]]:
+    """Returns a list of all findings for a specific project or generates SARIF file if Accept:
+    application/sarif+json header is provided
+
+     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+
+    Args:
+        uuid (UUID):
+        suppressed (Union[Unset, bool]):
+        source (Union[Unset, GetFindingsByProjectSource]):
+        accept (Union[Unset, str]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Union[Any, list['Finding']]
+    """
+
+    return (
+        await asyncio_detailed(
+            uuid=uuid,
+            client=client,
+            suppressed=suppressed,
+            source=source,
+            accept=accept,
+        )
+    ).parsed

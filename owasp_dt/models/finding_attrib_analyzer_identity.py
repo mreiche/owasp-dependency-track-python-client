@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class FindingAttributionAnalyzerIdentity(str, Enum):
+class FindingAttribAnalyzerIdentity(str, Enum):
     INTERNAL_ANALYZER = "INTERNAL_ANALYZER"
     NONE = "NONE"
     NPM_AUDIT_ANALYZER = "NPM_AUDIT_ANALYZER"
