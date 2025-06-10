@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-#openapi-python-client generate --overwrite --url http://localhost:8081/api/openapi.json --meta none --config generator-config.yml
-openapi-python-client generate --overwrite --path ./openapi.json --meta none --config generator-config.yml
+curl -lo openapi.json http://localhost:8081/api/openapi.json
+#jq -s 'reduce .[] as $item ({}; . * $item)' openapi.json patch.json > schema.json
+jq -s '.[0] * .[1]' openapi.json patch.json > schema.json
+jq 'del(.components.schemas.FindingAttribution)' schema.json > tmp.json
+mv tmp.json schema.json
+openapi-python-client generate --overwrite --path ./schema.json --meta none --config generator-config.yml

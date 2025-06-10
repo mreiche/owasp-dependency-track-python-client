@@ -28,8 +28,6 @@ T = TypeVar("T", bound="Project")
 class Project:
     """
     Attributes:
-        uuid (UUID):
-        last_bom_import (int): UNIX epoch timestamp in milliseconds
         authors (Union[Unset, list['OrganizationalContact']]):
         publisher (Union[Unset, str]):
         manufacturer (Union[Unset, OrganizationalEntity]):
@@ -45,10 +43,12 @@ class Project:
         purl (Union[Unset, str]):
         swid_tag_id (Union[Unset, str]):
         direct_dependencies (Union[Unset, str]):
+        uuid (Union[Unset, UUID]):
         parent (Union[Unset, Project]):
         children (Union[Unset, list['Project']]):
         properties (Union[Unset, list['ProjectProperty']]):
         tags (Union[Unset, list['Tag']]):
+        last_bom_import (Union[Unset, int]): UNIX epoch timestamp in milliseconds
         last_bom_import_format (Union[Unset, str]):
         last_inherited_risk_score (Union[Unset, float]):
         last_vulnerability_analysis (Union[Unset, int]): UNIX epoch timestamp in milliseconds
@@ -63,8 +63,6 @@ class Project:
         bom_ref (Union[Unset, str]):
     """
 
-    uuid: UUID
-    last_bom_import: int
     authors: Union[Unset, list["OrganizationalContact"]] = UNSET
     publisher: Union[Unset, str] = UNSET
     manufacturer: Union[Unset, "OrganizationalEntity"] = UNSET
@@ -80,10 +78,12 @@ class Project:
     purl: Union[Unset, str] = UNSET
     swid_tag_id: Union[Unset, str] = UNSET
     direct_dependencies: Union[Unset, str] = UNSET
+    uuid: Union[Unset, UUID] = UNSET
     parent: Union[Unset, "Project"] = UNSET
     children: Union[Unset, list["Project"]] = UNSET
     properties: Union[Unset, list["ProjectProperty"]] = UNSET
     tags: Union[Unset, list["Tag"]] = UNSET
+    last_bom_import: Union[Unset, int] = UNSET
     last_bom_import_format: Union[Unset, str] = UNSET
     last_inherited_risk_score: Union[Unset, float] = UNSET
     last_vulnerability_analysis: Union[Unset, int] = UNSET
@@ -99,10 +99,6 @@ class Project:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
-
-        last_bom_import = self.last_bom_import
-
         authors: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.authors, Unset):
             authors = []
@@ -148,6 +144,10 @@ class Project:
 
         direct_dependencies = self.direct_dependencies
 
+        uuid: Union[Unset, str] = UNSET
+        if not isinstance(self.uuid, Unset):
+            uuid = str(self.uuid)
+
         parent: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.parent, Unset):
             parent = self.parent.to_dict()
@@ -172,6 +172,8 @@ class Project:
             for tags_item_data in self.tags:
                 tags_item = tags_item_data.to_dict()
                 tags.append(tags_item)
+
+        last_bom_import = self.last_bom_import
 
         last_bom_import_format = self.last_bom_import_format
 
@@ -218,12 +220,7 @@ class Project:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "uuid": uuid,
-                "lastBomImport": last_bom_import,
-            }
-        )
+        field_dict.update({})
         if authors is not UNSET:
             field_dict["authors"] = authors
         if publisher is not UNSET:
@@ -254,6 +251,8 @@ class Project:
             field_dict["swidTagId"] = swid_tag_id
         if direct_dependencies is not UNSET:
             field_dict["directDependencies"] = direct_dependencies
+        if uuid is not UNSET:
+            field_dict["uuid"] = uuid
         if parent is not UNSET:
             field_dict["parent"] = parent
         if children is not UNSET:
@@ -262,6 +261,8 @@ class Project:
             field_dict["properties"] = properties
         if tags is not UNSET:
             field_dict["tags"] = tags
+        if last_bom_import is not UNSET:
+            field_dict["lastBomImport"] = last_bom_import
         if last_bom_import_format is not UNSET:
             field_dict["lastBomImportFormat"] = last_bom_import_format
         if last_inherited_risk_score is not UNSET:
@@ -302,10 +303,6 @@ class Project:
         from ..models.team import Team
 
         d = dict(src_dict)
-        uuid = UUID(d.pop("uuid"))
-
-        last_bom_import = d.pop("lastBomImport")
-
         authors = []
         _authors = d.pop("authors", UNSET)
         for authors_item_data in _authors or []:
@@ -366,6 +363,13 @@ class Project:
 
         direct_dependencies = d.pop("directDependencies", UNSET)
 
+        _uuid = d.pop("uuid", UNSET)
+        uuid: Union[Unset, UUID]
+        if isinstance(_uuid, Unset):
+            uuid = UNSET
+        else:
+            uuid = UUID(_uuid)
+
         _parent = d.pop("parent", UNSET)
         parent: Union[Unset, Project]
         if isinstance(_parent, Unset):
@@ -393,6 +397,8 @@ class Project:
             tags_item = Tag.from_dict(tags_item_data)
 
             tags.append(tags_item)
+
+        last_bom_import = d.pop("lastBomImport", UNSET)
 
         last_bom_import_format = d.pop("lastBomImportFormat", UNSET)
 
@@ -446,8 +452,6 @@ class Project:
         bom_ref = d.pop("bomRef", UNSET)
 
         project = cls(
-            uuid=uuid,
-            last_bom_import=last_bom_import,
             authors=authors,
             publisher=publisher,
             manufacturer=manufacturer,
@@ -463,10 +467,12 @@ class Project:
             purl=purl,
             swid_tag_id=swid_tag_id,
             direct_dependencies=direct_dependencies,
+            uuid=uuid,
             parent=parent,
             children=children,
             properties=properties,
             tags=tags,
+            last_bom_import=last_bom_import,
             last_bom_import_format=last_bom_import_format,
             last_inherited_risk_score=last_inherited_risk_score,
             last_vulnerability_analysis=last_vulnerability_analysis,
