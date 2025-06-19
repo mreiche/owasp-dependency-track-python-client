@@ -1,0 +1,85 @@
+{
+  "components" : {
+    "schemas" : {
+      "Project": {
+        "required": []
+      },
+      "Finding": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "object",
+            "additionalProperties": null
+          },
+          "vulnerability": {
+            "type": "object",
+            "additionalProperties": null
+          },
+          "analysis": {
+            "type": "object",
+            "additionalProperties": null
+          },
+          "attribution": {
+            "type": "object",
+            "additionalProperties": null
+          },
+          "matrix": {
+            "type": "string",
+            "additionalProperties": null
+          }
+        }
+      },
+      "Vulnerability": {
+        "properties": {
+          "findingAttribution": {
+            "$ref": "#/components/schemas/FindingAttrib"
+          }
+        }
+      },
+      "FindingAttrib": {
+        "required": [
+          "attributedOn",
+          "component",
+          "uuid",
+          "vulnerability"
+        ],
+        "type": "object",
+        "properties": {
+          "attributedOn": {
+            "type": "integer",
+            "description": "UNIX epoch timestamp in milliseconds",
+            "format": "int64"
+          },
+          "analyzerIdentity": {
+            "type": "string",
+            "enum": [
+              "INTERNAL_ANALYZER",
+              "OSSINDEX_ANALYZER",
+              "NPM_AUDIT_ANALYZER",
+              "VULNDB_ANALYZER",
+              "SNYK_ANALYZER",
+              "TRIVY_ANALYZER",
+              "NONE"
+            ]
+          },
+          "component": {
+            "$ref": "#/components/schemas/Component"
+          },
+          "vulnerability": {
+            "$ref": "#/components/schemas/Vulnerability"
+          },
+          "alternateIdentifier": {
+            "type": "string"
+          },
+          "referenceUrl": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

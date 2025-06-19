@@ -37,7 +37,6 @@ If you're looking for a CLI tool: [owasp-dependency-track-cli](https://github.co
 
 1. Install the requirements: `pip install -r requirements.txt`
 2. Start a OWASP DT instance locally (like via. Docker-Compose): https://docs.dependencytrack.org/getting-started/deploy-docker/
-3. Download the spec: `curl -lo openapi.json http://localhost:8081/api/openapi.json`
-4. Run `./regenerate-api-client.sh`
-5. Check if bug https://github.com/openapi-generators/openapi-python-client/issues/1256 is still in effect
-6. Publish this library with the API version tag
+3. Run `regenerate-api-client.sh`
+4. Check if bug https://github.com/openapi-generators/openapi-python-client/issues/1256 is still in effect
+5. Publish this library with the API version tag
