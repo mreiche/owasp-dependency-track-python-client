@@ -13744,7 +13744,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Project"
-            }
+            },
+            "nullable": true
           },
           "properties": {
             "type": "array",
