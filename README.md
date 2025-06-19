@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/owasp-dependency-track-client.svg)](https://badge.fury.io/py/owasp-dependency-track-client)
+
 # OWASP Dependency Track Python API client
 
 This is a generated library based on the official OWASP Dependency Track OpenAPI spec (`/api/openapi.json`) using [openapi-python-client](https://github.com/openapi-generators/openapi-python-client).
