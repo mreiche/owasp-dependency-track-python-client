@@ -2,7 +2,12 @@
   "components" : {
     "schemas" : {
       "Project": {
-        "required": []
+        "required": [],
+        "properties": {
+          "children" : {
+            "nullable": true
+          }
+        }
       },
       "Finding": {
         "type": "object",

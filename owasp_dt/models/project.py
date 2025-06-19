@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -45,7 +45,7 @@ class Project:
         direct_dependencies (Union[Unset, str]):
         uuid (Union[Unset, UUID]):
         parent (Union[Unset, Project]):
-        children (Union[Unset, list['Project']]):
+        children (Union[None, Unset, list['Project']]):
         properties (Union[Unset, list['ProjectProperty']]):
         tags (Union[Unset, list['Tag']]):
         last_bom_import (Union[Unset, int]): UNIX epoch timestamp in milliseconds
@@ -80,7 +80,7 @@ class Project:
     direct_dependencies: Union[Unset, str] = UNSET
     uuid: Union[Unset, UUID] = UNSET
     parent: Union[Unset, "Project"] = UNSET
-    children: Union[Unset, list["Project"]] = UNSET
+    children: Union[None, Unset, list["Project"]] = UNSET
     properties: Union[Unset, list["ProjectProperty"]] = UNSET
     tags: Union[Unset, list["Tag"]] = UNSET
     last_bom_import: Union[Unset, int] = UNSET
@@ -152,12 +152,17 @@ class Project:
         if not isinstance(self.parent, Unset):
             parent = self.parent.to_dict()
 
-        children: Union[Unset, list[dict[str, Any]]] = UNSET
-        if not isinstance(self.children, Unset):
+        children: Union[None, Unset, list[dict[str, Any]]]
+        if isinstance(self.children, Unset):
+            children = UNSET
+        elif isinstance(self.children, list):
             children = []
-            for children_item_data in self.children:
-                children_item = children_item_data.to_dict()
-                children.append(children_item)
+            for children_type_0_item_data in self.children:
+                children_type_0_item = children_type_0_item_data.to_dict()
+                children.append(children_type_0_item)
+
+        else:
+            children = self.children
 
         properties: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.properties, Unset):
@@ -377,12 +382,27 @@ class Project:
         else:
             parent = Project.from_dict(_parent)
 
-        children = []
-        _children = d.pop("children", UNSET)
-        for children_item_data in _children or []:
-            children_item = Project.from_dict(children_item_data)
+        def _parse_children(data: object) -> Union[None, Unset, list["Project"]]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                children_type_0 = []
+                _children_type_0 = data
+                for children_type_0_item_data in _children_type_0:
+                    children_type_0_item = Project.from_dict(children_type_0_item_data)
 
-            children.append(children_item)
+                    children_type_0.append(children_type_0_item)
+
+                return children_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, list["Project"]], data)
+
+        children = _parse_children(d.pop("children", UNSET))
 
         properties = []
         _properties = d.pop("properties", UNSET)
