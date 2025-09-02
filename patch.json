@@ -1,36 +1,34 @@
 {
-  "components" : {
-    "schemas" : {
+  "components": {
+    "schemas": {
       "Project": {
         "required": [],
         "properties": {
-          "children" : {
+          "children": {
             "nullable": true
           }
         }
+      },
+      "Component": {
+        "required": [
+          "project",
+          "uuid"
+        ]
       },
       "Finding": {
         "type": "object",
         "properties": {
           "component": {
-            "type": "object",
-            "additionalProperties": null
+            "$ref": "#/components/schemas/Component"
           },
           "vulnerability": {
-            "type": "object",
-            "additionalProperties": null
+            "$ref": "#/components/schemas/Vulnerability"
           },
           "analysis": {
-            "type": "object",
-            "additionalProperties": null
+            "$ref": "#/components/schemas/ViolationAnalysis"
           },
           "attribution": {
-            "type": "object",
-            "additionalProperties": null
-          },
-          "matrix": {
-            "type": "string",
-            "additionalProperties": null
+            "$ref": "#/components/schemas/FindingAttrib"
           }
         }
       },
@@ -42,12 +40,6 @@
         }
       },
       "FindingAttrib": {
-        "required": [
-          "attributedOn",
-          "component",
-          "uuid",
-          "vulnerability"
-        ],
         "type": "object",
         "properties": {
           "attributedOn": {

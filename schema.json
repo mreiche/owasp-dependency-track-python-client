@@ -11,7 +11,7 @@
       "name": "Apache-2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "4.13.2"
+    "version": "4.13.4"
   },
   "servers": [
     {
@@ -14571,7 +14571,6 @@
       },
       "Component": {
         "required": [
-          "classifier",
           "project",
           "uuid"
         ],
@@ -15496,23 +15495,34 @@
         "properties": {
           "component": {
             "type": "object",
-            "additionalProperties": null
+            "additionalProperties": {
+              "type": "object"
+            },
+            "$ref": "#/components/schemas/Component"
           },
           "vulnerability": {
             "type": "object",
-            "additionalProperties": null
+            "additionalProperties": {
+              "type": "object"
+            },
+            "$ref": "#/components/schemas/Vulnerability"
           },
           "analysis": {
             "type": "object",
-            "additionalProperties": null
+            "additionalProperties": {
+              "type": "object"
+            },
+            "$ref": "#/components/schemas/ViolationAnalysis"
           },
           "attribution": {
             "type": "object",
-            "additionalProperties": null
+            "additionalProperties": {
+              "type": "object"
+            },
+            "$ref": "#/components/schemas/FindingAttrib"
           },
           "matrix": {
-            "type": "string",
-            "additionalProperties": null
+            "type": "string"
           }
         }
       },
@@ -16623,12 +16633,6 @@
         }
       },
       "FindingAttrib": {
-        "required": [
-          "attributedOn",
-          "component",
-          "uuid",
-          "vulnerability"
-        ],
         "type": "object",
         "properties": {
           "attributedOn": {
