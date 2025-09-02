@@ -1,5 +1,10 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    TypeVar,
+    Union,
+)
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,28 +25,34 @@ T = TypeVar("T", bound="Analysis")
 class Analysis:
     """
     Attributes:
-        analysis_state (AnalysisAnalysisState):
-        analysis_justification (AnalysisAnalysisJustification):
-        analysis_response (AnalysisAnalysisResponse):
-        analysis_details (str):
+        analysis_state (Union[Unset, AnalysisAnalysisState]):
+        analysis_justification (Union[Unset, AnalysisAnalysisJustification]):
+        analysis_response (Union[Unset, AnalysisAnalysisResponse]):
+        analysis_details (Union[Unset, str]):
         analysis_comments (Union[Unset, list['AnalysisComment']]):
         is_suppressed (Union[Unset, bool]):
     """
 
-    analysis_state: AnalysisAnalysisState
-    analysis_justification: AnalysisAnalysisJustification
-    analysis_response: AnalysisAnalysisResponse
-    analysis_details: str
+    analysis_state: Union[Unset, AnalysisAnalysisState] = UNSET
+    analysis_justification: Union[Unset, AnalysisAnalysisJustification] = UNSET
+    analysis_response: Union[Unset, AnalysisAnalysisResponse] = UNSET
+    analysis_details: Union[Unset, str] = UNSET
     analysis_comments: Union[Unset, list["AnalysisComment"]] = UNSET
     is_suppressed: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        analysis_state = self.analysis_state.value
+        analysis_state: Union[Unset, str] = UNSET
+        if not isinstance(self.analysis_state, Unset):
+            analysis_state = self.analysis_state.value
 
-        analysis_justification = self.analysis_justification.value
+        analysis_justification: Union[Unset, str] = UNSET
+        if not isinstance(self.analysis_justification, Unset):
+            analysis_justification = self.analysis_justification.value
 
-        analysis_response = self.analysis_response.value
+        analysis_response: Union[Unset, str] = UNSET
+        if not isinstance(self.analysis_response, Unset):
+            analysis_response = self.analysis_response.value
 
         analysis_details = self.analysis_details
 
@@ -56,14 +67,15 @@ class Analysis:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "analysisState": analysis_state,
-                "analysisJustification": analysis_justification,
-                "analysisResponse": analysis_response,
-                "analysisDetails": analysis_details,
-            }
-        )
+        field_dict.update({})
+        if analysis_state is not UNSET:
+            field_dict["analysisState"] = analysis_state
+        if analysis_justification is not UNSET:
+            field_dict["analysisJustification"] = analysis_justification
+        if analysis_response is not UNSET:
+            field_dict["analysisResponse"] = analysis_response
+        if analysis_details is not UNSET:
+            field_dict["analysisDetails"] = analysis_details
         if analysis_comments is not UNSET:
             field_dict["analysisComments"] = analysis_comments
         if is_suppressed is not UNSET:
@@ -76,15 +88,30 @@ class Analysis:
         from ..models.analysis_comment import AnalysisComment
 
         d = dict(src_dict)
-        analysis_state = AnalysisAnalysisState(d.pop("analysisState"))
+        _analysis_state = d.pop("analysisState", UNSET)
+        analysis_state: Union[Unset, AnalysisAnalysisState]
+        if isinstance(_analysis_state, Unset):
+            analysis_state = UNSET
+        else:
+            analysis_state = AnalysisAnalysisState(_analysis_state)
 
-        analysis_justification = AnalysisAnalysisJustification(
-            d.pop("analysisJustification")
-        )
+        _analysis_justification = d.pop("analysisJustification", UNSET)
+        analysis_justification: Union[Unset, AnalysisAnalysisJustification]
+        if isinstance(_analysis_justification, Unset):
+            analysis_justification = UNSET
+        else:
+            analysis_justification = AnalysisAnalysisJustification(
+                _analysis_justification
+            )
 
-        analysis_response = AnalysisAnalysisResponse(d.pop("analysisResponse"))
+        _analysis_response = d.pop("analysisResponse", UNSET)
+        analysis_response: Union[Unset, AnalysisAnalysisResponse]
+        if isinstance(_analysis_response, Unset):
+            analysis_response = UNSET
+        else:
+            analysis_response = AnalysisAnalysisResponse(_analysis_response)
 
-        analysis_details = d.pop("analysisDetails")
+        analysis_details = d.pop("analysisDetails", UNSET)
 
         analysis_comments = []
         _analysis_comments = d.pop("analysisComments", UNSET)

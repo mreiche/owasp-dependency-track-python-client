@@ -24,12 +24,11 @@ def _get_kwargs(
         ),
     }
 
-    _body = []
+    _kwargs["json"] = []
     for body_item_data in body:
         body_item = str(body_item_data)
-        _body.append(body_item)
+        _kwargs["json"].append(body_item)
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -42,10 +41,12 @@ def _parse_response(
     if response.status_code == 204:
         response_204 = cast(Any, None)
         return response_204
+
     if response.status_code == 404:
         response_404 = ProblemDetails.from_dict(response.json())
 
         return response_404
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:

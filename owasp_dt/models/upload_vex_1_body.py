@@ -1,9 +1,14 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import (
+    Any,
+    TypeVar,
+    Union,
+)
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from .. import types
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="UploadVex1Body")
@@ -48,46 +53,32 @@ class UploadVex1Body:
 
         return field_dict
 
-    def to_multipart(self) -> dict[str, Any]:
-        project = (
-            self.project
-            if isinstance(self.project, Unset)
-            else (None, str(self.project).encode(), "text/plain")
-        )
+    def to_multipart(self) -> types.RequestFiles:
+        files: types.RequestFiles = []
 
-        project_name = (
-            self.project_name
-            if isinstance(self.project_name, Unset)
-            else (None, str(self.project_name).encode(), "text/plain")
-        )
+        if not isinstance(self.project, Unset):
+            files.append(("project", (None, str(self.project).encode(), "text/plain")))
 
-        project_version = (
-            self.project_version
-            if isinstance(self.project_version, Unset)
-            else (None, str(self.project_version).encode(), "text/plain")
-        )
+        if not isinstance(self.project_name, Unset):
+            files.append(
+                ("projectName", (None, str(self.project_name).encode(), "text/plain"))
+            )
 
-        vex = (
-            self.vex
-            if isinstance(self.vex, Unset)
-            else (None, str(self.vex).encode(), "text/plain")
-        )
+        if not isinstance(self.project_version, Unset):
+            files.append(
+                (
+                    "projectVersion",
+                    (None, str(self.project_version).encode(), "text/plain"),
+                )
+            )
 
-        field_dict: dict[str, Any] = {}
+        if not isinstance(self.vex, Unset):
+            files.append(("vex", (None, str(self.vex).encode(), "text/plain")))
+
         for prop_name, prop in self.additional_properties.items():
-            field_dict[prop_name] = (None, str(prop).encode(), "text/plain")
+            files.append((prop_name, (None, str(prop).encode(), "text/plain")))
 
-        field_dict.update({})
-        if project is not UNSET:
-            field_dict["project"] = project
-        if project_name is not UNSET:
-            field_dict["projectName"] = project_name
-        if project_version is not UNSET:
-            field_dict["projectVersion"] = project_version
-        if vex is not UNSET:
-            field_dict["vex"] = vex
-
-        return field_dict
+        return files
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:

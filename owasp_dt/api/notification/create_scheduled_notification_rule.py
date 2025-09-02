@@ -24,9 +24,8 @@ def _get_kwargs(
         "url": "/v1/notification/rule/scheduled",
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -40,13 +39,16 @@ def _parse_response(
         response_201 = NotificationRule.from_dict(response.json())
 
         return response_201
+
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
+
     if response.status_code == 404:
         response_404 = ProblemDetails.from_dict(response.json())
 
         return response_404
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:

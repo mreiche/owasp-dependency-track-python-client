@@ -1,5 +1,11 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    TypeVar,
+    Union,
+    cast,
+)
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -27,7 +33,6 @@ T = TypeVar("T", bound="Component")
 class Component:
     """
     Attributes:
-        classifier (ComponentClassifier):
         project (Project):
         uuid (UUID):
         authors (Union[Unset, list['OrganizationalContact']]):
@@ -36,6 +41,7 @@ class Component:
         group (Union[Unset, str]):
         name (Union[Unset, str]):
         version (Union[Unset, str]):
+        classifier (Union[Unset, ComponentClassifier]):
         filename (Union[Unset, str]):
         extension (Union[Unset, str]):
         md5 (Union[Unset, str]):
@@ -76,7 +82,6 @@ class Component:
         is_internal (Union[Unset, bool]):
     """
 
-    classifier: ComponentClassifier
     project: "Project"
     uuid: UUID
     authors: Union[Unset, list["OrganizationalContact"]] = UNSET
@@ -85,6 +90,7 @@ class Component:
     group: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET
     version: Union[Unset, str] = UNSET
+    classifier: Union[Unset, ComponentClassifier] = UNSET
     filename: Union[Unset, str] = UNSET
     extension: Union[Unset, str] = UNSET
     md5: Union[Unset, str] = UNSET
@@ -126,8 +132,6 @@ class Component:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        classifier = self.classifier.value
-
         project = self.project.to_dict()
 
         uuid = str(self.uuid)
@@ -150,6 +154,10 @@ class Component:
         name = self.name
 
         version = self.version
+
+        classifier: Union[Unset, str] = UNSET
+        if not isinstance(self.classifier, Unset):
+            classifier = self.classifier.value
 
         filename = self.filename
 
@@ -261,7 +269,6 @@ class Component:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "classifier": classifier,
                 "project": project,
                 "uuid": uuid,
             }
@@ -278,6 +285,8 @@ class Component:
             field_dict["name"] = name
         if version is not UNSET:
             field_dict["version"] = version
+        if classifier is not UNSET:
+            field_dict["classifier"] = classifier
         if filename is not UNSET:
             field_dict["filename"] = filename
         if extension is not UNSET:
@@ -370,8 +379,6 @@ class Component:
         from ..models.vulnerability import Vulnerability
 
         d = dict(src_dict)
-        classifier = ComponentClassifier(d.pop("classifier"))
-
         project = Project.from_dict(d.pop("project"))
 
         uuid = UUID(d.pop("uuid"))
@@ -397,6 +404,13 @@ class Component:
         name = d.pop("name", UNSET)
 
         version = d.pop("version", UNSET)
+
+        _classifier = d.pop("classifier", UNSET)
+        classifier: Union[Unset, ComponentClassifier]
+        if isinstance(_classifier, Unset):
+            classifier = UNSET
+        else:
+            classifier = ComponentClassifier(_classifier)
 
         filename = d.pop("filename", UNSET)
 
@@ -517,7 +531,6 @@ class Component:
         is_internal = d.pop("isInternal", UNSET)
 
         component = cls(
-            classifier=classifier,
             project=project,
             uuid=uuid,
             authors=authors,
@@ -526,6 +539,7 @@ class Component:
             group=group,
             name=name,
             version=version,
+            classifier=classifier,
             filename=filename,
             extension=extension,
             md5=md5,

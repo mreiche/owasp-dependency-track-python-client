@@ -1,5 +1,10 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    TypeVar,
+    Union,
+)
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -8,7 +13,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.finding_analysis import FindingAnalysis
-    from ..models.finding_attribution import FindingAttribution
+    from ..models.finding_attrib import FindingAttrib
     from ..models.finding_component import FindingComponent
     from ..models.finding_vulnerability import FindingVulnerability
 
@@ -23,14 +28,14 @@ class Finding:
         component (Union[Unset, FindingComponent]):
         vulnerability (Union[Unset, FindingVulnerability]):
         analysis (Union[Unset, FindingAnalysis]):
-        attribution (Union[Unset, FindingAttribution]):
+        attribution (Union[Unset, FindingAttrib]):
         matrix (Union[Unset, str]):
     """
 
     component: Union[Unset, "FindingComponent"] = UNSET
     vulnerability: Union[Unset, "FindingVulnerability"] = UNSET
     analysis: Union[Unset, "FindingAnalysis"] = UNSET
-    attribution: Union[Unset, "FindingAttribution"] = UNSET
+    attribution: Union[Unset, "FindingAttrib"] = UNSET
     matrix: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -72,7 +77,7 @@ class Finding:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.finding_analysis import FindingAnalysis
-        from ..models.finding_attribution import FindingAttribution
+        from ..models.finding_attrib import FindingAttrib
         from ..models.finding_component import FindingComponent
         from ..models.finding_vulnerability import FindingVulnerability
 
@@ -99,11 +104,11 @@ class Finding:
             analysis = FindingAnalysis.from_dict(_analysis)
 
         _attribution = d.pop("attribution", UNSET)
-        attribution: Union[Unset, FindingAttribution]
+        attribution: Union[Unset, FindingAttrib]
         if isinstance(_attribution, Unset):
             attribution = UNSET
         else:
-            attribution = FindingAttribution.from_dict(_attribution)
+            attribution = FindingAttrib.from_dict(_attribution)
 
         matrix = d.pop("matrix", UNSET)
 

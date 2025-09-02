@@ -14110,12 +14110,7 @@
         }
       },
       "Analysis": {
-        "required": [
-          "analysisDetails",
-          "analysisJustification",
-          "analysisResponse",
-          "analysisState"
-        ],
+        "required": [],
         "type": "object",
         "properties": {
           "analysisState": {
@@ -15495,24 +15490,113 @@
         "properties": {
           "component": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            },
-            "$ref": "#/components/schemas/Component"
+            "additionalProperties": true,
+            "properties": {
+              "uuid": {
+                "type": "string"
+              },
+              "group": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purl": {
+                "type": "string"
+              },
+              "project": {
+                "type": "string"
+              },
+              "projectName": {
+                "type": "string"
+              },
+              "projectVersion": {
+                "type": "string"
+              },
+              "latestVersion": {
+                "type": "string"
+              }
+            }
           },
           "vulnerability": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            },
-            "$ref": "#/components/schemas/Vulnerability"
+            "additionalProperties": true,
+            "properties": {
+              "uuid": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "vulnId": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "cvssV3BaseScore": {
+                "type": "number"
+              },
+              "severity": {
+                "type": "string"
+              },
+              "severityRank": {
+                "type": "integer"
+              },
+              "epssScore": {
+                "type": "number"
+              },
+              "epssPercentile": {
+                "type": "number"
+              },
+              "cweId": {
+                "type": "integer"
+              },
+              "cweName": {
+                "type": "string"
+              },
+              "cwes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Cwe"
+                }
+              },
+              "recommendation": {
+                "type": "string"
+              },
+              "published": {
+                "type": "integer"
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VulnerabilityAlias"
+                }
+              }
+            }
           },
           "analysis": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            },
-            "$ref": "#/components/schemas/ViolationAnalysis"
+            "additionalProperties": true,
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "EXPLOITABLE",
+                  "IN_TRIAGE",
+                  "FALSE_POSITIVE",
+                  "NOT_AFFECTED",
+                  "RESOLVED",
+                  "NOT_SET"
+                ]
+              },
+              "isSuppressed": {
+                "type": "boolean"
+              }
+            }
           },
           "attribution": {
             "type": "object",
