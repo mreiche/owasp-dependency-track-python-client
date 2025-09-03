@@ -46,9 +46,9 @@ from .external_reference import ExternalReference
 from .external_reference_type import ExternalReferenceType
 from .finding import Finding
 from .finding_analysis import FindingAnalysis
+from .finding_analysis_state import FindingAnalysisState
 from .finding_attrib import FindingAttrib
 from .finding_attrib_analyzer_identity import FindingAttribAnalyzerIdentity
-from .finding_attribution import FindingAttribution
 from .finding_component import FindingComponent
 from .finding_vulnerability import FindingVulnerability
 from .force_change_password_body import ForceChangePasswordBody
@@ -236,9 +236,9 @@ __all__ = (
     "ExternalReferenceType",
     "Finding",
     "FindingAnalysis",
+    "FindingAnalysisState",
     "FindingAttrib",
     "FindingAttribAnalyzerIdentity",
-    "FindingAttribution",
     "FindingComponent",
     "FindingVulnerability",
     "ForceChangePasswordBody",

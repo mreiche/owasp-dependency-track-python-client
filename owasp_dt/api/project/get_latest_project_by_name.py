@@ -29,15 +29,19 @@ def _parse_response(
         response_200 = Project.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
+
     if response.status_code == 403:
         response_403 = cast(Any, None)
         return response_403
+
     if response.status_code == 404:
         response_404 = cast(Any, None)
         return response_404
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:

@@ -20,9 +20,8 @@ def _get_kwargs(
         "url": "/v1/tag",
     }
 
-    _body = body
+    _kwargs["json"] = body
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -35,10 +34,12 @@ def _parse_response(
     if response.status_code == 204:
         response_204 = cast(Any, None)
         return response_204
+
     if response.status_code == 400:
         response_400 = TagOperationProblemDetails.from_dict(response.json())
 
         return response_400
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
