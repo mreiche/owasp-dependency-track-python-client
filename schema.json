@@ -15537,6 +15537,9 @@
               "description": {
                 "type": "string"
               },
+              "cvssV2BaseScore": {
+                "type": "number"
+              },
               "cvssV3BaseScore": {
                 "type": "number"
               },
