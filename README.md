@@ -31,11 +31,16 @@ projects = get_projects.sync(client=client)
 assert len(projects) > 0
 ```
 
-## CLI
+## More OWASP Dependency Track utils
 
-If you're looking for a CLI tool: [owasp-dependency-track-cli](https://github.com/mreiche/owasp-dependency-track-cli)
+This library is part of a wider OWASP Dependency Track tool chain:
+- OWASP Dependency Track Python API client: https://github.com/mreiche/owasp-dependency-track-python-client
+- OWASP Dependency Track CLI: https://github.com/mreiche/owasp-dependency-track-cli
+- OWASP Dependency Track Azure DevOps Sync: https://github.com/mreiche/owasp-dependency-track-azure-devops
 
-## Update the library
+## Development
+
+### Update the library
 
 1. Install the requirements: `pip install -r requirements.txt`
 2. Start a OWASP DT instance locally (like via. Docker-Compose): https://docs.dependencytrack.org/getting-started/deploy-docker/
