@@ -26,4 +26,5 @@ test = [
     "pytest-cov",
     "dotenv",
     "openapi-python-client",
+    "tinystream==0.1.18",
 ]
