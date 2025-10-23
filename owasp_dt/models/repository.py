@@ -20,24 +20,24 @@ class Repository:
     """
     Attributes:
         type_ (RepositoryType):
+        identifier (str):
+        url (str):
         resolution_order (int):
         enabled (bool):
         internal (bool):
         uuid (UUID):
-        identifier (Union[Unset, str]):
-        url (Union[Unset, str]):
         authentication_required (Union[Unset, bool]):
         username (Union[Unset, str]):
         password (Union[Unset, str]):
     """
 
     type_: RepositoryType
+    identifier: str
+    url: str
     resolution_order: int
     enabled: bool
     internal: bool
     uuid: UUID
-    identifier: Union[Unset, str] = UNSET
-    url: Union[Unset, str] = UNSET
     authentication_required: Union[Unset, bool] = UNSET
     username: Union[Unset, str] = UNSET
     password: Union[Unset, str] = UNSET
@@ -46,6 +46,10 @@ class Repository:
     def to_dict(self) -> dict[str, Any]:
         type_ = self.type_.value
 
+        identifier = self.identifier
+
+        url = self.url
+
         resolution_order = self.resolution_order
 
         enabled = self.enabled
@@ -53,10 +57,6 @@ class Repository:
         internal = self.internal
 
         uuid = str(self.uuid)
-
-        identifier = self.identifier
-
-        url = self.url
 
         authentication_required = self.authentication_required
 
@@ -69,16 +69,14 @@ class Repository:
         field_dict.update(
             {
                 "type": type_,
+                "identifier": identifier,
+                "url": url,
                 "resolutionOrder": resolution_order,
                 "enabled": enabled,
                 "internal": internal,
                 "uuid": uuid,
             }
         )
-        if identifier is not UNSET:
-            field_dict["identifier"] = identifier
-        if url is not UNSET:
-            field_dict["url"] = url
         if authentication_required is not UNSET:
             field_dict["authenticationRequired"] = authentication_required
         if username is not UNSET:
@@ -93,6 +91,10 @@ class Repository:
         d = dict(src_dict)
         type_ = RepositoryType(d.pop("type"))
 
+        identifier = d.pop("identifier")
+
+        url = d.pop("url")
+
         resolution_order = d.pop("resolutionOrder")
 
         enabled = d.pop("enabled")
@@ -100,10 +102,6 @@ class Repository:
         internal = d.pop("internal")
 
         uuid = UUID(d.pop("uuid"))
-
-        identifier = d.pop("identifier", UNSET)
-
-        url = d.pop("url", UNSET)
 
         authentication_required = d.pop("authenticationRequired", UNSET)
 
@@ -113,12 +111,12 @@ class Repository:
 
         repository = cls(
             type_=type_,
+            identifier=identifier,
+            url=url,
             resolution_order=resolution_order,
             enabled=enabled,
             internal=internal,
             uuid=uuid,
-            identifier=identifier,
-            url=url,
             authentication_required=authentication_required,
             username=username,
             password=password,

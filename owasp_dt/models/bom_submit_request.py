@@ -23,11 +23,11 @@ class BomSubmitRequest:
     """
     Attributes:
         project (str):  Example: 38640b33-4ba9-4733-bdab-cbfc40c6f8aa.
+        project_name (str):  Example: Example Application.
+        project_version (str):  Example: 1.0.0.
         bom (str): Base64 encoded BOM Example: ewogICJib21Gb3JtYXQiOiAiQ3ljbG9uZURYIiwKICAic3BlY1ZlcnNpb24iOiAiMS40IiwKI
             CAiY29tcG9uZW50cyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAibGlicmFyeSIsCiAgICAgICJuYW1lIjogImFjbWUtbGliIiwKICAgICAgInZlc
             nNpb24iOiAiMS4wLjAiCiAgICB9CiAgXQp9.
-        project_name (Union[Unset, str]):  Example: Example Application.
-        project_version (Union[Unset, str]):  Example: 1.0.0.
         project_tags (Union[Unset, list['Tag']]): Overwrite project tags. Modifying the tags of an existing project
             requires the PORTFOLIO_MANAGEMENT permission.
         auto_create (Union[Unset, bool]):
@@ -38,9 +38,9 @@ class BomSubmitRequest:
     """
 
     project: str
+    project_name: str
+    project_version: str
     bom: str
-    project_name: Union[Unset, str] = UNSET
-    project_version: Union[Unset, str] = UNSET
     project_tags: Union[Unset, list["Tag"]] = UNSET
     auto_create: Union[Unset, bool] = UNSET
     parent_uuid: Union[Unset, str] = UNSET
@@ -52,11 +52,11 @@ class BomSubmitRequest:
     def to_dict(self) -> dict[str, Any]:
         project = self.project
 
-        bom = self.bom
-
         project_name = self.project_name
 
         project_version = self.project_version
+
+        bom = self.bom
 
         project_tags: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.project_tags, Unset):
@@ -80,13 +80,11 @@ class BomSubmitRequest:
         field_dict.update(
             {
                 "project": project,
+                "projectName": project_name,
+                "projectVersion": project_version,
                 "bom": bom,
             }
         )
-        if project_name is not UNSET:
-            field_dict["projectName"] = project_name
-        if project_version is not UNSET:
-            field_dict["projectVersion"] = project_version
         if project_tags is not UNSET:
             field_dict["projectTags"] = project_tags
         if auto_create is not UNSET:
@@ -109,11 +107,11 @@ class BomSubmitRequest:
         d = dict(src_dict)
         project = d.pop("project")
 
+        project_name = d.pop("projectName")
+
+        project_version = d.pop("projectVersion")
+
         bom = d.pop("bom")
-
-        project_name = d.pop("projectName", UNSET)
-
-        project_version = d.pop("projectVersion", UNSET)
 
         project_tags = []
         _project_tags = d.pop("projectTags", UNSET)
@@ -134,9 +132,9 @@ class BomSubmitRequest:
 
         bom_submit_request = cls(
             project=project,
-            bom=bom,
             project_name=project_name,
             project_version=project_version,
+            bom=bom,
             project_tags=project_tags,
             auto_create=auto_create,
             parent_uuid=parent_uuid,

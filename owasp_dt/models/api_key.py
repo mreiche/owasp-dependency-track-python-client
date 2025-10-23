@@ -1,4 +1,3 @@
-import datetime
 from collections.abc import Mapping
 from typing import (
     Any,
@@ -8,7 +7,6 @@ from typing import (
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -20,8 +18,8 @@ class ApiKey:
     """
     Attributes:
         comment (Union[Unset, str]):
-        created (Union[Unset, datetime.datetime]):
-        last_used (Union[Unset, datetime.datetime]):
+        created (Union[Unset, int]): UNIX epoch timestamp in milliseconds
+        last_used (Union[Unset, int]): UNIX epoch timestamp in milliseconds
         public_id (Union[Unset, str]):
         key (Union[Unset, str]):
         legacy (Union[Unset, bool]):
@@ -29,8 +27,8 @@ class ApiKey:
     """
 
     comment: Union[Unset, str] = UNSET
-    created: Union[Unset, datetime.datetime] = UNSET
-    last_used: Union[Unset, datetime.datetime] = UNSET
+    created: Union[Unset, int] = UNSET
+    last_used: Union[Unset, int] = UNSET
     public_id: Union[Unset, str] = UNSET
     key: Union[Unset, str] = UNSET
     legacy: Union[Unset, bool] = UNSET
@@ -40,13 +38,9 @@ class ApiKey:
     def to_dict(self) -> dict[str, Any]:
         comment = self.comment
 
-        created: Union[Unset, str] = UNSET
-        if not isinstance(self.created, Unset):
-            created = self.created.isoformat()
+        created = self.created
 
-        last_used: Union[Unset, str] = UNSET
-        if not isinstance(self.last_used, Unset):
-            last_used = self.last_used.isoformat()
+        last_used = self.last_used
 
         public_id = self.public_id
 
@@ -81,19 +75,9 @@ class ApiKey:
         d = dict(src_dict)
         comment = d.pop("comment", UNSET)
 
-        _created = d.pop("created", UNSET)
-        created: Union[Unset, datetime.datetime]
-        if isinstance(_created, Unset):
-            created = UNSET
-        else:
-            created = isoparse(_created)
+        created = d.pop("created", UNSET)
 
-        _last_used = d.pop("lastUsed", UNSET)
-        last_used: Union[Unset, datetime.datetime]
-        if isinstance(_last_used, Unset):
-            last_used = UNSET
-        else:
-            last_used = isoparse(_last_used)
+        last_used = d.pop("lastUsed", UNSET)
 
         public_id = d.pop("publicId", UNSET)
 

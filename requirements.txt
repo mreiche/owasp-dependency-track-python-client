@@ -1,4 +1,0 @@
-openapi-python-client
-setuptools
-wheel
-twine

@@ -30,7 +30,7 @@ class Team:
     """
     Attributes:
         uuid (UUID):
-        name (Union[Unset, str]):
+        name (str):
         api_keys (Union[Unset, list['ApiKey']]):
         ldap_users (Union[Unset, list['LdapUser']]):
         managed_users (Union[Unset, list['ManagedUser']]):
@@ -41,7 +41,7 @@ class Team:
     """
 
     uuid: UUID
-    name: Union[Unset, str] = UNSET
+    name: str
     api_keys: Union[Unset, list["ApiKey"]] = UNSET
     ldap_users: Union[Unset, list["LdapUser"]] = UNSET
     managed_users: Union[Unset, list["ManagedUser"]] = UNSET
@@ -110,10 +110,9 @@ class Team:
         field_dict.update(
             {
                 "uuid": uuid,
+                "name": name,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if api_keys is not UNSET:
             field_dict["apiKeys"] = api_keys
         if ldap_users is not UNSET:
@@ -144,7 +143,7 @@ class Team:
         d = dict(src_dict)
         uuid = UUID(d.pop("uuid"))
 
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
         api_keys = []
         _api_keys = d.pop("apiKeys", UNSET)

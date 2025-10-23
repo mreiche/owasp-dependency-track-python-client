@@ -25,52 +25,45 @@ T = TypeVar("T", bound="PolicyCondition")
 class PolicyCondition:
     """
     Attributes:
+        operator (PolicyConditionOperator):
+        subject (PolicyConditionSubject):
+        value (str):
         uuid (UUID):
         policy (Union[Unset, Policy]):
-        operator (Union[Unset, PolicyConditionOperator]):
-        subject (Union[Unset, PolicyConditionSubject]):
-        value (Union[Unset, str]):
     """
 
+    operator: PolicyConditionOperator
+    subject: PolicyConditionSubject
+    value: str
     uuid: UUID
     policy: Union[Unset, "Policy"] = UNSET
-    operator: Union[Unset, PolicyConditionOperator] = UNSET
-    subject: Union[Unset, PolicyConditionSubject] = UNSET
-    value: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        operator = self.operator.value
+
+        subject = self.subject.value
+
+        value = self.value
+
         uuid = str(self.uuid)
 
         policy: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.policy, Unset):
             policy = self.policy.to_dict()
 
-        operator: Union[Unset, str] = UNSET
-        if not isinstance(self.operator, Unset):
-            operator = self.operator.value
-
-        subject: Union[Unset, str] = UNSET
-        if not isinstance(self.subject, Unset):
-            subject = self.subject.value
-
-        value = self.value
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "operator": operator,
+                "subject": subject,
+                "value": value,
                 "uuid": uuid,
             }
         )
         if policy is not UNSET:
             field_dict["policy"] = policy
-        if operator is not UNSET:
-            field_dict["operator"] = operator
-        if subject is not UNSET:
-            field_dict["subject"] = subject
-        if value is not UNSET:
-            field_dict["value"] = value
 
         return field_dict
 
@@ -79,6 +72,12 @@ class PolicyCondition:
         from ..models.policy import Policy
 
         d = dict(src_dict)
+        operator = PolicyConditionOperator(d.pop("operator"))
+
+        subject = PolicyConditionSubject(d.pop("subject"))
+
+        value = d.pop("value")
+
         uuid = UUID(d.pop("uuid"))
 
         _policy = d.pop("policy", UNSET)
@@ -88,28 +87,12 @@ class PolicyCondition:
         else:
             policy = Policy.from_dict(_policy)
 
-        _operator = d.pop("operator", UNSET)
-        operator: Union[Unset, PolicyConditionOperator]
-        if isinstance(_operator, Unset):
-            operator = UNSET
-        else:
-            operator = PolicyConditionOperator(_operator)
-
-        _subject = d.pop("subject", UNSET)
-        subject: Union[Unset, PolicyConditionSubject]
-        if isinstance(_subject, Unset):
-            subject = UNSET
-        else:
-            subject = PolicyConditionSubject(_subject)
-
-        value = d.pop("value", UNSET)
-
         policy_condition = cls(
-            uuid=uuid,
-            policy=policy,
             operator=operator,
             subject=subject,
             value=value,
+            uuid=uuid,
+            policy=policy,
         )
 
         policy_condition.additional_properties = d

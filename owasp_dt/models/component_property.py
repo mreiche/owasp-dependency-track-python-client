@@ -19,30 +19,30 @@ T = TypeVar("T", bound="ComponentProperty")
 class ComponentProperty:
     """
     Attributes:
+        property_name (str):
         property_type (ComponentPropertyPropertyType):
         uuid (UUID):
         group_name (Union[Unset, str]):
-        property_name (Union[Unset, str]):
         property_value (Union[Unset, str]):
         description (Union[Unset, str]):
     """
 
+    property_name: str
     property_type: ComponentPropertyPropertyType
     uuid: UUID
     group_name: Union[Unset, str] = UNSET
-    property_name: Union[Unset, str] = UNSET
     property_value: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        property_name = self.property_name
+
         property_type = self.property_type.value
 
         uuid = str(self.uuid)
 
         group_name = self.group_name
-
-        property_name = self.property_name
 
         property_value = self.property_value
 
@@ -52,14 +52,13 @@ class ComponentProperty:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "propertyName": property_name,
                 "propertyType": property_type,
                 "uuid": uuid,
             }
         )
         if group_name is not UNSET:
             field_dict["groupName"] = group_name
-        if property_name is not UNSET:
-            field_dict["propertyName"] = property_name
         if property_value is not UNSET:
             field_dict["propertyValue"] = property_value
         if description is not UNSET:
@@ -70,23 +69,23 @@ class ComponentProperty:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        property_name = d.pop("propertyName")
+
         property_type = ComponentPropertyPropertyType(d.pop("propertyType"))
 
         uuid = UUID(d.pop("uuid"))
 
         group_name = d.pop("groupName", UNSET)
 
-        property_name = d.pop("propertyName", UNSET)
-
         property_value = d.pop("propertyValue", UNSET)
 
         description = d.pop("description", UNSET)
 
         component_property = cls(
+            property_name=property_name,
             property_type=property_type,
             uuid=uuid,
             group_name=group_name,
-            property_name=property_name,
             property_value=property_value,
             description=description,
         )

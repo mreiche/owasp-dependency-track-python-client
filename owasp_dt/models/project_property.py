@@ -18,26 +18,26 @@ T = TypeVar("T", bound="ProjectProperty")
 class ProjectProperty:
     """
     Attributes:
+        group_name (str):
+        property_name (str):
         property_type (ProjectPropertyPropertyType):
-        group_name (Union[Unset, str]):
-        property_name (Union[Unset, str]):
         property_value (Union[Unset, str]):
         description (Union[Unset, str]):
     """
 
+    group_name: str
+    property_name: str
     property_type: ProjectPropertyPropertyType
-    group_name: Union[Unset, str] = UNSET
-    property_name: Union[Unset, str] = UNSET
     property_value: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        property_type = self.property_type.value
-
         group_name = self.group_name
 
         property_name = self.property_name
+
+        property_type = self.property_type.value
 
         property_value = self.property_value
 
@@ -47,13 +47,11 @@ class ProjectProperty:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "groupName": group_name,
+                "propertyName": property_name,
                 "propertyType": property_type,
             }
         )
-        if group_name is not UNSET:
-            field_dict["groupName"] = group_name
-        if property_name is not UNSET:
-            field_dict["propertyName"] = property_name
         if property_value is not UNSET:
             field_dict["propertyValue"] = property_value
         if description is not UNSET:
@@ -64,20 +62,20 @@ class ProjectProperty:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        group_name = d.pop("groupName")
+
+        property_name = d.pop("propertyName")
+
         property_type = ProjectPropertyPropertyType(d.pop("propertyType"))
-
-        group_name = d.pop("groupName", UNSET)
-
-        property_name = d.pop("propertyName", UNSET)
 
         property_value = d.pop("propertyValue", UNSET)
 
         description = d.pop("description", UNSET)
 
         project_property = cls(
-            property_type=property_type,
             group_name=group_name,
             property_name=property_name,
+            property_type=property_type,
             property_value=property_value,
             description=description,
         )

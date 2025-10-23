@@ -12,6 +12,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.about_provider_data import AboutProviderData
     from ..models.framework import Framework
 
 
@@ -28,6 +29,7 @@ class About:
         uuid (Union[Unset, str]):
         application (Union[Unset, str]):
         framework (Union[Unset, Framework]):
+        provider_data (Union[Unset, AboutProviderData]):
     """
 
     version: Union[Unset, str] = UNSET
@@ -36,6 +38,7 @@ class About:
     uuid: Union[Unset, str] = UNSET
     application: Union[Unset, str] = UNSET
     framework: Union[Unset, "Framework"] = UNSET
+    provider_data: Union[Unset, "AboutProviderData"] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -53,6 +56,10 @@ class About:
         if not isinstance(self.framework, Unset):
             framework = self.framework.to_dict()
 
+        provider_data: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.provider_data, Unset):
+            provider_data = self.provider_data.to_dict()
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -68,11 +75,14 @@ class About:
             field_dict["application"] = application
         if framework is not UNSET:
             field_dict["framework"] = framework
+        if provider_data is not UNSET:
+            field_dict["providerData"] = provider_data
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.about_provider_data import AboutProviderData
         from ..models.framework import Framework
 
         d = dict(src_dict)
@@ -93,6 +103,13 @@ class About:
         else:
             framework = Framework.from_dict(_framework)
 
+        _provider_data = d.pop("providerData", UNSET)
+        provider_data: Union[Unset, AboutProviderData]
+        if isinstance(_provider_data, Unset):
+            provider_data = UNSET
+        else:
+            provider_data = AboutProviderData.from_dict(_provider_data)
+
         about = cls(
             version=version,
             timestamp=timestamp,
@@ -100,6 +117,7 @@ class About:
             uuid=uuid,
             application=application,
             framework=framework,
+            provider_data=provider_data,
         )
 
         about.additional_properties = d

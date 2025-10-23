@@ -28,11 +28,11 @@ T = TypeVar("T", bound="ServiceComponent")
 class ServiceComponent:
     """
     Attributes:
+        name (str):
         project (Project):
         uuid (UUID):
         provider (Union[Unset, OrganizationalEntity]):
         group (Union[Unset, str]):
-        name (Union[Unset, str]):
         version (Union[Unset, str]):
         description (Union[Unset, str]):
         endpoints (Union[Unset, list[str]]):
@@ -48,11 +48,11 @@ class ServiceComponent:
         bom_ref (Union[Unset, str]):
     """
 
+    name: str
     project: "Project"
     uuid: UUID
     provider: Union[Unset, "OrganizationalEntity"] = UNSET
     group: Union[Unset, str] = UNSET
-    name: Union[Unset, str] = UNSET
     version: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     endpoints: Union[Unset, list[str]] = UNSET
@@ -69,6 +69,8 @@ class ServiceComponent:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        name = self.name
+
         project = self.project.to_dict()
 
         uuid = str(self.uuid)
@@ -78,8 +80,6 @@ class ServiceComponent:
             provider = self.provider.to_dict()
 
         group = self.group
-
-        name = self.name
 
         version = self.version
 
@@ -135,6 +135,7 @@ class ServiceComponent:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
                 "project": project,
                 "uuid": uuid,
             }
@@ -143,8 +144,6 @@ class ServiceComponent:
             field_dict["provider"] = provider
         if group is not UNSET:
             field_dict["group"] = group
-        if name is not UNSET:
-            field_dict["name"] = name
         if version is not UNSET:
             field_dict["version"] = version
         if description is not UNSET:
@@ -183,6 +182,8 @@ class ServiceComponent:
         from ..models.vulnerability import Vulnerability
 
         d = dict(src_dict)
+        name = d.pop("name")
+
         project = Project.from_dict(d.pop("project"))
 
         uuid = UUID(d.pop("uuid"))
@@ -195,8 +196,6 @@ class ServiceComponent:
             provider = OrganizationalEntity.from_dict(_provider)
 
         group = d.pop("group", UNSET)
-
-        name = d.pop("name", UNSET)
 
         version = d.pop("version", UNSET)
 
@@ -252,11 +251,11 @@ class ServiceComponent:
         bom_ref = d.pop("bomRef", UNSET)
 
         service_component = cls(
+            name=name,
             project=project,
             uuid=uuid,
             provider=provider,
             group=group,
-            name=name,
             version=version,
             description=description,
             endpoints=endpoints,

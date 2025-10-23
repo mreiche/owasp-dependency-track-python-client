@@ -23,15 +23,15 @@ T = TypeVar("T", bound="LdapUser")
 class LdapUser:
     """
     Attributes:
-        username (Union[Unset, str]):
-        dn (Union[Unset, str]):
+        username (str):
+        dn (str):
         teams (Union[Unset, list['Team']]):
         email (Union[Unset, str]):
         permissions (Union[Unset, list['Permission']]):
     """
 
-    username: Union[Unset, str] = UNSET
-    dn: Union[Unset, str] = UNSET
+    username: str
+    dn: str
     teams: Union[Unset, list["Team"]] = UNSET
     email: Union[Unset, str] = UNSET
     permissions: Union[Unset, list["Permission"]] = UNSET
@@ -60,11 +60,12 @@ class LdapUser:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if username is not UNSET:
-            field_dict["username"] = username
-        if dn is not UNSET:
-            field_dict["dn"] = dn
+        field_dict.update(
+            {
+                "username": username,
+                "dn": dn,
+            }
+        )
         if teams is not UNSET:
             field_dict["teams"] = teams
         if email is not UNSET:
@@ -80,9 +81,9 @@ class LdapUser:
         from ..models.team import Team
 
         d = dict(src_dict)
-        username = d.pop("username", UNSET)
+        username = d.pop("username")
 
-        dn = d.pop("dn", UNSET)
+        dn = d.pop("dn")
 
         teams = []
         _teams = d.pop("teams", UNSET)

@@ -1,6 +1,8 @@
 """Contains all the data models used in inputs/outputs"""
 
 from .about import About
+from .about_provider_data import AboutProviderData
+from .about_provider_data_additional_property import AboutProviderDataAdditionalProperty
 from .acl_mapping_request import AclMappingRequest
 from .affected_component import AffectedComponent
 from .affected_component_identity_type import AffectedComponentIdentityType
@@ -199,6 +201,8 @@ from .vulnerability_severity import VulnerabilitySeverity
 
 __all__ = (
     "About",
+    "AboutProviderData",
+    "AboutProviderDataAdditionalProperty",
     "AclMappingRequest",
     "AffectedComponent",
     "AffectedComponentIdentityType",

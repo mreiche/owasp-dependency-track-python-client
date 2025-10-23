@@ -11,7 +11,7 @@
       "name": "Apache-2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "4.13.4"
+    "version": "4.13.5"
   },
   "servers": [
     {
@@ -13286,6 +13286,12 @@
           },
           "framework": {
             "$ref": "#/components/schemas/Framework"
+          },
+          "providerData": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
           }
         }
       },
@@ -13332,12 +13338,14 @@
             "type": "string"
           },
           "created": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64",
+            "description": "UNIX epoch timestamp in milliseconds"
           },
           "lastUsed": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64",
+            "description": "UNIX epoch timestamp in milliseconds"
           },
           "publicId": {
             "maxLength": 8,
@@ -13356,6 +13364,9 @@
         }
       },
       "ExternalReference": {
+        "required": [
+          "url"
+        ],
         "type": "object",
         "properties": {
           "type": {
@@ -13416,6 +13427,10 @@
         }
       },
       "LdapUser": {
+        "required": [
+          "dn",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "username": {
@@ -13452,7 +13467,8 @@
       },
       "ManagedUser": {
         "required": [
-          "lastPasswordChange"
+          "lastPasswordChange",
+          "username"
         ],
         "type": "object",
         "properties": {
@@ -13463,8 +13479,9 @@
             "type": "string"
           },
           "lastPasswordChange": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64",
+            "description": "UNIX epoch timestamp in milliseconds"
           },
           "fullname": {
             "maxLength": 255,
@@ -13509,6 +13526,7 @@
       },
       "MappedLdapGroup": {
         "required": [
+          "dn",
           "uuid"
         ],
         "type": "object",
@@ -13542,6 +13560,7 @@
       },
       "OidcGroup": {
         "required": [
+          "name",
           "uuid"
         ],
         "type": "object",
@@ -13559,6 +13578,9 @@
         }
       },
       "OidcUser": {
+        "required": [
+          "username"
+        ],
         "type": "object",
         "properties": {
           "username": {
@@ -13628,6 +13650,9 @@
         }
       },
       "Permission": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -13980,6 +14005,8 @@
       },
       "ProjectProperty": {
         "required": [
+          "groupName",
+          "propertyName",
           "propertyType"
         ],
         "type": "object",
@@ -14039,6 +14066,9 @@
         }
       },
       "Tag": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -14051,6 +14081,7 @@
       },
       "Team": {
         "required": [
+          "name",
           "uuid"
         ],
         "type": "object",
@@ -14330,7 +14361,9 @@
       "BomSubmitRequest": {
         "required": [
           "bom",
-          "project"
+          "project",
+          "projectName",
+          "projectVersion"
         ],
         "type": "object",
         "properties": {
@@ -14430,6 +14463,7 @@
       },
       "ComponentProperty": {
         "required": [
+          "propertyName",
           "propertyType",
           "uuid"
         ],
@@ -14963,6 +14997,8 @@
       },
       "License": {
         "required": [
+          "licenseId",
+          "name",
           "uuid"
         ],
         "type": "object",
@@ -15023,6 +15059,7 @@
       },
       "LicenseGroup": {
         "required": [
+          "name",
           "uuid"
         ],
         "type": "object",
@@ -15101,6 +15138,7 @@
       },
       "ServiceComponent": {
         "required": [
+          "name",
           "project",
           "uuid"
         ],
@@ -15193,7 +15231,10 @@
       },
       "Vulnerability": {
         "required": [
-          "uuid"
+          "friendlyVulnId",
+          "source",
+          "uuid",
+          "vulnId"
         ],
         "type": "object",
         "properties": {
@@ -15420,6 +15461,8 @@
       },
       "ConfigProperty": {
         "required": [
+          "groupName",
+          "propertyName",
           "propertyType"
         ],
         "type": "object",
@@ -16067,6 +16110,7 @@
       },
       "CreateScheduledNotificationRuleRequest": {
         "required": [
+          "name",
           "notificationLevel",
           "publisher",
           "scope"
@@ -16160,7 +16204,10 @@
       },
       "Policy": {
         "required": [
-          "uuid"
+          "name",
+          "operator",
+          "uuid",
+          "violationState"
         ],
         "type": "object",
         "properties": {
@@ -16227,7 +16274,10 @@
       },
       "PolicyCondition": {
         "required": [
-          "uuid"
+          "operator",
+          "subject",
+          "uuid",
+          "value"
         ],
         "type": "object",
         "properties": {
@@ -16443,9 +16493,11 @@
       "Repository": {
         "required": [
           "enabled",
+          "identifier",
           "internal",
           "resolutionOrder",
           "type",
+          "url",
           "uuid"
         ],
         "type": "object",
@@ -16659,6 +16711,8 @@
       "VexSubmitRequest": {
         "required": [
           "project",
+          "projectName",
+          "projectVersion",
           "vex"
         ],
         "type": "object",

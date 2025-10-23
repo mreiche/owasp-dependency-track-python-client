@@ -139,6 +139,29 @@
           }
         }
       },
+      "ManagedUser" : {
+        "properties": {
+          "lastPasswordChange": {
+            "type": "integer",
+            "description": "UNIX epoch timestamp in milliseconds",
+            "format": "int64"
+          }
+        }
+      },
+      "ApiKey" : {
+        "properties" : {
+          "created" : {
+            "type": "integer",
+            "description": "UNIX epoch timestamp in milliseconds",
+            "format": "int64"
+          },
+          "lastUsed" : {
+            "type": "integer",
+            "description": "UNIX epoch timestamp in milliseconds",
+            "format": "int64"
+          }
+        }
+      },
       "FindingAttrib": {
         "type": "object",
         "properties": {

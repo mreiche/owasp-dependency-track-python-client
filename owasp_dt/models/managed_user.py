@@ -1,4 +1,3 @@
-import datetime
 from collections.abc import Mapping
 from typing import (
     TYPE_CHECKING,
@@ -9,7 +8,6 @@ from typing import (
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -25,8 +23,8 @@ T = TypeVar("T", bound="ManagedUser")
 class ManagedUser:
     """
     Attributes:
-        last_password_change (datetime.datetime):
-        username (Union[Unset, str]):
+        username (str):
+        last_password_change (int): UNIX epoch timestamp in milliseconds
         fullname (Union[Unset, str]):
         email (Union[Unset, str]):
         suspended (Union[Unset, bool]):
@@ -38,8 +36,8 @@ class ManagedUser:
         confirm_password (Union[Unset, str]):
     """
 
-    last_password_change: datetime.datetime
-    username: Union[Unset, str] = UNSET
+    username: str
+    last_password_change: int
     fullname: Union[Unset, str] = UNSET
     email: Union[Unset, str] = UNSET
     suspended: Union[Unset, bool] = UNSET
@@ -52,9 +50,9 @@ class ManagedUser:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        last_password_change = self.last_password_change.isoformat()
-
         username = self.username
+
+        last_password_change = self.last_password_change
 
         fullname = self.fullname
 
@@ -88,11 +86,10 @@ class ManagedUser:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "username": username,
                 "lastPasswordChange": last_password_change,
             }
         )
-        if username is not UNSET:
-            field_dict["username"] = username
         if fullname is not UNSET:
             field_dict["fullname"] = fullname
         if email is not UNSET:
@@ -120,9 +117,9 @@ class ManagedUser:
         from ..models.team import Team
 
         d = dict(src_dict)
-        last_password_change = isoparse(d.pop("lastPasswordChange"))
+        username = d.pop("username")
 
-        username = d.pop("username", UNSET)
+        last_password_change = d.pop("lastPasswordChange")
 
         fullname = d.pop("fullname", UNSET)
 
@@ -153,8 +150,8 @@ class ManagedUser:
         confirm_password = d.pop("confirmPassword", UNSET)
 
         managed_user = cls(
-            last_password_change=last_password_change,
             username=username,
+            last_password_change=last_password_change,
             fullname=fullname,
             email=email,
             suspended=suspended,
