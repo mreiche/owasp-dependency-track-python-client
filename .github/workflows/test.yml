@@ -25,6 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./test/docker-compose.yml"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -58,8 +63,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           verbose: true
-
-      - uses: ./.github/actions/build-container
-        with:
-          user: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
