@@ -23,22 +23,22 @@ T = TypeVar("T", bound="LicenseGroup")
 class LicenseGroup:
     """
     Attributes:
+        name (str):
         uuid (UUID):
-        name (Union[Unset, str]):
         licenses (Union[Unset, list['License']]):
         risk_weight (Union[Unset, int]):
     """
 
+    name: str
     uuid: UUID
-    name: Union[Unset, str] = UNSET
     licenses: Union[Unset, list["License"]] = UNSET
     risk_weight: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
-
         name = self.name
+
+        uuid = str(self.uuid)
 
         licenses: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.licenses, Unset):
@@ -53,11 +53,10 @@ class LicenseGroup:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
                 "uuid": uuid,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if licenses is not UNSET:
             field_dict["licenses"] = licenses
         if risk_weight is not UNSET:
@@ -70,9 +69,9 @@ class LicenseGroup:
         from ..models.license_ import License
 
         d = dict(src_dict)
-        uuid = UUID(d.pop("uuid"))
+        name = d.pop("name")
 
-        name = d.pop("name", UNSET)
+        uuid = UUID(d.pop("uuid"))
 
         licenses = []
         _licenses = d.pop("licenses", UNSET)
@@ -84,8 +83,8 @@ class LicenseGroup:
         risk_weight = d.pop("riskWeight", UNSET)
 
         license_group = cls(
-            uuid=uuid,
             name=name,
+            uuid=uuid,
             licenses=licenses,
             risk_weight=risk_weight,
         )

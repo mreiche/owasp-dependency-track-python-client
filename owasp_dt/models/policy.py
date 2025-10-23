@@ -27,10 +27,10 @@ T = TypeVar("T", bound="Policy")
 class Policy:
     """
     Attributes:
+        name (str):
+        operator (PolicyOperator):
+        violation_state (PolicyViolationState):
         uuid (UUID):
-        name (Union[Unset, str]):
-        operator (Union[Unset, PolicyOperator]):
-        violation_state (Union[Unset, PolicyViolationState]):
         policy_conditions (Union[Unset, list['PolicyCondition']]):
         projects (Union[Unset, list['Project']]):
         tags (Union[Unset, list['Tag']]):
@@ -39,10 +39,10 @@ class Policy:
         global_ (Union[Unset, bool]):
     """
 
+    name: str
+    operator: PolicyOperator
+    violation_state: PolicyViolationState
     uuid: UUID
-    name: Union[Unset, str] = UNSET
-    operator: Union[Unset, PolicyOperator] = UNSET
-    violation_state: Union[Unset, PolicyViolationState] = UNSET
     policy_conditions: Union[Unset, list["PolicyCondition"]] = UNSET
     projects: Union[Unset, list["Project"]] = UNSET
     tags: Union[Unset, list["Tag"]] = UNSET
@@ -52,17 +52,13 @@ class Policy:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
-
         name = self.name
 
-        operator: Union[Unset, str] = UNSET
-        if not isinstance(self.operator, Unset):
-            operator = self.operator.value
+        operator = self.operator.value
 
-        violation_state: Union[Unset, str] = UNSET
-        if not isinstance(self.violation_state, Unset):
-            violation_state = self.violation_state.value
+        violation_state = self.violation_state.value
+
+        uuid = str(self.uuid)
 
         policy_conditions: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.policy_conditions, Unset):
@@ -95,15 +91,12 @@ class Policy:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
+                "operator": operator,
+                "violationState": violation_state,
                 "uuid": uuid,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
-        if operator is not UNSET:
-            field_dict["operator"] = operator
-        if violation_state is not UNSET:
-            field_dict["violationState"] = violation_state
         if policy_conditions is not UNSET:
             field_dict["policyConditions"] = policy_conditions
         if projects is not UNSET:
@@ -126,23 +119,13 @@ class Policy:
         from ..models.tag import Tag
 
         d = dict(src_dict)
+        name = d.pop("name")
+
+        operator = PolicyOperator(d.pop("operator"))
+
+        violation_state = PolicyViolationState(d.pop("violationState"))
+
         uuid = UUID(d.pop("uuid"))
-
-        name = d.pop("name", UNSET)
-
-        _operator = d.pop("operator", UNSET)
-        operator: Union[Unset, PolicyOperator]
-        if isinstance(_operator, Unset):
-            operator = UNSET
-        else:
-            operator = PolicyOperator(_operator)
-
-        _violation_state = d.pop("violationState", UNSET)
-        violation_state: Union[Unset, PolicyViolationState]
-        if isinstance(_violation_state, Unset):
-            violation_state = UNSET
-        else:
-            violation_state = PolicyViolationState(_violation_state)
 
         policy_conditions = []
         _policy_conditions = d.pop("policyConditions", UNSET)
@@ -174,10 +157,10 @@ class Policy:
         global_ = d.pop("global", UNSET)
 
         policy = cls(
-            uuid=uuid,
             name=name,
             operator=operator,
             violation_state=violation_state,
+            uuid=uuid,
             policy_conditions=policy_conditions,
             projects=projects,
             tags=tags,

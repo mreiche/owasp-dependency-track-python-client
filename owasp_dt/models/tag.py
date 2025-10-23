@@ -1,14 +1,8 @@
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="Tag")
 
@@ -17,10 +11,10 @@ T = TypeVar("T", bound="Tag")
 class Tag:
     """
     Attributes:
-        name (Union[Unset, str]):
+        name (str):
     """
 
-    name: Union[Unset, str] = UNSET
+    name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -28,16 +22,18 @@ class Tag:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
+        field_dict.update(
+            {
+                "name": name,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
         tag = cls(
             name=name,

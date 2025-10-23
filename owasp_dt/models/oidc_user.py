@@ -23,14 +23,14 @@ T = TypeVar("T", bound="OidcUser")
 class OidcUser:
     """
     Attributes:
-        username (Union[Unset, str]):
+        username (str):
         subject_identifier (Union[Unset, str]):
         email (Union[Unset, str]):
         teams (Union[Unset, list['Team']]):
         permissions (Union[Unset, list['Permission']]):
     """
 
-    username: Union[Unset, str] = UNSET
+    username: str
     subject_identifier: Union[Unset, str] = UNSET
     email: Union[Unset, str] = UNSET
     teams: Union[Unset, list["Team"]] = UNSET
@@ -60,9 +60,11 @@ class OidcUser:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if username is not UNSET:
-            field_dict["username"] = username
+        field_dict.update(
+            {
+                "username": username,
+            }
+        )
         if subject_identifier is not UNSET:
             field_dict["subjectIdentifier"] = subject_identifier
         if email is not UNSET:
@@ -80,7 +82,7 @@ class OidcUser:
         from ..models.team import Team
 
         d = dict(src_dict)
-        username = d.pop("username", UNSET)
+        username = d.pop("username")
 
         subject_identifier = d.pop("subjectIdentifier", UNSET)
 

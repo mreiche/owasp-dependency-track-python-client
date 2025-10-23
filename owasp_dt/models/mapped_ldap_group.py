@@ -1,15 +1,9 @@
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="MappedLdapGroup")
 
@@ -18,41 +12,40 @@ T = TypeVar("T", bound="MappedLdapGroup")
 class MappedLdapGroup:
     """
     Attributes:
+        dn (str):
         uuid (UUID):
-        dn (Union[Unset, str]):
     """
 
+    dn: str
     uuid: UUID
-    dn: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
-
         dn = self.dn
+
+        uuid = str(self.uuid)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "dn": dn,
                 "uuid": uuid,
             }
         )
-        if dn is not UNSET:
-            field_dict["dn"] = dn
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        dn = d.pop("dn")
+
         uuid = UUID(d.pop("uuid"))
 
-        dn = d.pop("dn", UNSET)
-
         mapped_ldap_group = cls(
-            uuid=uuid,
             dn=dn,
+            uuid=uuid,
         )
 
         mapped_ldap_group.additional_properties = d

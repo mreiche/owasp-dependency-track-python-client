@@ -18,32 +18,34 @@ T = TypeVar("T", bound="ExternalReference")
 class ExternalReference:
     """
     Attributes:
+        url (str):
         type_ (Union[Unset, ExternalReferenceType]):
-        url (Union[Unset, str]):
         comment (Union[Unset, str]):
     """
 
+    url: str
     type_: Union[Unset, ExternalReferenceType] = UNSET
-    url: Union[Unset, str] = UNSET
     comment: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        url = self.url
+
         type_: Union[Unset, str] = UNSET
         if not isinstance(self.type_, Unset):
             type_ = self.type_.value
-
-        url = self.url
 
         comment = self.comment
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "url": url,
+            }
+        )
         if type_ is not UNSET:
             field_dict["type"] = type_
-        if url is not UNSET:
-            field_dict["url"] = url
         if comment is not UNSET:
             field_dict["comment"] = comment
 
@@ -52,6 +54,8 @@ class ExternalReference:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        url = d.pop("url")
+
         _type_ = d.pop("type", UNSET)
         type_: Union[Unset, ExternalReferenceType]
         if isinstance(_type_, Unset):
@@ -59,13 +63,11 @@ class ExternalReference:
         else:
             type_ = ExternalReferenceType(_type_)
 
-        url = d.pop("url", UNSET)
-
         comment = d.pop("comment", UNSET)
 
         external_reference = cls(
-            type_=type_,
             url=url,
+            type_=type_,
             comment=comment,
         )
 

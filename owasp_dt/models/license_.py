@@ -25,13 +25,13 @@ class License:
     """
     Attributes:
         uuid (UUID):
+        name (str):
+        license_id (str):
         license_groups (Union[Unset, list['LicenseGroup']]):
-        name (Union[Unset, str]):
         license_text (Union[Unset, str]):
         standard_license_template (Union[Unset, str]):
         standard_license_header (Union[Unset, str]):
         license_comments (Union[Unset, str]):
-        license_id (Union[Unset, str]):
         is_osi_approved (Union[Unset, bool]):
         is_fsf_libre (Union[Unset, bool]):
         is_deprecated_license_id (Union[Unset, bool]):
@@ -40,13 +40,13 @@ class License:
     """
 
     uuid: UUID
+    name: str
+    license_id: str
     license_groups: Union[Unset, list["LicenseGroup"]] = UNSET
-    name: Union[Unset, str] = UNSET
     license_text: Union[Unset, str] = UNSET
     standard_license_template: Union[Unset, str] = UNSET
     standard_license_header: Union[Unset, str] = UNSET
     license_comments: Union[Unset, str] = UNSET
-    license_id: Union[Unset, str] = UNSET
     is_osi_approved: Union[Unset, bool] = UNSET
     is_fsf_libre: Union[Unset, bool] = UNSET
     is_deprecated_license_id: Union[Unset, bool] = UNSET
@@ -57,14 +57,16 @@ class License:
     def to_dict(self) -> dict[str, Any]:
         uuid = str(self.uuid)
 
+        name = self.name
+
+        license_id = self.license_id
+
         license_groups: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.license_groups, Unset):
             license_groups = []
             for license_groups_item_data in self.license_groups:
                 license_groups_item = license_groups_item_data.to_dict()
                 license_groups.append(license_groups_item)
-
-        name = self.name
 
         license_text = self.license_text
 
@@ -73,8 +75,6 @@ class License:
         standard_license_header = self.standard_license_header
 
         license_comments = self.license_comments
-
-        license_id = self.license_id
 
         is_osi_approved = self.is_osi_approved
 
@@ -93,12 +93,12 @@ class License:
         field_dict.update(
             {
                 "uuid": uuid,
+                "name": name,
+                "licenseId": license_id,
             }
         )
         if license_groups is not UNSET:
             field_dict["licenseGroups"] = license_groups
-        if name is not UNSET:
-            field_dict["name"] = name
         if license_text is not UNSET:
             field_dict["licenseText"] = license_text
         if standard_license_template is not UNSET:
@@ -107,8 +107,6 @@ class License:
             field_dict["standardLicenseHeader"] = standard_license_header
         if license_comments is not UNSET:
             field_dict["licenseComments"] = license_comments
-        if license_id is not UNSET:
-            field_dict["licenseId"] = license_id
         if is_osi_approved is not UNSET:
             field_dict["isOsiApproved"] = is_osi_approved
         if is_fsf_libre is not UNSET:
@@ -129,14 +127,16 @@ class License:
         d = dict(src_dict)
         uuid = UUID(d.pop("uuid"))
 
+        name = d.pop("name")
+
+        license_id = d.pop("licenseId")
+
         license_groups = []
         _license_groups = d.pop("licenseGroups", UNSET)
         for license_groups_item_data in _license_groups or []:
             license_groups_item = LicenseGroup.from_dict(license_groups_item_data)
 
             license_groups.append(license_groups_item)
-
-        name = d.pop("name", UNSET)
 
         license_text = d.pop("licenseText", UNSET)
 
@@ -145,8 +145,6 @@ class License:
         standard_license_header = d.pop("standardLicenseHeader", UNSET)
 
         license_comments = d.pop("licenseComments", UNSET)
-
-        license_id = d.pop("licenseId", UNSET)
 
         is_osi_approved = d.pop("isOsiApproved", UNSET)
 
@@ -160,13 +158,13 @@ class License:
 
         license_ = cls(
             uuid=uuid,
-            license_groups=license_groups,
             name=name,
+            license_id=license_id,
+            license_groups=license_groups,
             license_text=license_text,
             standard_license_template=standard_license_template,
             standard_license_header=standard_license_header,
             license_comments=license_comments,
-            license_id=license_id,
             is_osi_approved=is_osi_approved,
             is_fsf_libre=is_fsf_libre,
             is_deprecated_license_id=is_deprecated_license_id,

@@ -2,3 +2,5 @@
 build
 owasp_dependency_track_client.egg-info
 openapi.json
+test-results
+.coverage

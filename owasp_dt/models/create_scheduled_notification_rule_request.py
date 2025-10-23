@@ -3,7 +3,6 @@ from typing import (
     TYPE_CHECKING,
     Any,
     TypeVar,
-    Union,
 )
 
 from attrs import define as _attrs_define
@@ -15,7 +14,6 @@ from ..models.create_scheduled_notification_rule_request_notification_level impo
 from ..models.create_scheduled_notification_rule_request_scope import (
     CreateScheduledNotificationRuleRequestScope,
 )
-from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.publisher import Publisher
@@ -28,38 +26,37 @@ T = TypeVar("T", bound="CreateScheduledNotificationRuleRequest")
 class CreateScheduledNotificationRuleRequest:
     """
     Attributes:
+        name (str):
         scope (CreateScheduledNotificationRuleRequestScope):
         notification_level (CreateScheduledNotificationRuleRequestNotificationLevel):
         publisher (Publisher):
-        name (Union[Unset, str]):
     """
 
+    name: str
     scope: CreateScheduledNotificationRuleRequestScope
     notification_level: CreateScheduledNotificationRuleRequestNotificationLevel
     publisher: "Publisher"
-    name: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        name = self.name
+
         scope = self.scope.value
 
         notification_level = self.notification_level.value
 
         publisher = self.publisher.to_dict()
 
-        name = self.name
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
                 "scope": scope,
                 "notificationLevel": notification_level,
                 "publisher": publisher,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
 
         return field_dict
 
@@ -68,6 +65,8 @@ class CreateScheduledNotificationRuleRequest:
         from ..models.publisher import Publisher
 
         d = dict(src_dict)
+        name = d.pop("name")
+
         scope = CreateScheduledNotificationRuleRequestScope(d.pop("scope"))
 
         notification_level = CreateScheduledNotificationRuleRequestNotificationLevel(
@@ -76,13 +75,11 @@ class CreateScheduledNotificationRuleRequest:
 
         publisher = Publisher.from_dict(d.pop("publisher"))
 
-        name = d.pop("name", UNSET)
-
         create_scheduled_notification_rule_request = cls(
+            name=name,
             scope=scope,
             notification_level=notification_level,
             publisher=publisher,
-            name=name,
         )
 
         create_scheduled_notification_rule_request.additional_properties = d

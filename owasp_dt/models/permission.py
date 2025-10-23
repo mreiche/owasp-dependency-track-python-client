@@ -17,11 +17,11 @@ T = TypeVar("T", bound="Permission")
 class Permission:
     """
     Attributes:
-        name (Union[Unset, str]):
+        name (str):
         description (Union[Unset, str]):
     """
 
-    name: Union[Unset, str] = UNSET
+    name: str
     description: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -32,9 +32,11 @@ class Permission:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
+        field_dict.update(
+            {
+                "name": name,
+            }
+        )
         if description is not UNSET:
             field_dict["description"] = description
 
@@ -43,7 +45,7 @@ class Permission:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
         description = d.pop("description", UNSET)
 

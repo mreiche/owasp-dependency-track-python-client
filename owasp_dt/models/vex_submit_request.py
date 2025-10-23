@@ -1,14 +1,8 @@
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="VexSubmitRequest")
 
@@ -18,38 +12,36 @@ class VexSubmitRequest:
     """
     Attributes:
         project (str):
+        project_name (str):
+        project_version (str):
         vex (str):
-        project_name (Union[Unset, str]):
-        project_version (Union[Unset, str]):
     """
 
     project: str
+    project_name: str
+    project_version: str
     vex: str
-    project_name: Union[Unset, str] = UNSET
-    project_version: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         project = self.project
 
-        vex = self.vex
-
         project_name = self.project_name
 
         project_version = self.project_version
+
+        vex = self.vex
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "project": project,
+                "projectName": project_name,
+                "projectVersion": project_version,
                 "vex": vex,
             }
         )
-        if project_name is not UNSET:
-            field_dict["projectName"] = project_name
-        if project_version is not UNSET:
-            field_dict["projectVersion"] = project_version
 
         return field_dict
 
@@ -58,17 +50,17 @@ class VexSubmitRequest:
         d = dict(src_dict)
         project = d.pop("project")
 
+        project_name = d.pop("projectName")
+
+        project_version = d.pop("projectVersion")
+
         vex = d.pop("vex")
-
-        project_name = d.pop("projectName", UNSET)
-
-        project_version = d.pop("projectVersion", UNSET)
 
         vex_submit_request = cls(
             project=project,
-            vex=vex,
             project_name=project_name,
             project_version=project_version,
+            vex=vex,
         )
 
         vex_submit_request.additional_properties = d

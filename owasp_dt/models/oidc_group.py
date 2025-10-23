@@ -1,15 +1,9 @@
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="OidcGroup")
 
@@ -19,11 +13,11 @@ class OidcGroup:
     """
     Attributes:
         uuid (UUID):
-        name (Union[Unset, str]):
+        name (str):
     """
 
     uuid: UUID
-    name: Union[Unset, str] = UNSET
+    name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -36,10 +30,9 @@ class OidcGroup:
         field_dict.update(
             {
                 "uuid": uuid,
+                "name": name,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
 
         return field_dict
 
@@ -48,7 +41,7 @@ class OidcGroup:
         d = dict(src_dict)
         uuid = UUID(d.pop("uuid"))
 
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
         oidc_group = cls(
             uuid=uuid,
