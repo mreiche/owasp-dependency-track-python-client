@@ -11,16 +11,17 @@ from owasp_dt.models import Policy, PolicyViolationState, PolicyCondition, Polic
 from owasp_dt.types import UNSET
 
 
-def assert_mit_license_uuid(client: owasp_dt.Client):
-    if empty(test.mit_license_uuid):
+def test_mit_license(client: owasp_dt.Client):
+    def _test_mit_license():
         resp = get_license.sync_detailed(client=client, license_id="MIT")
         assert resp.status_code == 200
         license = resp.parsed
         assert isinstance(license, License)
-        __mit_license_uuid = str(license.uuid)
-    return test.mit_license_uuid
+        test.mit_license_uuid = str(license.uuid)
 
+    test.retry(_test_mit_license, 600)
 
+@pytest.mark.depends(on=['test_mit_license'])
 def test_create_test_policy(client: owasp_dt.Client):
     policy = Policy(
         uuid="",
@@ -35,16 +36,12 @@ def test_create_test_policy(client: owasp_dt.Client):
     policy = resp.parsed
     assert isinstance(policy, Policy)
 
-    license_uuid = assert_mit_license_uuid(client)
-
-    assert not empty(license_uuid), "MIT license not found"
-
     condition = PolicyCondition(
         uuid="",
         policy=UNSET,
         subject=PolicyConditionSubject.LICENSE,
         operator=PolicyConditionOperator.IS,
-        value=license_uuid,
+        value=test.mit_license_uuid,
     )
     resp = create_policy_condition.sync_detailed(client=client, uuid=policy.uuid, body=condition)
     assert resp.status_code == 201
