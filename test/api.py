@@ -1,12 +1,9 @@
 from typing import Generator, Callable, TypeVar
 
 from owasp_dt import Client
-from owasp_dt.api.project import get_projects
 from owasp_dt.api.project_property import create_property_1, update_property
-from owasp_dt.models import Project, ProjectProperty
+from owasp_dt.models import ProjectProperty
 from owasp_dt.types import Response
-from tinystream import Stream
-
 from test import config
 
 

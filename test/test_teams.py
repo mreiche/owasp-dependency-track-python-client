@@ -1,5 +1,6 @@
-from owasp_dt.api.team import get_teams
 import owasp_dt
+from owasp_dt.api.team import get_teams
+
 
 def test_team_epoch(client: owasp_dt.Client):
     teams = get_teams.sync(client=client)

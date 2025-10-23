@@ -5,11 +5,9 @@ from typing import Callable
 
 from dotenv import load_dotenv
 
-import owasp_dt
-from owasp_dt import Client
 from test import config
 
-__base_dir = Path(__file__).parent
+base_dir = Path(__file__).parent
 
 project_name = "test-api"
 upload_token: str | None = None
@@ -38,7 +36,7 @@ def retry(callable: Callable, seconds: float, wait_time: float = 3):
 
 
 def setup_module():
-    assert load_dotenv(__base_dir / "test.env")
+    assert load_dotenv(base_dir / "test.env")
 
 
 def teardown_module():
