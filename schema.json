@@ -15231,7 +15231,6 @@
       },
       "Vulnerability": {
         "required": [
-          "friendlyVulnId",
           "source",
           "uuid",
           "vulnId"

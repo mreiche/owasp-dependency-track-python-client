@@ -133,6 +133,7 @@
         }
       },
       "Vulnerability": {
+        "required" : [ "source", "uuid", "vulnId" ],
         "properties": {
           "findingAttribution": {
             "$ref": "#/components/schemas/FindingAttrib"
