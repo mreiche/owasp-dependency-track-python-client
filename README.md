@@ -47,3 +47,12 @@ This library is part of a wider OWASP Dependency Track tool chain:
 3. Run `regenerate-api-client.sh`
 4. Check if bug https://github.com/openapi-generators/openapi-python-client/issues/1256 is still in effect
 5. Publish this library with the API version tag
+
+### Start the test environment
+```shell
+cd test
+podman|docker compose up
+```
+
+- Preconfigured user: `admin:admin2`
+- Preconfigured API key: see `test/test.env`
