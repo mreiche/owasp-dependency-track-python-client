@@ -1,5 +1,4 @@
 import pytest
-from is_empty import empty
 
 import owasp_dt
 import test
