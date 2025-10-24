@@ -1,4 +1,3 @@
-from pathlib import Path
 from time import sleep
 
 import pytest
@@ -8,6 +7,7 @@ import test
 from owasp_dt.api.bom import upload_bom
 from owasp_dt.api.event import is_token_being_processed_1
 from owasp_dt.models import UploadBomBody, IsTokenBeingProcessedResponse
+
 
 def test_upload_sbom(client: owasp_dt.Client):
     with open(test.base_dir / "files/test.sbom.xml") as sbom_file:
