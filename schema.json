@@ -13355,11 +13355,11 @@
           "key": {
             "type": "string"
           },
-          "legacy": {
-            "type": "boolean"
-          },
           "maskedKey": {
             "type": "string"
+          },
+          "legacy": {
+            "type": "boolean"
           }
         }
       },
