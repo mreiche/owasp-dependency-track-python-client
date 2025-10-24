@@ -24,6 +24,8 @@ test = [
     "pytest>=7",
     "pytest-depends",
     "pytest-cov",
-    "dotenv",
+    "dotenv== 0.9.9",
     "openapi-python-client",
+    "tinystream==0.1.18",
+    "is_empty==1.0.1",
 ]

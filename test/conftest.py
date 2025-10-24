@@ -1,8 +1,8 @@
 import pytest
 
-from test import create_client_from_env
+from test import api
 
 
 @pytest.fixture
 def client():
-    yield create_client_from_env()
+    yield api.create_client_from_env()
