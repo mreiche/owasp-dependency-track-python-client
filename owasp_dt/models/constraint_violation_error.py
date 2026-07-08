@@ -8,59 +8,61 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="ConstraintViolationError")
 
 
 @_attrs_define
-class OrganizationalContact:
+class ConstraintViolationError:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        message (str): Message explaining the error
+        path (str | Unset): Path to the invalid field in the request
+        value (str | Unset): The invalid value
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    message: str
+    path: str | Unset = UNSET
+    value: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        message = self.message
 
-        email = self.email
+        path = self.path
 
-        phone = self.phone
+        value = self.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "message": message,
+            }
+        )
+        if path is not UNSET:
+            field_dict["path"] = path
+        if value is not UNSET:
+            field_dict["value"] = value
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        message = d.pop("message")
 
-        email = d.pop("email", UNSET)
+        path = d.pop("path", UNSET)
 
-        phone = d.pop("phone", UNSET)
+        value = d.pop("value", UNSET)
 
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        constraint_violation_error = cls(
+            message=message,
+            path=path,
+            value=value,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        constraint_violation_error.additional_properties = d
+        return constraint_violation_error
 
     @property
     def additional_keys(self) -> list[str]:

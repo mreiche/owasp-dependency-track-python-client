@@ -6,61 +6,60 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.task_queue_status import TaskQueueStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="UpdateTaskQueueRequest")
 
 
 @_attrs_define
-class OrganizationalContact:
+class UpdateTaskQueueRequest:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        status (TaskQueueStatus | Unset):
+        capacity (int | Unset):
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    status: TaskQueueStatus | Unset = UNSET
+    capacity: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        status: str | Unset = UNSET
+        if not isinstance(self.status, Unset):
+            status = self.status.value
 
-        email = self.email
-
-        phone = self.phone
+        capacity = self.capacity
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        if status is not UNSET:
+            field_dict["status"] = status
+        if capacity is not UNSET:
+            field_dict["capacity"] = capacity
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        _status = d.pop("status", UNSET)
+        status: TaskQueueStatus | Unset
+        if isinstance(_status, Unset):
+            status = UNSET
+        else:
+            status = TaskQueueStatus(_status)
 
-        email = d.pop("email", UNSET)
+        capacity = d.pop("capacity", UNSET)
 
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        update_task_queue_request = cls(
+            status=status,
+            capacity=capacity,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        update_task_queue_request.additional_properties = d
+        return update_task_queue_request
 
     @property
     def additional_keys(self) -> list[str]:

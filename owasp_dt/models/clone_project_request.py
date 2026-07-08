@@ -6,6 +6,7 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.clone_project_include import CloneProjectInclude
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="CloneProjectRequest")
@@ -15,121 +16,77 @@ T = TypeVar("T", bound="CloneProjectRequest")
 class CloneProjectRequest:
     """
     Attributes:
-        project (str):
-        version (str):
-        include_acl (bool | Unset):
-        include_audit_history (bool | Unset):
-        include_components (bool | Unset):
-        include_dependencies (bool | Unset):
-        include_policy_violations (bool | Unset):
-        include_properties (bool | Unset):
-        include_services (bool | Unset):
-        include_tags (bool | Unset):
-        make_clone_latest (bool | Unset):
+        version (str): Version of the cloned project.
+        version_is_latest (bool | Unset): Whether to mark the cloned project version as latest. If another version is
+            already marked as latest, it will be atomically un-unmarked as part of the cloning operation. Default: False.
+        includes (list[CloneProjectInclude] | Unset): List of items to include in the clone:
+
+              * `ACL`: Include portfolio ACL definitions.
+              * `COMPONENTS`: Include components.
+              * `FINDINGS`: Include findings.
+                  * Has no effect unless `COMPONENTS` is also included.
+              * `FINDINGS_AUDIT_HISTORY`: Include audit history of findings.
+                  * Has no effect unless `FINDINGS` is also included.
+              * `POLICY_VIOLATIONS`: Include policy violations.
+                  * Has no effect unless `COMPONENTS` is also included.
+              * `POLICY_VIOLATIONS_AUDIT_HISTORY`: Include audit history of policy violations.
+                  * Has no effect unless `POLICY_VIOLATIONS` is also included.
+              * `PROPERTIES`: Include project properties.
+              * `SERVICES`: Include services.
+              * `TAGS`: Include project tags.
     """
 
-    project: str
     version: str
-    include_acl: bool | Unset = UNSET
-    include_audit_history: bool | Unset = UNSET
-    include_components: bool | Unset = UNSET
-    include_dependencies: bool | Unset = UNSET
-    include_policy_violations: bool | Unset = UNSET
-    include_properties: bool | Unset = UNSET
-    include_services: bool | Unset = UNSET
-    include_tags: bool | Unset = UNSET
-    make_clone_latest: bool | Unset = UNSET
+    version_is_latest: bool | Unset = False
+    includes: list[CloneProjectInclude] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        project = self.project
-
         version = self.version
 
-        include_acl = self.include_acl
+        version_is_latest = self.version_is_latest
 
-        include_audit_history = self.include_audit_history
-
-        include_components = self.include_components
-
-        include_dependencies = self.include_dependencies
-
-        include_policy_violations = self.include_policy_violations
-
-        include_properties = self.include_properties
-
-        include_services = self.include_services
-
-        include_tags = self.include_tags
-
-        make_clone_latest = self.make_clone_latest
+        includes: list[str] | Unset = UNSET
+        if not isinstance(self.includes, Unset):
+            includes = []
+            for includes_item_data in self.includes:
+                includes_item = includes_item_data.value
+                includes.append(includes_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "project": project,
                 "version": version,
             }
         )
-        if include_acl is not UNSET:
-            field_dict["includeACL"] = include_acl
-        if include_audit_history is not UNSET:
-            field_dict["includeAuditHistory"] = include_audit_history
-        if include_components is not UNSET:
-            field_dict["includeComponents"] = include_components
-        if include_dependencies is not UNSET:
-            field_dict["includeDependencies"] = include_dependencies
-        if include_policy_violations is not UNSET:
-            field_dict["includePolicyViolations"] = include_policy_violations
-        if include_properties is not UNSET:
-            field_dict["includeProperties"] = include_properties
-        if include_services is not UNSET:
-            field_dict["includeServices"] = include_services
-        if include_tags is not UNSET:
-            field_dict["includeTags"] = include_tags
-        if make_clone_latest is not UNSET:
-            field_dict["makeCloneLatest"] = make_clone_latest
+        if version_is_latest is not UNSET:
+            field_dict["version_is_latest"] = version_is_latest
+        if includes is not UNSET:
+            field_dict["includes"] = includes
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        project = d.pop("project")
-
         version = d.pop("version")
 
-        include_acl = d.pop("includeACL", UNSET)
+        version_is_latest = d.pop("version_is_latest", UNSET)
 
-        include_audit_history = d.pop("includeAuditHistory", UNSET)
+        _includes = d.pop("includes", UNSET)
+        includes: list[CloneProjectInclude] | Unset = UNSET
+        if _includes is not UNSET:
+            includes = []
+            for includes_item_data in _includes:
+                includes_item = CloneProjectInclude(includes_item_data)
 
-        include_components = d.pop("includeComponents", UNSET)
-
-        include_dependencies = d.pop("includeDependencies", UNSET)
-
-        include_policy_violations = d.pop("includePolicyViolations", UNSET)
-
-        include_properties = d.pop("includeProperties", UNSET)
-
-        include_services = d.pop("includeServices", UNSET)
-
-        include_tags = d.pop("includeTags", UNSET)
-
-        make_clone_latest = d.pop("makeCloneLatest", UNSET)
+                includes.append(includes_item)
 
         clone_project_request = cls(
-            project=project,
             version=version,
-            include_acl=include_acl,
-            include_audit_history=include_audit_history,
-            include_components=include_components,
-            include_dependencies=include_dependencies,
-            include_policy_violations=include_policy_violations,
-            include_properties=include_properties,
-            include_services=include_services,
-            include_tags=include_tags,
-            make_clone_latest=make_clone_latest,
+            version_is_latest=version_is_latest,
+            includes=includes,
         )
 
         clone_project_request.additional_properties = d

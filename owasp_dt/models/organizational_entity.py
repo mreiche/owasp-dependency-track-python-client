@@ -19,17 +19,23 @@ T = TypeVar("T", bound="OrganizationalEntity")
 class OrganizationalEntity:
     """
     Attributes:
-        contacts (list[OrganizationalContact] | Unset):
-        name (str | Unset):
+        name (str | Unset): Name of the organizational entity
         urls (list[str] | Unset):
+        contacts (list[OrganizationalContact] | Unset):
     """
 
-    contacts: list[OrganizationalContact] | Unset = UNSET
     name: str | Unset = UNSET
     urls: list[str] | Unset = UNSET
+    contacts: list[OrganizationalContact] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        name = self.name
+
+        urls: list[str] | Unset = UNSET
+        if not isinstance(self.urls, Unset):
+            urls = self.urls
+
         contacts: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.contacts, Unset):
             contacts = []
@@ -37,21 +43,15 @@ class OrganizationalEntity:
                 contacts_item = contacts_item_data.to_dict()
                 contacts.append(contacts_item)
 
-        name = self.name
-
-        urls: list[str] | Unset = UNSET
-        if not isinstance(self.urls, Unset):
-            urls = self.urls
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if contacts is not UNSET:
-            field_dict["contacts"] = contacts
         if name is not UNSET:
             field_dict["name"] = name
         if urls is not UNSET:
             field_dict["urls"] = urls
+        if contacts is not UNSET:
+            field_dict["contacts"] = contacts
 
         return field_dict
 
@@ -60,6 +60,10 @@ class OrganizationalEntity:
         from ..models.organizational_contact import OrganizationalContact
 
         d = dict(src_dict)
+        name = d.pop("name", UNSET)
+
+        urls = cast(list[str], d.pop("urls", UNSET))
+
         _contacts = d.pop("contacts", UNSET)
         contacts: list[OrganizationalContact] | Unset = UNSET
         if _contacts is not UNSET:
@@ -69,14 +73,10 @@ class OrganizationalEntity:
 
                 contacts.append(contacts_item)
 
-        name = d.pop("name", UNSET)
-
-        urls = cast(list[str], d.pop("urls", UNSET))
-
         organizational_entity = cls(
-            contacts=contacts,
             name=name,
             urls=urls,
+            contacts=contacts,
         )
 
         organizational_entity.additional_properties = d

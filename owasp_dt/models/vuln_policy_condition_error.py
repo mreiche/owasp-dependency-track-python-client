@@ -6,61 +6,59 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="VulnPolicyConditionError")
 
 
 @_attrs_define
-class OrganizationalContact:
+class VulnPolicyConditionError:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        line (int): Line number where the error occurred
+        column (int): Column number where the error occurred
+        message (str): Description of the error
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    line: int
+    column: int
+    message: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        line = self.line
 
-        email = self.email
+        column = self.column
 
-        phone = self.phone
+        message = self.message
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "line": line,
+                "column": column,
+                "message": message,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        line = d.pop("line")
 
-        email = d.pop("email", UNSET)
+        column = d.pop("column")
 
-        phone = d.pop("phone", UNSET)
+        message = d.pop("message")
 
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        vuln_policy_condition_error = cls(
+            line=line,
+            column=column,
+            message=message,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        vuln_policy_condition_error.additional_properties = d
+        return vuln_policy_condition_error
 
     @property
     def additional_keys(self) -> list[str]:

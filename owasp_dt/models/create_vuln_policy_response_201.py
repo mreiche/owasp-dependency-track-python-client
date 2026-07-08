@@ -2,65 +2,48 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Any, TypeVar
+from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="CreateVulnPolicyResponse201")
 
 
 @_attrs_define
-class OrganizationalContact:
+class CreateVulnPolicyResponse201:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        uuid (UUID):
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    uuid: UUID
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
-
-        email = self.email
-
-        phone = self.phone
+        uuid = str(self.uuid)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "uuid": uuid,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        uuid = UUID(d.pop("uuid"))
 
-        email = d.pop("email", UNSET)
-
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        create_vuln_policy_response_201 = cls(
+            uuid=uuid,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        create_vuln_policy_response_201.additional_properties = d
+        return create_vuln_policy_response_201
 
     @property
     def additional_keys(self) -> list[str]:

@@ -6,61 +6,59 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="ListExtensionsResponseItem")
 
 
 @_attrs_define
-class OrganizationalContact:
+class ListExtensionsResponseItem:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        name (str):
+        configurable (bool): Whether the extension supports runtime configuration.
+        testable (bool): Whether the extension can be tested.
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    name: str
+    configurable: bool
+    testable: bool
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        email = self.email
+        configurable = self.configurable
 
-        phone = self.phone
+        testable = self.testable
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "name": name,
+                "configurable": configurable,
+                "testable": testable,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
-        email = d.pop("email", UNSET)
+        configurable = d.pop("configurable")
 
-        phone = d.pop("phone", UNSET)
+        testable = d.pop("testable")
 
-        organizational_contact = cls(
+        list_extensions_response_item = cls(
             name=name,
-            email=email,
-            phone=phone,
+            configurable=configurable,
+            testable=testable,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        list_extensions_response_item.additional_properties = d
+        return list_extensions_response_item
 
     @property
     def additional_keys(self) -> list[str]:

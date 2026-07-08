@@ -1,8 +1,0 @@
-from enum import Enum
-
-
-class GetAllFindings1SortOrder(str, Enum):
-    ASC_DESC = "asc, desc"
-
-    def __str__(self) -> str:
-        return str(self.value)

@@ -6,61 +6,43 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="ListExtensionPointsResponseItem")
 
 
 @_attrs_define
-class OrganizationalContact:
+class ListExtensionPointsResponseItem:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        name (str):
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        email = self.email
-
-        phone = self.phone
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "name": name,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
-        email = d.pop("email", UNSET)
-
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
+        list_extension_points_response_item = cls(
             name=name,
-            email=email,
-            phone=phone,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        list_extension_points_response_item.additional_properties = d
+        return list_extension_points_response_item
 
     @property
     def additional_keys(self) -> list[str]:

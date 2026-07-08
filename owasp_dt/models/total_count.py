@@ -6,61 +6,54 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
+from ..models.total_count_type import TotalCountType
 
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="TotalCount")
 
 
 @_attrs_define
-class OrganizationalContact:
+class TotalCount:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        count (int): The total number of records across all pages. Might be an exact count, or a lower bound. Refer to
+            the `type` field for the applicable semantics.
+        type_ (TotalCountType):
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    count: int
+    type_: TotalCountType
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        count = self.count
 
-        email = self.email
-
-        phone = self.phone
+        type_ = self.type_.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "count": count,
+                "type": type_,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        count = d.pop("count")
 
-        email = d.pop("email", UNSET)
+        type_ = TotalCountType(d.pop("type"))
 
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        total_count = cls(
+            count=count,
+            type_=type_,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        total_count.additional_properties = d
+        return total_count
 
     @property
     def additional_keys(self) -> list[str]:

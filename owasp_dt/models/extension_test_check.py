@@ -6,61 +6,63 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.extension_test_check_status import ExtensionTestCheckStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="ExtensionTestCheck")
 
 
 @_attrs_define
-class OrganizationalContact:
+class ExtensionTestCheck:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        name (str):  Example: connection.
+        status (ExtensionTestCheckStatus):
+        message (str | Unset):  Example: Connection failed.
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    name: str
+    status: ExtensionTestCheckStatus
+    message: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        email = self.email
+        status = self.status.value
 
-        phone = self.phone
+        message = self.message
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "name": name,
+                "status": status,
+            }
+        )
+        if message is not UNSET:
+            field_dict["message"] = message
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
-        email = d.pop("email", UNSET)
+        status = ExtensionTestCheckStatus(d.pop("status"))
 
-        phone = d.pop("phone", UNSET)
+        message = d.pop("message", UNSET)
 
-        organizational_contact = cls(
+        extension_test_check = cls(
             name=name,
-            email=email,
-            phone=phone,
+            status=status,
+            message=message,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        extension_test_check.additional_properties = d
+        return extension_test_check
 
     @property
     def additional_keys(self) -> list[str]:

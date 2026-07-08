@@ -1,66 +1,65 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="OrganizationalContact")
+if TYPE_CHECKING:
+    from ..models.total_count import TotalCount
+
+
+T = TypeVar("T", bound="PaginatedResponse")
 
 
 @_attrs_define
-class OrganizationalContact:
+class PaginatedResponse:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        total (TotalCount):
+        next_page_token (str | Unset): Token to retrieve the next page. Absent when no more items exist.
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    total: TotalCount
+    next_page_token: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        total = self.total.to_dict()
 
-        email = self.email
-
-        phone = self.phone
+        next_page_token = self.next_page_token
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        field_dict.update(
+            {
+                "total": total,
+            }
+        )
+        if next_page_token is not UNSET:
+            field_dict["next_page_token"] = next_page_token
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.total_count import TotalCount
+
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        total = TotalCount.from_dict(d.pop("total"))
 
-        email = d.pop("email", UNSET)
+        next_page_token = d.pop("next_page_token", UNSET)
 
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        paginated_response = cls(
+            total=total,
+            next_page_token=next_page_token,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        paginated_response.additional_properties = d
+        return paginated_response
 
     @property
     def additional_keys(self) -> list[str]:

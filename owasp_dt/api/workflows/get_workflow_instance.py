@@ -1,0 +1,217 @@
+from http import HTTPStatus
+from typing import Any
+from urllib.parse import quote
+
+import httpx
+
+from ...client import AuthenticatedClient, Client
+from ...models.problem_details import ProblemDetails
+from ...models.workflow_run_metadata import WorkflowRunMetadata
+from ...types import Response
+
+
+def _get_kwargs(
+    id: str,
+) -> dict[str, Any]:
+    _kwargs: dict[str, Any] = {
+        "method": "get",
+        "url": "/internal/workflow-instances/{id}".format(
+            id=quote(str(id), safe=""),
+        ),
+    }
+
+    return _kwargs
+
+
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> ProblemDetails | WorkflowRunMetadata:
+    if response.status_code == 200:
+        response_200 = WorkflowRunMetadata.from_dict(response.json())
+
+        return response_200
+
+    if response.status_code == 400:
+        response_400 = ProblemDetails.from_dict(response.json())
+
+        return response_400
+
+    if response.status_code == 401:
+        response_401 = ProblemDetails.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
+
+    if response.status_code == 404:
+        response_404 = ProblemDetails.from_dict(response.json())
+
+        return response_404
+
+    response_default = ProblemDetails.from_dict(response.json())
+
+    return response_default
+
+
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[ProblemDetails | WorkflowRunMetadata]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    id: str,
+    *,
+    client: AuthenticatedClient | Client,
+) -> Response[ProblemDetails | WorkflowRunMetadata]:
+    """Get a workflow instance
+
+     Returns run metadata of a given workflow instance.
+
+    Multiple runs can share an instance ID, but only a single run can exist
+    in non-terminal state at any given time. Thus, this operation only
+    returns metadata if a run in non-terminal state exists.
+
+    To list all runs for an instance ID, including terminated ones,
+    use the `/internal/workflow-runs` endpoint and filter by `workflow_instance_id`.
+
+    Requires the `SYSTEM_CONFIGURATION` or `SYSTEM_CONFIGURATION_READ` permission.
+
+    Args:
+        id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ProblemDetails | WorkflowRunMetadata]
+    """
+
+    kwargs = _get_kwargs(
+        id=id,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    id: str,
+    *,
+    client: AuthenticatedClient | Client,
+) -> ProblemDetails | WorkflowRunMetadata | None:
+    """Get a workflow instance
+
+     Returns run metadata of a given workflow instance.
+
+    Multiple runs can share an instance ID, but only a single run can exist
+    in non-terminal state at any given time. Thus, this operation only
+    returns metadata if a run in non-terminal state exists.
+
+    To list all runs for an instance ID, including terminated ones,
+    use the `/internal/workflow-runs` endpoint and filter by `workflow_instance_id`.
+
+    Requires the `SYSTEM_CONFIGURATION` or `SYSTEM_CONFIGURATION_READ` permission.
+
+    Args:
+        id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        ProblemDetails | WorkflowRunMetadata
+    """
+
+    return sync_detailed(
+        id=id,
+        client=client,
+    ).parsed
+
+
+async def asyncio_detailed(
+    id: str,
+    *,
+    client: AuthenticatedClient | Client,
+) -> Response[ProblemDetails | WorkflowRunMetadata]:
+    """Get a workflow instance
+
+     Returns run metadata of a given workflow instance.
+
+    Multiple runs can share an instance ID, but only a single run can exist
+    in non-terminal state at any given time. Thus, this operation only
+    returns metadata if a run in non-terminal state exists.
+
+    To list all runs for an instance ID, including terminated ones,
+    use the `/internal/workflow-runs` endpoint and filter by `workflow_instance_id`.
+
+    Requires the `SYSTEM_CONFIGURATION` or `SYSTEM_CONFIGURATION_READ` permission.
+
+    Args:
+        id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ProblemDetails | WorkflowRunMetadata]
+    """
+
+    kwargs = _get_kwargs(
+        id=id,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    id: str,
+    *,
+    client: AuthenticatedClient | Client,
+) -> ProblemDetails | WorkflowRunMetadata | None:
+    """Get a workflow instance
+
+     Returns run metadata of a given workflow instance.
+
+    Multiple runs can share an instance ID, but only a single run can exist
+    in non-terminal state at any given time. Thus, this operation only
+    returns metadata if a run in non-terminal state exists.
+
+    To list all runs for an instance ID, including terminated ones,
+    use the `/internal/workflow-runs` endpoint and filter by `workflow_instance_id`.
+
+    Requires the `SYSTEM_CONFIGURATION` or `SYSTEM_CONFIGURATION_READ` permission.
+
+    Args:
+        id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        ProblemDetails | WorkflowRunMetadata
+    """
+
+    return (
+        await asyncio_detailed(
+            id=id,
+            client=client,
+        )
+    ).parsed

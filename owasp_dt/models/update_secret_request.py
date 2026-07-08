@@ -8,59 +8,50 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="OrganizationalContact")
+T = TypeVar("T", bound="UpdateSecretRequest")
 
 
 @_attrs_define
-class OrganizationalContact:
+class UpdateSecretRequest:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        description (str | Unset): The new description. Omit this field to retain the current description.
+        value (str | Unset): The new value. Omit this field to retain the current value.
     """
 
-    name: str | Unset = UNSET
-    email: str | Unset = UNSET
-    phone: str | Unset = UNSET
+    description: str | Unset = UNSET
+    value: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        description = self.description
 
-        email = self.email
-
-        phone = self.phone
+        value = self.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
-        if email is not UNSET:
-            field_dict["email"] = email
-        if phone is not UNSET:
-            field_dict["phone"] = phone
+        if description is not UNSET:
+            field_dict["description"] = description
+        if value is not UNSET:
+            field_dict["value"] = value
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        description = d.pop("description", UNSET)
 
-        email = d.pop("email", UNSET)
+        value = d.pop("value", UNSET)
 
-        phone = d.pop("phone", UNSET)
-
-        organizational_contact = cls(
-            name=name,
-            email=email,
-            phone=phone,
+        update_secret_request = cls(
+            description=description,
+            value=value,
         )
 
-        organizational_contact.additional_properties = d
-        return organizational_contact
+        update_secret_request.additional_properties = d
+        return update_secret_request
 
     @property
     def additional_keys(self) -> list[str]:
