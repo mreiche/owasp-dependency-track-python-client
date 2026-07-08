@@ -1,17 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.config_property import ConfigProperty
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: list["ConfigProperty"],
+    body: list[ConfigProperty] | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,10 +20,11 @@ def _get_kwargs(
         "url": "/v1/configProperty/aggregate",
     }
 
-    _kwargs["json"] = []
-    for body_item_data in body:
-        body_item = body_item_data.to_dict()
-        _kwargs["json"].append(body_item)
+    if not isinstance(body, Unset):
+        _kwargs["json"] = []
+        for body_item_data in body:
+            body_item = body_item_data.to_dict()
+            _kwargs["json"].append(body_item)
 
     headers["Content-Type"] = "application/json"
 
@@ -32,8 +33,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["ConfigProperty"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[ConfigProperty] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -59,8 +60,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["ConfigProperty"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[ConfigProperty]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,21 +73,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: list["ConfigProperty"],
-) -> Response[Union[Any, list["ConfigProperty"]]]:
+    body: list[ConfigProperty] | Unset = UNSET,
+) -> Response[Any | list[ConfigProperty]]:
     """Updates an array of config properties
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>
 
     Args:
-        body (list['ConfigProperty']):
+        body (list[ConfigProperty] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ConfigProperty']]]
+        Response[Any | list[ConfigProperty]]
     """
 
     kwargs = _get_kwargs(
@@ -103,21 +105,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: list["ConfigProperty"],
-) -> Optional[Union[Any, list["ConfigProperty"]]]:
+    body: list[ConfigProperty] | Unset = UNSET,
+) -> Any | list[ConfigProperty] | None:
     """Updates an array of config properties
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>
 
     Args:
-        body (list['ConfigProperty']):
+        body (list[ConfigProperty] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ConfigProperty']]
+        Any | list[ConfigProperty]
     """
 
     return sync_detailed(
@@ -129,21 +132,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: list["ConfigProperty"],
-) -> Response[Union[Any, list["ConfigProperty"]]]:
+    body: list[ConfigProperty] | Unset = UNSET,
+) -> Response[Any | list[ConfigProperty]]:
     """Updates an array of config properties
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>
 
     Args:
-        body (list['ConfigProperty']):
+        body (list[ConfigProperty] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ConfigProperty']]]
+        Response[Any | list[ConfigProperty]]
     """
 
     kwargs = _get_kwargs(
@@ -158,21 +162,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: list["ConfigProperty"],
-) -> Optional[Union[Any, list["ConfigProperty"]]]:
+    body: list[ConfigProperty] | Unset = UNSET,
+) -> Any | list[ConfigProperty] | None:
     """Updates an array of config properties
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>
 
     Args:
-        body (list['ConfigProperty']):
+        body (list[ConfigProperty] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ConfigProperty']]
+        Any | list[ConfigProperty]
     """
 
     return (

@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -24,17 +21,17 @@ class MappedOidcGroup:
     """
     Attributes:
         uuid (UUID):
-        group (Union[Unset, OidcGroup]):
+        group (OidcGroup | Unset):
     """
 
     uuid: UUID
-    group: Union[Unset, "OidcGroup"] = UNSET
+    group: OidcGroup | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         uuid = str(self.uuid)
 
-        group: Union[Unset, dict[str, Any]] = UNSET
+        group: dict[str, Any] | Unset = UNSET
         if not isinstance(self.group, Unset):
             group = self.group.to_dict()
 
@@ -58,7 +55,7 @@ class MappedOidcGroup:
         uuid = UUID(d.pop("uuid"))
 
         _group = d.pop("group", UNSET)
-        group: Union[Unset, OidcGroup]
+        group: OidcGroup | Unset
         if isinstance(_group, Unset):
             group = UNSET
         else:

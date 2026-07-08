@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
@@ -11,25 +13,25 @@ T = TypeVar("T", bound="AclMappingRequest")
 class AclMappingRequest:
     """
     Attributes:
-        team (str):
         project (str):
+        team (str):
     """
 
-    team: str
     project: str
+    team: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        team = self.team
-
         project = self.project
+
+        team = self.team
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "team": team,
                 "project": project,
+                "team": team,
             }
         )
 
@@ -38,13 +40,13 @@ class AclMappingRequest:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        team = d.pop("team")
-
         project = d.pop("project")
 
+        team = d.pop("team")
+
         acl_mapping_request = cls(
-            team=team,
             project=project,
+            team=team,
         )
 
         acl_mapping_request.additional_properties = d

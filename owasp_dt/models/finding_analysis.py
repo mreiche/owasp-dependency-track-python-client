@@ -1,76 +1,61 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.finding_analysis_state import FindingAnalysisState
-from ..types import UNSET, Unset
+if TYPE_CHECKING:
+    from ..models.finding_analysis_additional_property import (
+        FindingAnalysisAdditionalProperty,
+    )
+
 
 T = TypeVar("T", bound="FindingAnalysis")
 
 
 @_attrs_define
 class FindingAnalysis:
-    """
-    Attributes:
-        state (Union[Unset, FindingAnalysisState]):
-        is_suppressed (Union[Unset, bool]):
-    """
+    """ """
 
-    state: Union[Unset, FindingAnalysisState] = UNSET
-    is_suppressed: Union[Unset, bool] = UNSET
-    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, FindingAnalysisAdditionalProperty] = _attrs_field(
+        init=False, factory=dict
+    )
 
     def to_dict(self) -> dict[str, Any]:
-        state: Union[Unset, str] = UNSET
-        if not isinstance(self.state, Unset):
-            state = self.state.value
-
-        is_suppressed = self.is_suppressed
-
         field_dict: dict[str, Any] = {}
-        field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if state is not UNSET:
-            field_dict["state"] = state
-        if is_suppressed is not UNSET:
-            field_dict["isSuppressed"] = is_suppressed
+        for prop_name, prop in self.additional_properties.items():
+            field_dict[prop_name] = prop.to_dict()
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        d = dict(src_dict)
-        _state = d.pop("state", UNSET)
-        state: Union[Unset, FindingAnalysisState]
-        if isinstance(_state, Unset):
-            state = UNSET
-        else:
-            state = FindingAnalysisState(_state)
-
-        is_suppressed = d.pop("isSuppressed", UNSET)
-
-        finding_analysis = cls(
-            state=state,
-            is_suppressed=is_suppressed,
+        from ..models.finding_analysis_additional_property import (
+            FindingAnalysisAdditionalProperty,
         )
 
-        finding_analysis.additional_properties = d
+        d = dict(src_dict)
+        finding_analysis = cls()
+
+        additional_properties = {}
+        for prop_name, prop_dict in d.items():
+            additional_property = FindingAnalysisAdditionalProperty.from_dict(prop_dict)
+
+            additional_properties[prop_name] = additional_property
+
+        finding_analysis.additional_properties = additional_properties
         return finding_analysis
 
     @property
     def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
-    def __getitem__(self, key: str) -> Any:
+    def __getitem__(self, key: str) -> FindingAnalysisAdditionalProperty:
         return self.additional_properties[key]
 
-    def __setitem__(self, key: str, value: Any) -> None:
+    def __setitem__(self, key: str, value: FindingAnalysisAdditionalProperty) -> None:
         self.additional_properties[key] = value
 
     def __delitem__(self, key: str) -> None:

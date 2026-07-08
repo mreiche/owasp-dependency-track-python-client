@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,23 +17,23 @@ class ExternalReference:
     """
     Attributes:
         url (str):
-        type_ (Union[Unset, ExternalReferenceType]):
-        comment (Union[Unset, str]):
+        comment (str | Unset):
+        type_ (ExternalReferenceType | Unset):
     """
 
     url: str
-    type_: Union[Unset, ExternalReferenceType] = UNSET
-    comment: Union[Unset, str] = UNSET
+    comment: str | Unset = UNSET
+    type_: ExternalReferenceType | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         url = self.url
 
-        type_: Union[Unset, str] = UNSET
+        comment = self.comment
+
+        type_: str | Unset = UNSET
         if not isinstance(self.type_, Unset):
             type_ = self.type_.value
-
-        comment = self.comment
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -44,10 +42,10 @@ class ExternalReference:
                 "url": url,
             }
         )
-        if type_ is not UNSET:
-            field_dict["type"] = type_
         if comment is not UNSET:
             field_dict["comment"] = comment
+        if type_ is not UNSET:
+            field_dict["type"] = type_
 
         return field_dict
 
@@ -56,19 +54,19 @@ class ExternalReference:
         d = dict(src_dict)
         url = d.pop("url")
 
+        comment = d.pop("comment", UNSET)
+
         _type_ = d.pop("type", UNSET)
-        type_: Union[Unset, ExternalReferenceType]
+        type_: ExternalReferenceType | Unset
         if isinstance(_type_, Unset):
             type_ = UNSET
         else:
             type_ = ExternalReferenceType(_type_)
 
-        comment = d.pop("comment", UNSET)
-
         external_reference = cls(
             url=url,
-            type_=type_,
             comment=comment,
+            type_=type_,
         )
 
         external_reference.additional_properties = d

@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -27,34 +24,32 @@ class ViolationAnalysis:
     """
     Attributes:
         analysis_state (ViolationAnalysisAnalysisState):
-        analysis_comments (Union[Unset, list['ViolationAnalysisComment']]):
-        violation_analysis_state (Union[Unset, ViolationAnalysisViolationAnalysisState]):
-        is_suppressed (Union[Unset, bool]):
+        analysis_comments (list[ViolationAnalysisComment] | Unset):
+        is_suppressed (bool | Unset):
+        violation_analysis_state (ViolationAnalysisViolationAnalysisState | Unset):
     """
 
     analysis_state: ViolationAnalysisAnalysisState
-    analysis_comments: Union[Unset, list["ViolationAnalysisComment"]] = UNSET
-    violation_analysis_state: Union[Unset, ViolationAnalysisViolationAnalysisState] = (
-        UNSET
-    )
-    is_suppressed: Union[Unset, bool] = UNSET
+    analysis_comments: list[ViolationAnalysisComment] | Unset = UNSET
+    is_suppressed: bool | Unset = UNSET
+    violation_analysis_state: ViolationAnalysisViolationAnalysisState | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         analysis_state = self.analysis_state.value
 
-        analysis_comments: Union[Unset, list[dict[str, Any]]] = UNSET
+        analysis_comments: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.analysis_comments, Unset):
             analysis_comments = []
             for analysis_comments_item_data in self.analysis_comments:
                 analysis_comments_item = analysis_comments_item_data.to_dict()
                 analysis_comments.append(analysis_comments_item)
 
-        violation_analysis_state: Union[Unset, str] = UNSET
+        is_suppressed = self.is_suppressed
+
+        violation_analysis_state: str | Unset = UNSET
         if not isinstance(self.violation_analysis_state, Unset):
             violation_analysis_state = self.violation_analysis_state.value
-
-        is_suppressed = self.is_suppressed
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -65,10 +60,10 @@ class ViolationAnalysis:
         )
         if analysis_comments is not UNSET:
             field_dict["analysisComments"] = analysis_comments
-        if violation_analysis_state is not UNSET:
-            field_dict["violationAnalysisState"] = violation_analysis_state
         if is_suppressed is not UNSET:
             field_dict["isSuppressed"] = is_suppressed
+        if violation_analysis_state is not UNSET:
+            field_dict["violationAnalysisState"] = violation_analysis_state
 
         return field_dict
 
@@ -79,17 +74,21 @@ class ViolationAnalysis:
         d = dict(src_dict)
         analysis_state = ViolationAnalysisAnalysisState(d.pop("analysisState"))
 
-        analysis_comments = []
         _analysis_comments = d.pop("analysisComments", UNSET)
-        for analysis_comments_item_data in _analysis_comments or []:
-            analysis_comments_item = ViolationAnalysisComment.from_dict(
-                analysis_comments_item_data
-            )
+        analysis_comments: list[ViolationAnalysisComment] | Unset = UNSET
+        if _analysis_comments is not UNSET:
+            analysis_comments = []
+            for analysis_comments_item_data in _analysis_comments:
+                analysis_comments_item = ViolationAnalysisComment.from_dict(
+                    analysis_comments_item_data
+                )
 
-            analysis_comments.append(analysis_comments_item)
+                analysis_comments.append(analysis_comments_item)
+
+        is_suppressed = d.pop("isSuppressed", UNSET)
 
         _violation_analysis_state = d.pop("violationAnalysisState", UNSET)
-        violation_analysis_state: Union[Unset, ViolationAnalysisViolationAnalysisState]
+        violation_analysis_state: ViolationAnalysisViolationAnalysisState | Unset
         if isinstance(_violation_analysis_state, Unset):
             violation_analysis_state = UNSET
         else:
@@ -97,13 +96,11 @@ class ViolationAnalysis:
                 _violation_analysis_state
             )
 
-        is_suppressed = d.pop("isSuppressed", UNSET)
-
         violation_analysis = cls(
             analysis_state=analysis_state,
             analysis_comments=analysis_comments,
-            violation_analysis_state=violation_analysis_state,
             is_suppressed=is_suppressed,
+            violation_analysis_state=violation_analysis_state,
         )
 
         violation_analysis.additional_properties = d

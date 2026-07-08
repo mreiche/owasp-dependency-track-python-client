@@ -3,7 +3,6 @@ from enum import Enum
 
 class ProjectPropertyPropertyType(str, Enum):
     BOOLEAN = "BOOLEAN"
-    ENCRYPTEDSTRING = "ENCRYPTEDSTRING"
     INTEGER = "INTEGER"
     NUMBER = "NUMBER"
     STRING = "STRING"

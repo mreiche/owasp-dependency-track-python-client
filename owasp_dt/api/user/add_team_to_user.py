@@ -1,12 +1,13 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.identifiable_object import IdentifiableObject
-from ...models.user_principal import UserPrincipal
+from ...models.user import User
 from ...types import Response
 
 
@@ -20,7 +21,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/v1/user/{username}/membership".format(
-            username=username,
+            username=quote(str(username), safe=""),
         ),
     }
 
@@ -33,10 +34,10 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, UserPrincipal]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | User | None:
     if response.status_code == 200:
-        response_200 = UserPrincipal.from_dict(response.json())
+        response_200 = User.from_dict(response.json())
 
         return response_200
 
@@ -59,8 +60,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, UserPrincipal]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | User]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -74,10 +75,11 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: IdentifiableObject,
-) -> Response[Union[Any, UserPrincipal]]:
+) -> Response[Any | User]:
     """Adds the username to the specified team.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         username (str):
@@ -88,7 +90,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, UserPrincipal]]
+        Response[Any | User]
     """
 
     kwargs = _get_kwargs(
@@ -108,10 +110,11 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: IdentifiableObject,
-) -> Optional[Union[Any, UserPrincipal]]:
+) -> Any | User | None:
     """Adds the username to the specified team.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         username (str):
@@ -122,7 +125,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, UserPrincipal]
+        Any | User
     """
 
     return sync_detailed(
@@ -137,10 +140,11 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: IdentifiableObject,
-) -> Response[Union[Any, UserPrincipal]]:
+) -> Response[Any | User]:
     """Adds the username to the specified team.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         username (str):
@@ -151,7 +155,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, UserPrincipal]]
+        Response[Any | User]
     """
 
     kwargs = _get_kwargs(
@@ -169,10 +173,11 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: IdentifiableObject,
-) -> Optional[Union[Any, UserPrincipal]]:
+) -> Any | User | None:
     """Adds the username to the specified team.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         username (str):
@@ -183,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, UserPrincipal]
+        Any | User
     """
 
     return (

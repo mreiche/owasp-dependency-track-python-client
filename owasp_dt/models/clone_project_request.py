@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,28 +17,28 @@ class CloneProjectRequest:
     Attributes:
         project (str):
         version (str):
-        include_tags (Union[Unset, bool]):
-        include_properties (Union[Unset, bool]):
-        include_dependencies (Union[Unset, bool]):
-        include_components (Union[Unset, bool]):
-        include_services (Union[Unset, bool]):
-        include_audit_history (Union[Unset, bool]):
-        include_acl (Union[Unset, bool]):
-        include_policy_violations (Union[Unset, bool]):
-        make_clone_latest (Union[Unset, bool]):
+        include_acl (bool | Unset):
+        include_audit_history (bool | Unset):
+        include_components (bool | Unset):
+        include_dependencies (bool | Unset):
+        include_policy_violations (bool | Unset):
+        include_properties (bool | Unset):
+        include_services (bool | Unset):
+        include_tags (bool | Unset):
+        make_clone_latest (bool | Unset):
     """
 
     project: str
     version: str
-    include_tags: Union[Unset, bool] = UNSET
-    include_properties: Union[Unset, bool] = UNSET
-    include_dependencies: Union[Unset, bool] = UNSET
-    include_components: Union[Unset, bool] = UNSET
-    include_services: Union[Unset, bool] = UNSET
-    include_audit_history: Union[Unset, bool] = UNSET
-    include_acl: Union[Unset, bool] = UNSET
-    include_policy_violations: Union[Unset, bool] = UNSET
-    make_clone_latest: Union[Unset, bool] = UNSET
+    include_acl: bool | Unset = UNSET
+    include_audit_history: bool | Unset = UNSET
+    include_components: bool | Unset = UNSET
+    include_dependencies: bool | Unset = UNSET
+    include_policy_violations: bool | Unset = UNSET
+    include_properties: bool | Unset = UNSET
+    include_services: bool | Unset = UNSET
+    include_tags: bool | Unset = UNSET
+    make_clone_latest: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,21 +46,21 @@ class CloneProjectRequest:
 
         version = self.version
 
-        include_tags = self.include_tags
-
-        include_properties = self.include_properties
-
-        include_dependencies = self.include_dependencies
-
-        include_components = self.include_components
-
-        include_services = self.include_services
+        include_acl = self.include_acl
 
         include_audit_history = self.include_audit_history
 
-        include_acl = self.include_acl
+        include_components = self.include_components
+
+        include_dependencies = self.include_dependencies
 
         include_policy_violations = self.include_policy_violations
+
+        include_properties = self.include_properties
+
+        include_services = self.include_services
+
+        include_tags = self.include_tags
 
         make_clone_latest = self.make_clone_latest
 
@@ -74,22 +72,22 @@ class CloneProjectRequest:
                 "version": version,
             }
         )
-        if include_tags is not UNSET:
-            field_dict["includeTags"] = include_tags
-        if include_properties is not UNSET:
-            field_dict["includeProperties"] = include_properties
-        if include_dependencies is not UNSET:
-            field_dict["includeDependencies"] = include_dependencies
-        if include_components is not UNSET:
-            field_dict["includeComponents"] = include_components
-        if include_services is not UNSET:
-            field_dict["includeServices"] = include_services
-        if include_audit_history is not UNSET:
-            field_dict["includeAuditHistory"] = include_audit_history
         if include_acl is not UNSET:
             field_dict["includeACL"] = include_acl
+        if include_audit_history is not UNSET:
+            field_dict["includeAuditHistory"] = include_audit_history
+        if include_components is not UNSET:
+            field_dict["includeComponents"] = include_components
+        if include_dependencies is not UNSET:
+            field_dict["includeDependencies"] = include_dependencies
         if include_policy_violations is not UNSET:
             field_dict["includePolicyViolations"] = include_policy_violations
+        if include_properties is not UNSET:
+            field_dict["includeProperties"] = include_properties
+        if include_services is not UNSET:
+            field_dict["includeServices"] = include_services
+        if include_tags is not UNSET:
+            field_dict["includeTags"] = include_tags
         if make_clone_latest is not UNSET:
             field_dict["makeCloneLatest"] = make_clone_latest
 
@@ -102,35 +100,35 @@ class CloneProjectRequest:
 
         version = d.pop("version")
 
-        include_tags = d.pop("includeTags", UNSET)
-
-        include_properties = d.pop("includeProperties", UNSET)
-
-        include_dependencies = d.pop("includeDependencies", UNSET)
-
-        include_components = d.pop("includeComponents", UNSET)
-
-        include_services = d.pop("includeServices", UNSET)
+        include_acl = d.pop("includeACL", UNSET)
 
         include_audit_history = d.pop("includeAuditHistory", UNSET)
 
-        include_acl = d.pop("includeACL", UNSET)
+        include_components = d.pop("includeComponents", UNSET)
+
+        include_dependencies = d.pop("includeDependencies", UNSET)
 
         include_policy_violations = d.pop("includePolicyViolations", UNSET)
+
+        include_properties = d.pop("includeProperties", UNSET)
+
+        include_services = d.pop("includeServices", UNSET)
+
+        include_tags = d.pop("includeTags", UNSET)
 
         make_clone_latest = d.pop("makeCloneLatest", UNSET)
 
         clone_project_request = cls(
             project=project,
             version=version,
-            include_tags=include_tags,
-            include_properties=include_properties,
-            include_dependencies=include_dependencies,
-            include_components=include_components,
-            include_services=include_services,
-            include_audit_history=include_audit_history,
             include_acl=include_acl,
+            include_audit_history=include_audit_history,
+            include_components=include_components,
+            include_dependencies=include_dependencies,
             include_policy_violations=include_policy_violations,
+            include_properties=include_properties,
+            include_services=include_services,
+            include_tags=include_tags,
             make_clone_latest=make_clone_latest,
         )
 

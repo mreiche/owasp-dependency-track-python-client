@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -12,14 +12,17 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetCwesSortOrder] = UNSET,
+    search_text: str | Unset = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetCwesSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
+
+    params["searchText"] = search_text
 
     params["pageNumber"] = page_number
 
@@ -31,7 +34,7 @@ def _get_kwargs(
 
     params["sortName"] = sort_name
 
-    json_sort_order: Union[Unset, str] = UNSET
+    json_sort_order: str | Unset = UNSET
     if not isinstance(sort_order, Unset):
         json_sort_order = sort_order.value
 
@@ -49,8 +52,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["Cwe"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[Cwe] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -72,8 +75,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["Cwe"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[Cwe]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -85,32 +88,35 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetCwesSortOrder] = UNSET,
-) -> Response[Union[Any, list["Cwe"]]]:
+    search_text: str | Unset = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetCwesSortOrder | Unset = UNSET,
+) -> Response[Any | list[Cwe]]:
     """Returns a list of all CWEs
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetCwesSortOrder]):
+        search_text (str | Unset):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetCwesSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Cwe']]]
+        Response[Any | list[Cwe]]
     """
 
     kwargs = _get_kwargs(
+        search_text=search_text,
         page_number=page_number,
         page_size=page_size,
         offset=offset,
@@ -129,33 +135,36 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetCwesSortOrder] = UNSET,
-) -> Optional[Union[Any, list["Cwe"]]]:
+    search_text: str | Unset = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetCwesSortOrder | Unset = UNSET,
+) -> Any | list[Cwe] | None:
     """Returns a list of all CWEs
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetCwesSortOrder]):
+        search_text (str | Unset):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetCwesSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Cwe']]
+        Any | list[Cwe]
     """
 
     return sync_detailed(
         client=client,
+        search_text=search_text,
         page_number=page_number,
         page_size=page_size,
         offset=offset,
@@ -168,32 +177,35 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetCwesSortOrder] = UNSET,
-) -> Response[Union[Any, list["Cwe"]]]:
+    search_text: str | Unset = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetCwesSortOrder | Unset = UNSET,
+) -> Response[Any | list[Cwe]]:
     """Returns a list of all CWEs
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetCwesSortOrder]):
+        search_text (str | Unset):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetCwesSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Cwe']]]
+        Response[Any | list[Cwe]]
     """
 
     kwargs = _get_kwargs(
+        search_text=search_text,
         page_number=page_number,
         page_size=page_size,
         offset=offset,
@@ -210,34 +222,37 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetCwesSortOrder] = UNSET,
-) -> Optional[Union[Any, list["Cwe"]]]:
+    search_text: str | Unset = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetCwesSortOrder | Unset = UNSET,
+) -> Any | list[Cwe] | None:
     """Returns a list of all CWEs
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetCwesSortOrder]):
+        search_text (str | Unset):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetCwesSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Cwe']]
+        Any | list[Cwe]
     """
 
     return (
         await asyncio_detailed(
             client=client,
+            search_text=search_text,
             page_number=page_number,
             page_size=page_size,
             offset=offset,

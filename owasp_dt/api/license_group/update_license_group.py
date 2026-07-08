@@ -1,17 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.license_group import LicenseGroup
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: LicenseGroup,
+    body: LicenseGroup | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +20,8 @@ def _get_kwargs(
         "url": "/v1/licenseGroup",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,8 +30,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, LicenseGroup]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | LicenseGroup | None:
     if response.status_code == 200:
         response_200 = LicenseGroup.from_dict(response.json())
 
@@ -51,8 +52,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, LicenseGroup]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | LicenseGroup]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,21 +65,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup,
-) -> Response[Union[Any, LicenseGroup]]:
+    body: LicenseGroup | Unset = UNSET,
+) -> Response[Any | LicenseGroup]:
     """Updates a license group
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (LicenseGroup):
+        body (LicenseGroup | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, LicenseGroup]]
+        Response[Any | LicenseGroup]
     """
 
     kwargs = _get_kwargs(
@@ -95,21 +97,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup,
-) -> Optional[Union[Any, LicenseGroup]]:
+    body: LicenseGroup | Unset = UNSET,
+) -> Any | LicenseGroup | None:
     """Updates a license group
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (LicenseGroup):
+        body (LicenseGroup | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, LicenseGroup]
+        Any | LicenseGroup
     """
 
     return sync_detailed(
@@ -121,21 +124,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup,
-) -> Response[Union[Any, LicenseGroup]]:
+    body: LicenseGroup | Unset = UNSET,
+) -> Response[Any | LicenseGroup]:
     """Updates a license group
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (LicenseGroup):
+        body (LicenseGroup | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, LicenseGroup]]
+        Response[Any | LicenseGroup]
     """
 
     kwargs = _get_kwargs(
@@ -150,21 +154,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup,
-) -> Optional[Union[Any, LicenseGroup]]:
+    body: LicenseGroup | Unset = UNSET,
+) -> Any | LicenseGroup | None:
     """Updates a license group
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (LicenseGroup):
+        body (LicenseGroup | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, LicenseGroup]
+        Any | LicenseGroup
     """
 
     return (

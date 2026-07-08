@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -18,42 +16,52 @@ T = TypeVar("T", bound="ProjectVersion")
 class ProjectVersion:
     """
     Attributes:
-        uuid (Union[Unset, UUID]):
-        version (Union[Unset, str]):
-        active (Union[Unset, bool]):
+        active (bool | Unset):
+        is_latest (bool | Unset):
+        uuid (UUID | Unset):
+        version (str | Unset):
     """
 
-    uuid: Union[Unset, UUID] = UNSET
-    version: Union[Unset, str] = UNSET
-    active: Union[Unset, bool] = UNSET
+    active: bool | Unset = UNSET
+    is_latest: bool | Unset = UNSET
+    uuid: UUID | Unset = UNSET
+    version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid: Union[Unset, str] = UNSET
+        active = self.active
+
+        is_latest = self.is_latest
+
+        uuid: str | Unset = UNSET
         if not isinstance(self.uuid, Unset):
             uuid = str(self.uuid)
 
         version = self.version
 
-        active = self.active
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if active is not UNSET:
+            field_dict["active"] = active
+        if is_latest is not UNSET:
+            field_dict["isLatest"] = is_latest
         if uuid is not UNSET:
             field_dict["uuid"] = uuid
         if version is not UNSET:
             field_dict["version"] = version
-        if active is not UNSET:
-            field_dict["active"] = active
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        active = d.pop("active", UNSET)
+
+        is_latest = d.pop("isLatest", UNSET)
+
         _uuid = d.pop("uuid", UNSET)
-        uuid: Union[Unset, UUID]
+        uuid: UUID | Unset
         if isinstance(_uuid, Unset):
             uuid = UNSET
         else:
@@ -61,12 +69,11 @@ class ProjectVersion:
 
         version = d.pop("version", UNSET)
 
-        active = d.pop("active", UNSET)
-
         project_version = cls(
+            active=active,
+            is_latest=is_latest,
             uuid=uuid,
             version=version,
-            active=active,
         )
 
         project_version.additional_properties = d

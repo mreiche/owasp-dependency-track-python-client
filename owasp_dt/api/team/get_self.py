@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -19,8 +19,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, TeamSelfResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | TeamSelfResponse | None:
     if response.status_code == 200:
         response_200 = TeamSelfResponse.from_dict(response.json())
 
@@ -45,8 +45,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, TeamSelfResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | TeamSelfResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -58,7 +58,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, TeamSelfResponse]]:
+) -> Response[Any | TeamSelfResponse]:
     """Returns information about the current team.
 
     Raises:
@@ -66,7 +66,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, TeamSelfResponse]]
+        Response[Any | TeamSelfResponse]
     """
 
     kwargs = _get_kwargs()
@@ -81,7 +81,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, TeamSelfResponse]]:
+) -> Any | TeamSelfResponse | None:
     """Returns information about the current team.
 
     Raises:
@@ -89,7 +89,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, TeamSelfResponse]
+        Any | TeamSelfResponse
     """
 
     return sync_detailed(
@@ -100,7 +100,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, TeamSelfResponse]]:
+) -> Response[Any | TeamSelfResponse]:
     """Returns information about the current team.
 
     Raises:
@@ -108,7 +108,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, TeamSelfResponse]]
+        Response[Any | TeamSelfResponse]
     """
 
     kwargs = _get_kwargs()
@@ -121,7 +121,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, TeamSelfResponse]]:
+) -> Any | TeamSelfResponse | None:
     """Returns information about the current team.
 
     Raises:
@@ -129,7 +129,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, TeamSelfResponse]
+        Any | TeamSelfResponse
     """
 
     return (

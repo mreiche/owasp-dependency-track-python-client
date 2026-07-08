@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
@@ -18,8 +18,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 200:
         return None
 
@@ -33,7 +33,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -49,7 +49,8 @@ def sync_detailed(
 ) -> Response[Any]:
     """Requests a refresh of the portfolio metrics
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -74,7 +75,8 @@ async def asyncio_detailed(
 ) -> Response[Any]:
     """Requests a refresh of the portfolio metrics
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

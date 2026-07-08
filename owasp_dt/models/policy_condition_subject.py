@@ -8,6 +8,8 @@ class PolicyConditionSubject(str, Enum):
     CPE = "CPE"
     CWE = "CWE"
     EPSS = "EPSS"
+    EXPRESSION = "EXPRESSION"
+    IS_INTERNAL = "IS_INTERNAL"
     LICENSE = "LICENSE"
     LICENSE_GROUP = "LICENSE_GROUP"
     PACKAGE_URL = "PACKAGE_URL"

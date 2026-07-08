@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,16 +16,16 @@ T = TypeVar("T", bound="UploadVex1Body")
 class UploadVex1Body:
     """
     Attributes:
-        project (Union[Unset, str]):
-        project_name (Union[Unset, str]):
-        project_version (Union[Unset, str]):
-        vex (Union[Unset, str]):
+        project (str | Unset):
+        project_name (str | Unset):
+        project_version (str | Unset):
+        vex (str | Unset):
     """
 
-    project: Union[Unset, str] = UNSET
-    project_name: Union[Unset, str] = UNSET
-    project_version: Union[Unset, str] = UNSET
-    vex: Union[Unset, str] = UNSET
+    project: str | Unset = UNSET
+    project_name: str | Unset = UNSET
+    project_version: str | Unset = UNSET
+    vex: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

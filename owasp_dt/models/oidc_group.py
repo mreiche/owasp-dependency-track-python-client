@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
 from typing import Any, TypeVar
 from uuid import UUID
@@ -12,25 +14,25 @@ T = TypeVar("T", bound="OidcGroup")
 class OidcGroup:
     """
     Attributes:
-        uuid (UUID):
         name (str):
+        uuid (UUID):
     """
 
-    uuid: UUID
     name: str
+    uuid: UUID
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
-
         name = self.name
+
+        uuid = str(self.uuid)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "uuid": uuid,
                 "name": name,
+                "uuid": uuid,
             }
         )
 
@@ -39,13 +41,13 @@ class OidcGroup:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        uuid = UUID(d.pop("uuid"))
-
         name = d.pop("name")
 
+        uuid = UUID(d.pop("uuid"))
+
         oidc_group = cls(
-            uuid=uuid,
             name=name,
+            uuid=uuid,
         )
 
         oidc_group.additional_properties = d

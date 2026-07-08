@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,38 +15,38 @@ T = TypeVar("T", bound="Framework")
 class Framework:
     """
     Attributes:
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        timestamp (Union[Unset, str]):
-        uuid (Union[Unset, str]):
+        name (str | Unset):
+        timestamp (str | Unset):
+        uuid (str | Unset):
+        version (str | Unset):
     """
 
-    name: Union[Unset, str] = UNSET
-    version: Union[Unset, str] = UNSET
-    timestamp: Union[Unset, str] = UNSET
-    uuid: Union[Unset, str] = UNSET
+    name: str | Unset = UNSET
+    timestamp: str | Unset = UNSET
+    uuid: str | Unset = UNSET
+    version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        version = self.version
-
         timestamp = self.timestamp
 
         uuid = self.uuid
+
+        version = self.version
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
-        if version is not UNSET:
-            field_dict["version"] = version
         if timestamp is not UNSET:
             field_dict["timestamp"] = timestamp
         if uuid is not UNSET:
             field_dict["uuid"] = uuid
+        if version is not UNSET:
+            field_dict["version"] = version
 
         return field_dict
 
@@ -57,17 +55,17 @@ class Framework:
         d = dict(src_dict)
         name = d.pop("name", UNSET)
 
-        version = d.pop("version", UNSET)
-
         timestamp = d.pop("timestamp", UNSET)
 
         uuid = d.pop("uuid", UNSET)
 
+        version = d.pop("version", UNSET)
+
         framework = cls(
             name=name,
-            version=version,
             timestamp=timestamp,
             uuid=uuid,
+            version=version,
         )
 
         framework.additional_properties = d

@@ -1,17 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.managed_user import ManagedUser
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ManagedUser,
+    body: ManagedUser | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +20,8 @@ def _get_kwargs(
         "url": "/v1/user/managed",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,8 +30,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 204:
         return None
 
@@ -47,7 +48,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -60,14 +61,15 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ManagedUser,
+    body: ManagedUser | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a user.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (ManagedUser):
+        body (ManagedUser | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -91,14 +93,15 @@ def sync_detailed(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ManagedUser,
+    body: ManagedUser | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a user.
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (ManagedUser):
+        body (ManagedUser | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

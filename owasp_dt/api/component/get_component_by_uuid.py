@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -7,13 +8,14 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.component import Component
+from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     uuid: UUID,
     *,
-    include_repository_meta_data: Union[Unset, bool] = UNSET,
+    include_repository_meta_data: bool | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
@@ -24,7 +26,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/component/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
         "params": params,
     }
@@ -33,8 +35,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Component]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Component | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = Component.from_dict(response.json())
 
@@ -45,7 +47,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -59,8 +62,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Component]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Component | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,22 +76,22 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    include_repository_meta_data: Union[Unset, bool] = UNSET,
-) -> Response[Union[Any, Component]]:
+    include_repository_meta_data: bool | Unset = UNSET,
+) -> Response[Any | Component | ProblemDetails]:
     """Returns a specific component
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        include_repository_meta_data (Union[Unset, bool]):
+        include_repository_meta_data (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Component]]
+        Response[Any | Component | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -107,22 +110,22 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    include_repository_meta_data: Union[Unset, bool] = UNSET,
-) -> Optional[Union[Any, Component]]:
+    include_repository_meta_data: bool | Unset = UNSET,
+) -> Any | Component | ProblemDetails | None:
     """Returns a specific component
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        include_repository_meta_data (Union[Unset, bool]):
+        include_repository_meta_data (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Component]
+        Any | Component | ProblemDetails
     """
 
     return sync_detailed(
@@ -136,22 +139,22 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    include_repository_meta_data: Union[Unset, bool] = UNSET,
-) -> Response[Union[Any, Component]]:
+    include_repository_meta_data: bool | Unset = UNSET,
+) -> Response[Any | Component | ProblemDetails]:
     """Returns a specific component
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        include_repository_meta_data (Union[Unset, bool]):
+        include_repository_meta_data (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Component]]
+        Response[Any | Component | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -168,22 +171,22 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    include_repository_meta_data: Union[Unset, bool] = UNSET,
-) -> Optional[Union[Any, Component]]:
+    include_repository_meta_data: bool | Unset = UNSET,
+) -> Any | Component | ProblemDetails | None:
     """Returns a specific component
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        include_repository_meta_data (Union[Unset, bool]):
+        include_repository_meta_data (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Component]
+        Any | Component | ProblemDetails
     """
 
     return (

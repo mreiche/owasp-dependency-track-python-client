@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -18,8 +18,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list[str]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[str] | None:
     if response.status_code == 200:
         response_200 = cast(list[str], response.json())
 
@@ -36,8 +36,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list[str]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[str]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -49,21 +49,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list[str]]]:
+) -> Response[Any | list[str]]:
     """Returns the DNs of all accessible groups within the directory
 
      <p>
       This API performs a pass-through query to the configured LDAP server.
-      Search criteria results are cached using default Alpine CacheManager policy.
     <p>
-    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list[str]]]
+        Response[Any | list[str]]
     """
 
     kwargs = _get_kwargs()
@@ -78,21 +78,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list[str]]]:
+) -> Any | list[str] | None:
     """Returns the DNs of all accessible groups within the directory
 
      <p>
       This API performs a pass-through query to the configured LDAP server.
-      Search criteria results are cached using default Alpine CacheManager policy.
     <p>
-    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list[str]]
+        Any | list[str]
     """
 
     return sync_detailed(
@@ -103,21 +103,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list[str]]]:
+) -> Response[Any | list[str]]:
     """Returns the DNs of all accessible groups within the directory
 
      <p>
       This API performs a pass-through query to the configured LDAP server.
-      Search criteria results are cached using default Alpine CacheManager policy.
     <p>
-    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list[str]]]
+        Response[Any | list[str]]
     """
 
     kwargs = _get_kwargs()
@@ -130,21 +130,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list[str]]]:
+) -> Any | list[str] | None:
     """Returns the DNs of all accessible groups within the directory
 
      <p>
       This API performs a pass-through query to the configured LDAP server.
-      Search criteria results are cached using default Alpine CacheManager policy.
     <p>
-    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list[str]]
+        Any | list[str]
     """
 
     return (

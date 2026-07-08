@@ -1,17 +1,20 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.create_notification_publisher_request import (
+    CreateNotificationPublisherRequest,
+)
 from ...models.notification_publisher import NotificationPublisher
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: NotificationPublisher,
+    body: CreateNotificationPublisherRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +23,8 @@ def _get_kwargs(
         "url": "/v1/notification/publisher",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,8 +33,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, NotificationPublisher]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | NotificationPublisher | None:
     if response.status_code == 201:
         response_201 = NotificationPublisher.from_dict(response.json())
 
@@ -55,8 +59,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, NotificationPublisher]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | NotificationPublisher]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -68,21 +72,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: NotificationPublisher,
-) -> Response[Union[Any, NotificationPublisher]]:
+    body: CreateNotificationPublisherRequest | Unset = UNSET,
+) -> Response[Any | NotificationPublisher]:
     """Creates a new notification publisher
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (NotificationPublisher):
+        body (CreateNotificationPublisherRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationPublisher]]
+        Response[Any | NotificationPublisher]
     """
 
     kwargs = _get_kwargs(
@@ -99,21 +104,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: NotificationPublisher,
-) -> Optional[Union[Any, NotificationPublisher]]:
+    body: CreateNotificationPublisherRequest | Unset = UNSET,
+) -> Any | NotificationPublisher | None:
     """Creates a new notification publisher
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (NotificationPublisher):
+        body (CreateNotificationPublisherRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationPublisher]
+        Any | NotificationPublisher
     """
 
     return sync_detailed(
@@ -125,21 +131,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: NotificationPublisher,
-) -> Response[Union[Any, NotificationPublisher]]:
+    body: CreateNotificationPublisherRequest | Unset = UNSET,
+) -> Response[Any | NotificationPublisher]:
     """Creates a new notification publisher
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (NotificationPublisher):
+        body (CreateNotificationPublisherRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationPublisher]]
+        Response[Any | NotificationPublisher]
     """
 
     kwargs = _get_kwargs(
@@ -154,21 +161,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: NotificationPublisher,
-) -> Optional[Union[Any, NotificationPublisher]]:
+    body: CreateNotificationPublisherRequest | Unset = UNSET,
+) -> Any | NotificationPublisher | None:
     """Creates a new notification publisher
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (NotificationPublisher):
+        body (CreateNotificationPublisherRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationPublisher]
+        Any | NotificationPublisher
     """
 
     return (

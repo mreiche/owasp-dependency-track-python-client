@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -7,6 +8,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.dependency_graph_response import DependencyGraphResponse
+from ...models.problem_details import ProblemDetails
 from ...types import Response
 
 
@@ -16,7 +18,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/dependencyGraph/project/{uuid}/directDependencies".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +26,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["DependencyGraphResponse"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | list[DependencyGraphResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -43,7 +45,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -57,8 +60,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["DependencyGraphResponse"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | list[DependencyGraphResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -71,7 +74,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["DependencyGraphResponse"]]]:
+) -> Response[Any | ProblemDetails | list[DependencyGraphResponse]]:
     """Returns a list of specific components and services from project UUID
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -84,7 +87,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['DependencyGraphResponse']]]
+        Response[Any | ProblemDetails | list[DependencyGraphResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -102,7 +105,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["DependencyGraphResponse"]]]:
+) -> Any | ProblemDetails | list[DependencyGraphResponse] | None:
     """Returns a list of specific components and services from project UUID
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -115,7 +118,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['DependencyGraphResponse']]
+        Any | ProblemDetails | list[DependencyGraphResponse]
     """
 
     return sync_detailed(
@@ -128,7 +131,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["DependencyGraphResponse"]]]:
+) -> Response[Any | ProblemDetails | list[DependencyGraphResponse]]:
     """Returns a list of specific components and services from project UUID
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -141,7 +144,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['DependencyGraphResponse']]]
+        Response[Any | ProblemDetails | list[DependencyGraphResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -157,7 +160,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["DependencyGraphResponse"]]]:
+) -> Any | ProblemDetails | list[DependencyGraphResponse] | None:
     """Returns a list of specific components and services from project UUID
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -170,7 +173,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['DependencyGraphResponse']]
+        Any | ProblemDetails | list[DependencyGraphResponse]
     """
 
     return (

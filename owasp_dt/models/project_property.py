@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -21,15 +19,15 @@ class ProjectProperty:
         group_name (str):
         property_name (str):
         property_type (ProjectPropertyPropertyType):
-        property_value (Union[Unset, str]):
-        description (Union[Unset, str]):
+        description (str | Unset):
+        property_value (str | Unset):
     """
 
     group_name: str
     property_name: str
     property_type: ProjectPropertyPropertyType
-    property_value: Union[Unset, str] = UNSET
-    description: Union[Unset, str] = UNSET
+    description: str | Unset = UNSET
+    property_value: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -39,9 +37,9 @@ class ProjectProperty:
 
         property_type = self.property_type.value
 
-        property_value = self.property_value
-
         description = self.description
+
+        property_value = self.property_value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -52,10 +50,10 @@ class ProjectProperty:
                 "propertyType": property_type,
             }
         )
-        if property_value is not UNSET:
-            field_dict["propertyValue"] = property_value
         if description is not UNSET:
             field_dict["description"] = description
+        if property_value is not UNSET:
+            field_dict["propertyValue"] = property_value
 
         return field_dict
 
@@ -68,16 +66,16 @@ class ProjectProperty:
 
         property_type = ProjectPropertyPropertyType(d.pop("propertyType"))
 
-        property_value = d.pop("propertyValue", UNSET)
-
         description = d.pop("description", UNSET)
+
+        property_value = d.pop("propertyValue", UNSET)
 
         project_property = cls(
             group_name=group_name,
             property_name=property_name,
             property_type=property_type,
-            property_value=property_value,
             description=description,
+            property_value=property_value,
         )
 
         project_property.additional_properties = d

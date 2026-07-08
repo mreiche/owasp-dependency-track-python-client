@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,6 +11,7 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.organizational_contact import OrganizationalContact
     from ..models.organizational_entity import OrganizationalEntity
+    from ..models.tools import Tools
 
 
 T = TypeVar("T", bound="ProjectMetadata")
@@ -23,33 +21,41 @@ T = TypeVar("T", bound="ProjectMetadata")
 class ProjectMetadata:
     """
     Attributes:
-        supplier (Union[Unset, OrganizationalEntity]):
-        authors (Union[Unset, list['OrganizationalContact']]):
+        authors (list[OrganizationalContact] | Unset):
+        supplier (OrganizationalEntity | Unset):
+        tools (Tools | Unset):
     """
 
-    supplier: Union[Unset, "OrganizationalEntity"] = UNSET
-    authors: Union[Unset, list["OrganizationalContact"]] = UNSET
+    authors: list[OrganizationalContact] | Unset = UNSET
+    supplier: OrganizationalEntity | Unset = UNSET
+    tools: Tools | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        supplier: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.supplier, Unset):
-            supplier = self.supplier.to_dict()
-
-        authors: Union[Unset, list[dict[str, Any]]] = UNSET
+        authors: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.authors, Unset):
             authors = []
             for authors_item_data in self.authors:
                 authors_item = authors_item_data.to_dict()
                 authors.append(authors_item)
 
+        supplier: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.supplier, Unset):
+            supplier = self.supplier.to_dict()
+
+        tools: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.tools, Unset):
+            tools = self.tools.to_dict()
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if supplier is not UNSET:
-            field_dict["supplier"] = supplier
         if authors is not UNSET:
             field_dict["authors"] = authors
+        if supplier is not UNSET:
+            field_dict["supplier"] = supplier
+        if tools is not UNSET:
+            field_dict["tools"] = tools
 
         return field_dict
 
@@ -57,25 +63,36 @@ class ProjectMetadata:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.organizational_contact import OrganizationalContact
         from ..models.organizational_entity import OrganizationalEntity
+        from ..models.tools import Tools
 
         d = dict(src_dict)
+        _authors = d.pop("authors", UNSET)
+        authors: list[OrganizationalContact] | Unset = UNSET
+        if _authors is not UNSET:
+            authors = []
+            for authors_item_data in _authors:
+                authors_item = OrganizationalContact.from_dict(authors_item_data)
+
+                authors.append(authors_item)
+
         _supplier = d.pop("supplier", UNSET)
-        supplier: Union[Unset, OrganizationalEntity]
+        supplier: OrganizationalEntity | Unset
         if isinstance(_supplier, Unset):
             supplier = UNSET
         else:
             supplier = OrganizationalEntity.from_dict(_supplier)
 
-        authors = []
-        _authors = d.pop("authors", UNSET)
-        for authors_item_data in _authors or []:
-            authors_item = OrganizationalContact.from_dict(authors_item_data)
-
-            authors.append(authors_item)
+        _tools = d.pop("tools", UNSET)
+        tools: Tools | Unset
+        if isinstance(_tools, Unset):
+            tools = UNSET
+        else:
+            tools = Tools.from_dict(_tools)
 
         project_metadata = cls(
-            supplier=supplier,
             authors=authors,
+            supplier=supplier,
+            tools=tools,
         )
 
         project_metadata.additional_properties = d

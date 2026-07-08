@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,12 +15,12 @@ T = TypeVar("T", bound="Cwe")
 class Cwe:
     """
     Attributes:
-        cwe_id (Union[Unset, int]):
-        name (Union[Unset, str]):
+        cwe_id (int | Unset):
+        name (str | Unset):
     """
 
-    cwe_id: Union[Unset, int] = UNSET
-    name: Union[Unset, str] = UNSET
+    cwe_id: int | Unset = UNSET
+    name: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

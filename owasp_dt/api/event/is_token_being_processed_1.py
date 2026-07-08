@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -16,7 +17,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/event/token/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +25,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, IsTokenBeingProcessedResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | IsTokenBeingProcessedResponse | None:
     if response.status_code == 200:
         response_200 = IsTokenBeingProcessedResponse.from_dict(response.json())
 
@@ -42,8 +43,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, IsTokenBeingProcessedResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | IsTokenBeingProcessedResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -56,7 +57,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, IsTokenBeingProcessedResponse]]:
+) -> Response[Any | IsTokenBeingProcessedResponse]:
     """Determines if there are any tasks associated with the token that are being processed, or in the
     queue to be processed.
 
@@ -81,7 +82,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, IsTokenBeingProcessedResponse]]
+        Response[Any | IsTokenBeingProcessedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -99,7 +100,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, IsTokenBeingProcessedResponse]]:
+) -> Any | IsTokenBeingProcessedResponse | None:
     """Determines if there are any tasks associated with the token that are being processed, or in the
     queue to be processed.
 
@@ -124,7 +125,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, IsTokenBeingProcessedResponse]
+        Any | IsTokenBeingProcessedResponse
     """
 
     return sync_detailed(
@@ -137,7 +138,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, IsTokenBeingProcessedResponse]]:
+) -> Response[Any | IsTokenBeingProcessedResponse]:
     """Determines if there are any tasks associated with the token that are being processed, or in the
     queue to be processed.
 
@@ -162,7 +163,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, IsTokenBeingProcessedResponse]]
+        Response[Any | IsTokenBeingProcessedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -178,7 +179,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, IsTokenBeingProcessedResponse]]:
+) -> Any | IsTokenBeingProcessedResponse | None:
     """Determines if there are any tasks associated with the token that are being processed, or in the
     queue to be processed.
 
@@ -203,7 +204,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, IsTokenBeingProcessedResponse]
+        Any | IsTokenBeingProcessedResponse
     """
 
     return (

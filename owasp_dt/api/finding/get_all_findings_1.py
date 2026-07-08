@@ -1,33 +1,62 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.finding import Finding
+from ...models.get_all_findings_1_sort_order import GetAllFindings1SortOrder
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    show_inactive: Union[Unset, bool] = UNSET,
-    show_suppressed: Union[Unset, bool] = UNSET,
-    severity: Union[Unset, str] = UNSET,
-    analysis_status: Union[Unset, str] = UNSET,
-    vendor_response: Union[Unset, str] = UNSET,
-    publish_date_from: Union[Unset, str] = UNSET,
-    publish_date_to: Union[Unset, str] = UNSET,
-    attributed_on_date_from: Union[Unset, str] = UNSET,
-    attributed_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-    cvssv_2_from: Union[Unset, str] = UNSET,
-    cvssv_2_to: Union[Unset, str] = UNSET,
-    cvssv_3_from: Union[Unset, str] = UNSET,
-    cvssv_3_to: Union[Unset, str] = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetAllFindings1SortOrder | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    show_suppressed: bool | Unset = UNSET,
+    severity: str | Unset = UNSET,
+    analysis_status: str | Unset = UNSET,
+    vendor_response: str | Unset = UNSET,
+    publish_date_from: str | Unset = UNSET,
+    publish_date_to: str | Unset = UNSET,
+    attributed_on_date_from: str | Unset = UNSET,
+    attributed_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+    cvssv_2_from: str | Unset = UNSET,
+    cvssv_2_to: str | Unset = UNSET,
+    cvssv_3_from: str | Unset = UNSET,
+    cvssv_3_to: str | Unset = UNSET,
+    cvssv_4_from: str | Unset = UNSET,
+    cvssv_4_to: str | Unset = UNSET,
+    epss_from: str | Unset = UNSET,
+    epss_to: str | Unset = UNSET,
+    epss_percentile_from: str | Unset = UNSET,
+    epss_percentile_to: str | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
+
+    params["pageNumber"] = page_number
+
+    params["pageSize"] = page_size
+
+    params["offset"] = offset
+
+    params["limit"] = limit
+
+    params["sortName"] = sort_name
+
+    json_sort_order: str | Unset = UNSET
+    if not isinstance(sort_order, Unset):
+        json_sort_order = sort_order.value
+
+    params["sortOrder"] = json_sort_order
 
     params["showInactive"] = show_inactive
 
@@ -59,6 +88,18 @@ def _get_kwargs(
 
     params["cvssv3To"] = cvssv_3_to
 
+    params["cvssv4From"] = cvssv_4_from
+
+    params["cvssv4To"] = cvssv_4_to
+
+    params["epssFrom"] = epss_from
+
+    params["epssTo"] = epss_to
+
+    params["epssPercentileFrom"] = epss_percentile_from
+
+    params["epssPercentileTo"] = epss_percentile_to
+
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
@@ -71,8 +112,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["Finding"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[Finding] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -94,8 +135,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["Finding"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[Finding]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -107,52 +148,82 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    show_inactive: Union[Unset, bool] = UNSET,
-    show_suppressed: Union[Unset, bool] = UNSET,
-    severity: Union[Unset, str] = UNSET,
-    analysis_status: Union[Unset, str] = UNSET,
-    vendor_response: Union[Unset, str] = UNSET,
-    publish_date_from: Union[Unset, str] = UNSET,
-    publish_date_to: Union[Unset, str] = UNSET,
-    attributed_on_date_from: Union[Unset, str] = UNSET,
-    attributed_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-    cvssv_2_from: Union[Unset, str] = UNSET,
-    cvssv_2_to: Union[Unset, str] = UNSET,
-    cvssv_3_from: Union[Unset, str] = UNSET,
-    cvssv_3_to: Union[Unset, str] = UNSET,
-) -> Response[Union[Any, list["Finding"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetAllFindings1SortOrder | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    show_suppressed: bool | Unset = UNSET,
+    severity: str | Unset = UNSET,
+    analysis_status: str | Unset = UNSET,
+    vendor_response: str | Unset = UNSET,
+    publish_date_from: str | Unset = UNSET,
+    publish_date_to: str | Unset = UNSET,
+    attributed_on_date_from: str | Unset = UNSET,
+    attributed_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+    cvssv_2_from: str | Unset = UNSET,
+    cvssv_2_to: str | Unset = UNSET,
+    cvssv_3_from: str | Unset = UNSET,
+    cvssv_3_to: str | Unset = UNSET,
+    cvssv_4_from: str | Unset = UNSET,
+    cvssv_4_to: str | Unset = UNSET,
+    epss_from: str | Unset = UNSET,
+    epss_to: str | Unset = UNSET,
+    epss_percentile_from: str | Unset = UNSET,
+    epss_percentile_to: str | Unset = UNSET,
+) -> Response[Any | list[Finding]]:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        show_inactive (Union[Unset, bool]):
-        show_suppressed (Union[Unset, bool]):
-        severity (Union[Unset, str]):
-        analysis_status (Union[Unset, str]):
-        vendor_response (Union[Unset, str]):
-        publish_date_from (Union[Unset, str]):
-        publish_date_to (Union[Unset, str]):
-        attributed_on_date_from (Union[Unset, str]):
-        attributed_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
-        cvssv_2_from (Union[Unset, str]):
-        cvssv_2_to (Union[Unset, str]):
-        cvssv_3_from (Union[Unset, str]):
-        cvssv_3_to (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetAllFindings1SortOrder | Unset):
+        show_inactive (bool | Unset):
+        show_suppressed (bool | Unset):
+        severity (str | Unset):
+        analysis_status (str | Unset):
+        vendor_response (str | Unset):
+        publish_date_from (str | Unset):
+        publish_date_to (str | Unset):
+        attributed_on_date_from (str | Unset):
+        attributed_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
+        cvssv_2_from (str | Unset):
+        cvssv_2_to (str | Unset):
+        cvssv_3_from (str | Unset):
+        cvssv_3_to (str | Unset):
+        cvssv_4_from (str | Unset):
+        cvssv_4_to (str | Unset):
+        epss_from (str | Unset):
+        epss_to (str | Unset):
+        epss_percentile_from (str | Unset):
+        epss_percentile_to (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Finding']]]
+        Response[Any | list[Finding]]
     """
 
     kwargs = _get_kwargs(
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
         show_inactive=show_inactive,
         show_suppressed=show_suppressed,
         severity=severity,
@@ -168,6 +239,12 @@ def sync_detailed(
         cvssv_2_to=cvssv_2_to,
         cvssv_3_from=cvssv_3_from,
         cvssv_3_to=cvssv_3_to,
+        cvssv_4_from=cvssv_4_from,
+        cvssv_4_to=cvssv_4_to,
+        epss_from=epss_from,
+        epss_to=epss_to,
+        epss_percentile_from=epss_percentile_from,
+        epss_percentile_to=epss_percentile_to,
     )
 
     response = client.get_httpx_client().request(
@@ -180,53 +257,83 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    show_inactive: Union[Unset, bool] = UNSET,
-    show_suppressed: Union[Unset, bool] = UNSET,
-    severity: Union[Unset, str] = UNSET,
-    analysis_status: Union[Unset, str] = UNSET,
-    vendor_response: Union[Unset, str] = UNSET,
-    publish_date_from: Union[Unset, str] = UNSET,
-    publish_date_to: Union[Unset, str] = UNSET,
-    attributed_on_date_from: Union[Unset, str] = UNSET,
-    attributed_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-    cvssv_2_from: Union[Unset, str] = UNSET,
-    cvssv_2_to: Union[Unset, str] = UNSET,
-    cvssv_3_from: Union[Unset, str] = UNSET,
-    cvssv_3_to: Union[Unset, str] = UNSET,
-) -> Optional[Union[Any, list["Finding"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetAllFindings1SortOrder | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    show_suppressed: bool | Unset = UNSET,
+    severity: str | Unset = UNSET,
+    analysis_status: str | Unset = UNSET,
+    vendor_response: str | Unset = UNSET,
+    publish_date_from: str | Unset = UNSET,
+    publish_date_to: str | Unset = UNSET,
+    attributed_on_date_from: str | Unset = UNSET,
+    attributed_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+    cvssv_2_from: str | Unset = UNSET,
+    cvssv_2_to: str | Unset = UNSET,
+    cvssv_3_from: str | Unset = UNSET,
+    cvssv_3_to: str | Unset = UNSET,
+    cvssv_4_from: str | Unset = UNSET,
+    cvssv_4_to: str | Unset = UNSET,
+    epss_from: str | Unset = UNSET,
+    epss_to: str | Unset = UNSET,
+    epss_percentile_from: str | Unset = UNSET,
+    epss_percentile_to: str | Unset = UNSET,
+) -> Any | list[Finding] | None:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        show_inactive (Union[Unset, bool]):
-        show_suppressed (Union[Unset, bool]):
-        severity (Union[Unset, str]):
-        analysis_status (Union[Unset, str]):
-        vendor_response (Union[Unset, str]):
-        publish_date_from (Union[Unset, str]):
-        publish_date_to (Union[Unset, str]):
-        attributed_on_date_from (Union[Unset, str]):
-        attributed_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
-        cvssv_2_from (Union[Unset, str]):
-        cvssv_2_to (Union[Unset, str]):
-        cvssv_3_from (Union[Unset, str]):
-        cvssv_3_to (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetAllFindings1SortOrder | Unset):
+        show_inactive (bool | Unset):
+        show_suppressed (bool | Unset):
+        severity (str | Unset):
+        analysis_status (str | Unset):
+        vendor_response (str | Unset):
+        publish_date_from (str | Unset):
+        publish_date_to (str | Unset):
+        attributed_on_date_from (str | Unset):
+        attributed_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
+        cvssv_2_from (str | Unset):
+        cvssv_2_to (str | Unset):
+        cvssv_3_from (str | Unset):
+        cvssv_3_to (str | Unset):
+        cvssv_4_from (str | Unset):
+        cvssv_4_to (str | Unset):
+        epss_from (str | Unset):
+        epss_to (str | Unset):
+        epss_percentile_from (str | Unset):
+        epss_percentile_to (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Finding']]
+        Any | list[Finding]
     """
 
     return sync_detailed(
         client=client,
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
         show_inactive=show_inactive,
         show_suppressed=show_suppressed,
         severity=severity,
@@ -242,58 +349,94 @@ def sync(
         cvssv_2_to=cvssv_2_to,
         cvssv_3_from=cvssv_3_from,
         cvssv_3_to=cvssv_3_to,
+        cvssv_4_from=cvssv_4_from,
+        cvssv_4_to=cvssv_4_to,
+        epss_from=epss_from,
+        epss_to=epss_to,
+        epss_percentile_from=epss_percentile_from,
+        epss_percentile_to=epss_percentile_to,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    show_inactive: Union[Unset, bool] = UNSET,
-    show_suppressed: Union[Unset, bool] = UNSET,
-    severity: Union[Unset, str] = UNSET,
-    analysis_status: Union[Unset, str] = UNSET,
-    vendor_response: Union[Unset, str] = UNSET,
-    publish_date_from: Union[Unset, str] = UNSET,
-    publish_date_to: Union[Unset, str] = UNSET,
-    attributed_on_date_from: Union[Unset, str] = UNSET,
-    attributed_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-    cvssv_2_from: Union[Unset, str] = UNSET,
-    cvssv_2_to: Union[Unset, str] = UNSET,
-    cvssv_3_from: Union[Unset, str] = UNSET,
-    cvssv_3_to: Union[Unset, str] = UNSET,
-) -> Response[Union[Any, list["Finding"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetAllFindings1SortOrder | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    show_suppressed: bool | Unset = UNSET,
+    severity: str | Unset = UNSET,
+    analysis_status: str | Unset = UNSET,
+    vendor_response: str | Unset = UNSET,
+    publish_date_from: str | Unset = UNSET,
+    publish_date_to: str | Unset = UNSET,
+    attributed_on_date_from: str | Unset = UNSET,
+    attributed_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+    cvssv_2_from: str | Unset = UNSET,
+    cvssv_2_to: str | Unset = UNSET,
+    cvssv_3_from: str | Unset = UNSET,
+    cvssv_3_to: str | Unset = UNSET,
+    cvssv_4_from: str | Unset = UNSET,
+    cvssv_4_to: str | Unset = UNSET,
+    epss_from: str | Unset = UNSET,
+    epss_to: str | Unset = UNSET,
+    epss_percentile_from: str | Unset = UNSET,
+    epss_percentile_to: str | Unset = UNSET,
+) -> Response[Any | list[Finding]]:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        show_inactive (Union[Unset, bool]):
-        show_suppressed (Union[Unset, bool]):
-        severity (Union[Unset, str]):
-        analysis_status (Union[Unset, str]):
-        vendor_response (Union[Unset, str]):
-        publish_date_from (Union[Unset, str]):
-        publish_date_to (Union[Unset, str]):
-        attributed_on_date_from (Union[Unset, str]):
-        attributed_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
-        cvssv_2_from (Union[Unset, str]):
-        cvssv_2_to (Union[Unset, str]):
-        cvssv_3_from (Union[Unset, str]):
-        cvssv_3_to (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetAllFindings1SortOrder | Unset):
+        show_inactive (bool | Unset):
+        show_suppressed (bool | Unset):
+        severity (str | Unset):
+        analysis_status (str | Unset):
+        vendor_response (str | Unset):
+        publish_date_from (str | Unset):
+        publish_date_to (str | Unset):
+        attributed_on_date_from (str | Unset):
+        attributed_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
+        cvssv_2_from (str | Unset):
+        cvssv_2_to (str | Unset):
+        cvssv_3_from (str | Unset):
+        cvssv_3_to (str | Unset):
+        cvssv_4_from (str | Unset):
+        cvssv_4_to (str | Unset):
+        epss_from (str | Unset):
+        epss_to (str | Unset):
+        epss_percentile_from (str | Unset):
+        epss_percentile_to (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Finding']]]
+        Response[Any | list[Finding]]
     """
 
     kwargs = _get_kwargs(
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
         show_inactive=show_inactive,
         show_suppressed=show_suppressed,
         severity=severity,
@@ -309,6 +452,12 @@ async def asyncio_detailed(
         cvssv_2_to=cvssv_2_to,
         cvssv_3_from=cvssv_3_from,
         cvssv_3_to=cvssv_3_to,
+        cvssv_4_from=cvssv_4_from,
+        cvssv_4_to=cvssv_4_to,
+        epss_from=epss_from,
+        epss_to=epss_to,
+        epss_percentile_from=epss_percentile_from,
+        epss_percentile_to=epss_percentile_to,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -319,54 +468,84 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    show_inactive: Union[Unset, bool] = UNSET,
-    show_suppressed: Union[Unset, bool] = UNSET,
-    severity: Union[Unset, str] = UNSET,
-    analysis_status: Union[Unset, str] = UNSET,
-    vendor_response: Union[Unset, str] = UNSET,
-    publish_date_from: Union[Unset, str] = UNSET,
-    publish_date_to: Union[Unset, str] = UNSET,
-    attributed_on_date_from: Union[Unset, str] = UNSET,
-    attributed_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-    cvssv_2_from: Union[Unset, str] = UNSET,
-    cvssv_2_to: Union[Unset, str] = UNSET,
-    cvssv_3_from: Union[Unset, str] = UNSET,
-    cvssv_3_to: Union[Unset, str] = UNSET,
-) -> Optional[Union[Any, list["Finding"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetAllFindings1SortOrder | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    show_suppressed: bool | Unset = UNSET,
+    severity: str | Unset = UNSET,
+    analysis_status: str | Unset = UNSET,
+    vendor_response: str | Unset = UNSET,
+    publish_date_from: str | Unset = UNSET,
+    publish_date_to: str | Unset = UNSET,
+    attributed_on_date_from: str | Unset = UNSET,
+    attributed_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+    cvssv_2_from: str | Unset = UNSET,
+    cvssv_2_to: str | Unset = UNSET,
+    cvssv_3_from: str | Unset = UNSET,
+    cvssv_3_to: str | Unset = UNSET,
+    cvssv_4_from: str | Unset = UNSET,
+    cvssv_4_to: str | Unset = UNSET,
+    epss_from: str | Unset = UNSET,
+    epss_to: str | Unset = UNSET,
+    epss_percentile_from: str | Unset = UNSET,
+    epss_percentile_to: str | Unset = UNSET,
+) -> Any | list[Finding] | None:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        show_inactive (Union[Unset, bool]):
-        show_suppressed (Union[Unset, bool]):
-        severity (Union[Unset, str]):
-        analysis_status (Union[Unset, str]):
-        vendor_response (Union[Unset, str]):
-        publish_date_from (Union[Unset, str]):
-        publish_date_to (Union[Unset, str]):
-        attributed_on_date_from (Union[Unset, str]):
-        attributed_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
-        cvssv_2_from (Union[Unset, str]):
-        cvssv_2_to (Union[Unset, str]):
-        cvssv_3_from (Union[Unset, str]):
-        cvssv_3_to (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetAllFindings1SortOrder | Unset):
+        show_inactive (bool | Unset):
+        show_suppressed (bool | Unset):
+        severity (str | Unset):
+        analysis_status (str | Unset):
+        vendor_response (str | Unset):
+        publish_date_from (str | Unset):
+        publish_date_to (str | Unset):
+        attributed_on_date_from (str | Unset):
+        attributed_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
+        cvssv_2_from (str | Unset):
+        cvssv_2_to (str | Unset):
+        cvssv_3_from (str | Unset):
+        cvssv_3_to (str | Unset):
+        cvssv_4_from (str | Unset):
+        cvssv_4_to (str | Unset):
+        epss_from (str | Unset):
+        epss_to (str | Unset):
+        epss_percentile_from (str | Unset):
+        epss_percentile_to (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Finding']]
+        Any | list[Finding]
     """
 
     return (
         await asyncio_detailed(
             client=client,
+            page_number=page_number,
+            page_size=page_size,
+            offset=offset,
+            limit=limit,
+            sort_name=sort_name,
+            sort_order=sort_order,
             show_inactive=show_inactive,
             show_suppressed=show_suppressed,
             severity=severity,
@@ -382,5 +561,11 @@ async def asyncio(
             cvssv_2_to=cvssv_2_to,
             cvssv_3_from=cvssv_3_from,
             cvssv_3_to=cvssv_3_to,
+            cvssv_4_from=cvssv_4_from,
+            cvssv_4_to=cvssv_4_to,
+            epss_from=epss_from,
+            epss_to=epss_to,
+            epss_percentile_from=epss_percentile_from,
+            epss_percentile_to=epss_percentile_to,
         )
     ).parsed

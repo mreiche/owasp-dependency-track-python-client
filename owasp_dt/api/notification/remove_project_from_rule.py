@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -7,6 +8,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.notification_rule import NotificationRule
+from ...models.problem_details import ProblemDetails
 from ...types import Response
 
 
@@ -17,8 +19,8 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/notification/rule/{rule_uuid}/project/{project_uuid}".format(
-            rule_uuid=rule_uuid,
-            project_uuid=project_uuid,
+            rule_uuid=quote(str(rule_uuid), safe=""),
+            project_uuid=quote(str(project_uuid), safe=""),
         ),
     }
 
@@ -26,8 +28,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, NotificationRule]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | NotificationRule | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = NotificationRule.from_dict(response.json())
 
@@ -41,6 +43,11 @@ def _parse_response(
         response_401 = cast(Any, None)
         return response_401
 
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
+
     if response.status_code == 404:
         response_404 = cast(Any, None)
         return response_404
@@ -52,8 +59,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, NotificationRule]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | NotificationRule | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -67,10 +74,11 @@ def sync_detailed(
     project_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, NotificationRule]]:
+) -> Response[Any | NotificationRule | ProblemDetails]:
     """Removes a project from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -81,7 +89,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationRule]]
+        Response[Any | NotificationRule | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -101,10 +109,11 @@ def sync(
     project_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, NotificationRule]]:
+) -> Any | NotificationRule | ProblemDetails | None:
     """Removes a project from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -115,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationRule]
+        Any | NotificationRule | ProblemDetails
     """
 
     return sync_detailed(
@@ -130,10 +139,11 @@ async def asyncio_detailed(
     project_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, NotificationRule]]:
+) -> Response[Any | NotificationRule | ProblemDetails]:
     """Removes a project from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -144,7 +154,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationRule]]
+        Response[Any | NotificationRule | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -162,10 +172,11 @@ async def asyncio(
     project_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, NotificationRule]]:
+) -> Any | NotificationRule | ProblemDetails | None:
     """Removes a project from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -176,7 +187,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationRule]
+        Any | NotificationRule | ProblemDetails
     """
 
     return (

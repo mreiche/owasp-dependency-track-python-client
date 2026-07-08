@@ -1,17 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.tag_operation_problem_details import TagOperationProblemDetails
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: list[str],
+    body: list[str] | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +20,8 @@ def _get_kwargs(
         "url": "/v1/tag",
     }
 
-    _kwargs["json"] = body
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body
 
     headers["Content-Type"] = "application/json"
 
@@ -29,8 +30,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, TagOperationProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | TagOperationProblemDetails | None:
     if response.status_code == 204:
         response_204 = cast(Any, None)
         return response_204
@@ -47,8 +48,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, TagOperationProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | TagOperationProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -60,8 +61,8 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: list[str],
-) -> Response[Union[Any, TagOperationProblemDetails]]:
+    body: list[str] | Unset = UNSET,
+) -> Response[Any | TagOperationProblemDetails]:
     """Deletes one or more tags.
 
      <p>A tag can only be deleted if no projects or policies are assigned to it.</p>
@@ -74,17 +75,17 @@ def sync_detailed(
       Principals with <strong>POLICY_MANAGEMENT</strong> permission can delete tags
       with assigned policies.
     </p>
-    <p>Requires permission <strong>TAG_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>TAG_MANAGEMENT</strong> or <strong>TAG_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (list[str]):
+        body (list[str] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, TagOperationProblemDetails]]
+        Response[Any | TagOperationProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -101,8 +102,8 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: list[str],
-) -> Optional[Union[Any, TagOperationProblemDetails]]:
+    body: list[str] | Unset = UNSET,
+) -> Any | TagOperationProblemDetails | None:
     """Deletes one or more tags.
 
      <p>A tag can only be deleted if no projects or policies are assigned to it.</p>
@@ -115,17 +116,17 @@ def sync(
       Principals with <strong>POLICY_MANAGEMENT</strong> permission can delete tags
       with assigned policies.
     </p>
-    <p>Requires permission <strong>TAG_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>TAG_MANAGEMENT</strong> or <strong>TAG_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (list[str]):
+        body (list[str] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, TagOperationProblemDetails]
+        Any | TagOperationProblemDetails
     """
 
     return sync_detailed(
@@ -137,8 +138,8 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: list[str],
-) -> Response[Union[Any, TagOperationProblemDetails]]:
+    body: list[str] | Unset = UNSET,
+) -> Response[Any | TagOperationProblemDetails]:
     """Deletes one or more tags.
 
      <p>A tag can only be deleted if no projects or policies are assigned to it.</p>
@@ -151,17 +152,17 @@ async def asyncio_detailed(
       Principals with <strong>POLICY_MANAGEMENT</strong> permission can delete tags
       with assigned policies.
     </p>
-    <p>Requires permission <strong>TAG_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>TAG_MANAGEMENT</strong> or <strong>TAG_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (list[str]):
+        body (list[str] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, TagOperationProblemDetails]]
+        Response[Any | TagOperationProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -176,8 +177,8 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: list[str],
-) -> Optional[Union[Any, TagOperationProblemDetails]]:
+    body: list[str] | Unset = UNSET,
+) -> Any | TagOperationProblemDetails | None:
     """Deletes one or more tags.
 
      <p>A tag can only be deleted if no projects or policies are assigned to it.</p>
@@ -190,17 +191,17 @@ async def asyncio(
       Principals with <strong>POLICY_MANAGEMENT</strong> permission can delete tags
       with assigned policies.
     </p>
-    <p>Requires permission <strong>TAG_MANAGEMENT</strong></p>
+    <p>Requires permission <strong>TAG_MANAGEMENT</strong> or <strong>TAG_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (list[str]):
+        body (list[str] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, TagOperationProblemDetails]
+        Any | TagOperationProblemDetails
     """
 
     return (

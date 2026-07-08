@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -17,8 +18,8 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/v1/permission/{permission}/team/{uuid}".format(
-            permission=permission,
-            uuid=uuid,
+            permission=quote(str(permission), safe=""),
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -26,8 +27,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Team]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Team | None:
     if response.status_code == 200:
         response_200 = Team.from_dict(response.json())
 
@@ -52,8 +53,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Team]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Team]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -67,10 +68,9 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Team]]:
-    """Adds the permission to the specified team.
-
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+) -> Response[Any | Team]:
+    """<p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         permission (str):
@@ -81,7 +81,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Team]]
+        Response[Any | Team]
     """
 
     kwargs = _get_kwargs(
@@ -101,10 +101,9 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Team]]:
-    """Adds the permission to the specified team.
-
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+) -> Any | Team | None:
+    """<p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         permission (str):
@@ -115,7 +114,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Team]
+        Any | Team
     """
 
     return sync_detailed(
@@ -130,10 +129,9 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Team]]:
-    """Adds the permission to the specified team.
-
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+) -> Response[Any | Team]:
+    """<p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         permission (str):
@@ -144,7 +142,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Team]]
+        Response[Any | Team]
     """
 
     kwargs = _get_kwargs(
@@ -162,10 +160,9 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Team]]:
-    """Adds the permission to the specified team.
-
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+) -> Any | Team | None:
+    """<p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         permission (str):
@@ -176,7 +173,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Team]
+        Any | Team
     """
 
     return (

@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -7,13 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.bom_upload_response import BomUploadResponse
 from ...models.invalid_bom_problem_details import InvalidBomProblemDetails
+from ...models.problem_details import ProblemDetails
 from ...models.vex_submit_request import VexSubmitRequest
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: VexSubmitRequest,
+    body: VexSubmitRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -22,7 +23,8 @@ def _get_kwargs(
         "url": "/v1/vex",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -31,8 +33,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = BomUploadResponse.from_dict(response.json())
 
@@ -48,7 +50,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -62,8 +65,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,8 +78,8 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: VexSubmitRequest,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: VexSubmitRequest | Unset = UNSET,
+) -> Response[Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails]:
     """Upload a supported VEX document
 
      <p>
@@ -93,17 +96,18 @@ def sync_detailed(
       When uploading large VEX files, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
     </p>
-    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
+    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong> or
+    <strong>VULNERABILITY_ANALYSIS_UPDATE</strong></p>
 
     Args:
-        body (VexSubmitRequest):
+        body (VexSubmitRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -120,8 +124,8 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: VexSubmitRequest,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: VexSubmitRequest | Unset = UNSET,
+) -> Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails | None:
     """Upload a supported VEX document
 
      <p>
@@ -138,17 +142,18 @@ def sync(
       When uploading large VEX files, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
     </p>
-    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
+    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong> or
+    <strong>VULNERABILITY_ANALYSIS_UPDATE</strong></p>
 
     Args:
-        body (VexSubmitRequest):
+        body (VexSubmitRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails
     """
 
     return sync_detailed(
@@ -160,8 +165,8 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: VexSubmitRequest,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: VexSubmitRequest | Unset = UNSET,
+) -> Response[Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails]:
     """Upload a supported VEX document
 
      <p>
@@ -178,17 +183,18 @@ async def asyncio_detailed(
       When uploading large VEX files, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
     </p>
-    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
+    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong> or
+    <strong>VULNERABILITY_ANALYSIS_UPDATE</strong></p>
 
     Args:
-        body (VexSubmitRequest):
+        body (VexSubmitRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -203,8 +209,8 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: VexSubmitRequest,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: VexSubmitRequest | Unset = UNSET,
+) -> Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails | None:
     """Upload a supported VEX document
 
      <p>
@@ -221,17 +227,18 @@ async def asyncio(
       When uploading large VEX files, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
     </p>
-    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
+    <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong> or
+    <strong>VULNERABILITY_ANALYSIS_UPDATE</strong></p>
 
     Args:
-        body (VexSubmitRequest):
+        body (VexSubmitRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | InvalidBomProblemDetails | ProblemDetails
     """
 
     return (

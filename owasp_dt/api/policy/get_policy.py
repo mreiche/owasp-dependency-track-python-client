@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -16,7 +17,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/policy/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +25,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Policy]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Policy | None:
     if response.status_code == 200:
         response_200 = Policy.from_dict(response.json())
 
@@ -46,8 +47,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Policy]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Policy]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -60,10 +61,11 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Policy]]:
+) -> Response[Any | Policy]:
     """Returns a specific policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -73,7 +75,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Policy]]
+        Response[Any | Policy]
     """
 
     kwargs = _get_kwargs(
@@ -91,10 +93,11 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Policy]]:
+) -> Any | Policy | None:
     """Returns a specific policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -104,7 +107,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Policy]
+        Any | Policy
     """
 
     return sync_detailed(
@@ -117,10 +120,11 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Policy]]:
+) -> Response[Any | Policy]:
     """Returns a specific policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -130,7 +134,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Policy]]
+        Response[Any | Policy]
     """
 
     kwargs = _get_kwargs(
@@ -146,10 +150,11 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Policy]]:
+) -> Any | Policy | None:
     """Returns a specific policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
+    <strong>POLICY_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -159,7 +164,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Policy]
+        Any | Policy
     """
 
     return (

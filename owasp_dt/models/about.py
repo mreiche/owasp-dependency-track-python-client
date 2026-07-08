@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,7 +9,6 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.about_provider_data import AboutProviderData
     from ..models.framework import Framework
 
 
@@ -23,101 +19,75 @@ T = TypeVar("T", bound="About")
 class About:
     """
     Attributes:
-        version (Union[Unset, str]):
-        timestamp (Union[Unset, str]):
-        system_uuid (Union[Unset, str]):
-        uuid (Union[Unset, str]):
-        application (Union[Unset, str]):
-        framework (Union[Unset, Framework]):
-        provider_data (Union[Unset, AboutProviderData]):
+        application (str | Unset):
+        framework (Framework | Unset):
+        timestamp (str | Unset):
+        uuid (str | Unset):
+        version (str | Unset):
     """
 
-    version: Union[Unset, str] = UNSET
-    timestamp: Union[Unset, str] = UNSET
-    system_uuid: Union[Unset, str] = UNSET
-    uuid: Union[Unset, str] = UNSET
-    application: Union[Unset, str] = UNSET
-    framework: Union[Unset, "Framework"] = UNSET
-    provider_data: Union[Unset, "AboutProviderData"] = UNSET
+    application: str | Unset = UNSET
+    framework: Framework | Unset = UNSET
+    timestamp: str | Unset = UNSET
+    uuid: str | Unset = UNSET
+    version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        version = self.version
-
-        timestamp = self.timestamp
-
-        system_uuid = self.system_uuid
-
-        uuid = self.uuid
-
         application = self.application
 
-        framework: Union[Unset, dict[str, Any]] = UNSET
+        framework: dict[str, Any] | Unset = UNSET
         if not isinstance(self.framework, Unset):
             framework = self.framework.to_dict()
 
-        provider_data: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.provider_data, Unset):
-            provider_data = self.provider_data.to_dict()
+        timestamp = self.timestamp
+
+        uuid = self.uuid
+
+        version = self.version
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if version is not UNSET:
-            field_dict["version"] = version
-        if timestamp is not UNSET:
-            field_dict["timestamp"] = timestamp
-        if system_uuid is not UNSET:
-            field_dict["systemUuid"] = system_uuid
-        if uuid is not UNSET:
-            field_dict["uuid"] = uuid
         if application is not UNSET:
             field_dict["application"] = application
         if framework is not UNSET:
             field_dict["framework"] = framework
-        if provider_data is not UNSET:
-            field_dict["providerData"] = provider_data
+        if timestamp is not UNSET:
+            field_dict["timestamp"] = timestamp
+        if uuid is not UNSET:
+            field_dict["uuid"] = uuid
+        if version is not UNSET:
+            field_dict["version"] = version
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.about_provider_data import AboutProviderData
         from ..models.framework import Framework
 
         d = dict(src_dict)
-        version = d.pop("version", UNSET)
-
-        timestamp = d.pop("timestamp", UNSET)
-
-        system_uuid = d.pop("systemUuid", UNSET)
-
-        uuid = d.pop("uuid", UNSET)
-
         application = d.pop("application", UNSET)
 
         _framework = d.pop("framework", UNSET)
-        framework: Union[Unset, Framework]
+        framework: Framework | Unset
         if isinstance(_framework, Unset):
             framework = UNSET
         else:
             framework = Framework.from_dict(_framework)
 
-        _provider_data = d.pop("providerData", UNSET)
-        provider_data: Union[Unset, AboutProviderData]
-        if isinstance(_provider_data, Unset):
-            provider_data = UNSET
-        else:
-            provider_data = AboutProviderData.from_dict(_provider_data)
+        timestamp = d.pop("timestamp", UNSET)
+
+        uuid = d.pop("uuid", UNSET)
+
+        version = d.pop("version", UNSET)
 
         about = cls(
-            version=version,
-            timestamp=timestamp,
-            system_uuid=system_uuid,
-            uuid=uuid,
             application=application,
             framework=framework,
-            provider_data=provider_data,
+            timestamp=timestamp,
+            uuid=uuid,
+            version=version,
         )
 
         about.additional_properties = d

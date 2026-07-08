@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,22 +15,22 @@ T = TypeVar("T", bound="ApiKey")
 class ApiKey:
     """
     Attributes:
-        comment (Union[Unset, str]):
-        created (Union[Unset, int]): UNIX epoch timestamp in milliseconds
-        last_used (Union[Unset, int]): UNIX epoch timestamp in milliseconds
-        public_id (Union[Unset, str]):
-        key (Union[Unset, str]):
-        masked_key (Union[Unset, str]):
-        legacy (Union[Unset, bool]):
+        comment (str | Unset):
+        created (int | Unset): UNIX epoch timestamp in milliseconds
+        key (str | Unset):
+        last_used (int | Unset): UNIX epoch timestamp in milliseconds
+        legacy (bool | Unset):
+        masked_key (str | Unset):
+        public_id (str | Unset):
     """
 
-    comment: Union[Unset, str] = UNSET
-    created: Union[Unset, int] = UNSET
-    last_used: Union[Unset, int] = UNSET
-    public_id: Union[Unset, str] = UNSET
-    key: Union[Unset, str] = UNSET
-    masked_key: Union[Unset, str] = UNSET
-    legacy: Union[Unset, bool] = UNSET
+    comment: str | Unset = UNSET
+    created: int | Unset = UNSET
+    key: str | Unset = UNSET
+    last_used: int | Unset = UNSET
+    legacy: bool | Unset = UNSET
+    masked_key: str | Unset = UNSET
+    public_id: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -40,15 +38,15 @@ class ApiKey:
 
         created = self.created
 
+        key = self.key
+
         last_used = self.last_used
 
-        public_id = self.public_id
-
-        key = self.key
+        legacy = self.legacy
 
         masked_key = self.masked_key
 
-        legacy = self.legacy
+        public_id = self.public_id
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,16 +55,16 @@ class ApiKey:
             field_dict["comment"] = comment
         if created is not UNSET:
             field_dict["created"] = created
-        if last_used is not UNSET:
-            field_dict["lastUsed"] = last_used
-        if public_id is not UNSET:
-            field_dict["publicId"] = public_id
         if key is not UNSET:
             field_dict["key"] = key
-        if masked_key is not UNSET:
-            field_dict["maskedKey"] = masked_key
+        if last_used is not UNSET:
+            field_dict["lastUsed"] = last_used
         if legacy is not UNSET:
             field_dict["legacy"] = legacy
+        if masked_key is not UNSET:
+            field_dict["maskedKey"] = masked_key
+        if public_id is not UNSET:
+            field_dict["publicId"] = public_id
 
         return field_dict
 
@@ -77,24 +75,24 @@ class ApiKey:
 
         created = d.pop("created", UNSET)
 
+        key = d.pop("key", UNSET)
+
         last_used = d.pop("lastUsed", UNSET)
 
-        public_id = d.pop("publicId", UNSET)
-
-        key = d.pop("key", UNSET)
+        legacy = d.pop("legacy", UNSET)
 
         masked_key = d.pop("maskedKey", UNSET)
 
-        legacy = d.pop("legacy", UNSET)
+        public_id = d.pop("publicId", UNSET)
 
         api_key = cls(
             comment=comment,
             created=created,
-            last_used=last_used,
-            public_id=public_id,
             key=key,
-            masked_key=masked_key,
+            last_used=last_used,
             legacy=legacy,
+            masked_key=masked_key,
+            public_id=public_id,
         )
 
         api_key.additional_properties = d

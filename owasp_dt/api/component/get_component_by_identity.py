@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 from uuid import UUID
 
 import httpx
@@ -10,24 +10,27 @@ from ...models.component import Component
 from ...models.get_component_by_identity_sort_order import (
     GetComponentByIdentitySortOrder,
 )
+from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByIdentitySortOrder] = UNSET,
-    group: Union[Unset, str] = UNSET,
-    name: Union[Unset, str] = UNSET,
-    version: Union[Unset, str] = UNSET,
-    purl: Union[Unset, str] = UNSET,
-    cpe: Union[Unset, str] = UNSET,
-    swid_tag_id: Union[Unset, str] = UNSET,
-    project: Union[Unset, UUID] = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByIdentitySortOrder | Unset = UNSET,
+    group: str | Unset = UNSET,
+    name: str | Unset = UNSET,
+    version: str | Unset = UNSET,
+    purl: str | Unset = UNSET,
+    cpe: str | Unset = UNSET,
+    swid_tag_id: str | Unset = UNSET,
+    project: UUID | Unset = UNSET,
+    exclude_inactive_projects: bool | Unset = UNSET,
+    only_latest_project_versions: bool | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
@@ -41,7 +44,7 @@ def _get_kwargs(
 
     params["sortName"] = sort_name
 
-    json_sort_order: Union[Unset, str] = UNSET
+    json_sort_order: str | Unset = UNSET
     if not isinstance(sort_order, Unset):
         json_sort_order = sort_order.value
 
@@ -59,10 +62,14 @@ def _get_kwargs(
 
     params["swidTagId"] = swid_tag_id
 
-    json_project: Union[Unset, str] = UNSET
+    json_project: str | Unset = UNSET
     if not isinstance(project, Unset):
         json_project = str(project)
     params["project"] = json_project
+
+    params["excludeInactiveProjects"] = exclude_inactive_projects
+
+    params["onlyLatestProjectVersions"] = only_latest_project_versions
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -76,8 +83,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["Component"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | list[Component] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -92,6 +99,11 @@ def _parse_response(
         response_401 = cast(Any, None)
         return response_401
 
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -99,8 +111,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["Component"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | list[Component]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -112,46 +124,51 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByIdentitySortOrder] = UNSET,
-    group: Union[Unset, str] = UNSET,
-    name: Union[Unset, str] = UNSET,
-    version: Union[Unset, str] = UNSET,
-    purl: Union[Unset, str] = UNSET,
-    cpe: Union[Unset, str] = UNSET,
-    swid_tag_id: Union[Unset, str] = UNSET,
-    project: Union[Unset, UUID] = UNSET,
-) -> Response[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByIdentitySortOrder | Unset = UNSET,
+    group: str | Unset = UNSET,
+    name: str | Unset = UNSET,
+    version: str | Unset = UNSET,
+    purl: str | Unset = UNSET,
+    cpe: str | Unset = UNSET,
+    swid_tag_id: str | Unset = UNSET,
+    project: UUID | Unset = UNSET,
+    exclude_inactive_projects: bool | Unset = UNSET,
+    only_latest_project_versions: bool | Unset = UNSET,
+) -> Response[Any | ProblemDetails | list[Component]]:
     """Returns a list of components that have the specified component identity. This resource accepts
     coordinates (group, name, version) or purl, cpe, or swidTagId
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByIdentitySortOrder]):
-        group (Union[Unset, str]):
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        purl (Union[Unset, str]):
-        cpe (Union[Unset, str]):
-        swid_tag_id (Union[Unset, str]):
-        project (Union[Unset, UUID]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByIdentitySortOrder | Unset):
+        group (str | Unset):
+        name (str | Unset):
+        version (str | Unset):
+        purl (str | Unset):
+        cpe (str | Unset):
+        swid_tag_id (str | Unset):
+        project (UUID | Unset):
+        exclude_inactive_projects (bool | Unset):
+        only_latest_project_versions (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Component']]]
+        Response[Any | ProblemDetails | list[Component]]
     """
 
     kwargs = _get_kwargs(
@@ -168,6 +185,8 @@ def sync_detailed(
         cpe=cpe,
         swid_tag_id=swid_tag_id,
         project=project,
+        exclude_inactive_projects=exclude_inactive_projects,
+        only_latest_project_versions=only_latest_project_versions,
     )
 
     response = client.get_httpx_client().request(
@@ -180,46 +199,51 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByIdentitySortOrder] = UNSET,
-    group: Union[Unset, str] = UNSET,
-    name: Union[Unset, str] = UNSET,
-    version: Union[Unset, str] = UNSET,
-    purl: Union[Unset, str] = UNSET,
-    cpe: Union[Unset, str] = UNSET,
-    swid_tag_id: Union[Unset, str] = UNSET,
-    project: Union[Unset, UUID] = UNSET,
-) -> Optional[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByIdentitySortOrder | Unset = UNSET,
+    group: str | Unset = UNSET,
+    name: str | Unset = UNSET,
+    version: str | Unset = UNSET,
+    purl: str | Unset = UNSET,
+    cpe: str | Unset = UNSET,
+    swid_tag_id: str | Unset = UNSET,
+    project: UUID | Unset = UNSET,
+    exclude_inactive_projects: bool | Unset = UNSET,
+    only_latest_project_versions: bool | Unset = UNSET,
+) -> Any | ProblemDetails | list[Component] | None:
     """Returns a list of components that have the specified component identity. This resource accepts
     coordinates (group, name, version) or purl, cpe, or swidTagId
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByIdentitySortOrder]):
-        group (Union[Unset, str]):
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        purl (Union[Unset, str]):
-        cpe (Union[Unset, str]):
-        swid_tag_id (Union[Unset, str]):
-        project (Union[Unset, UUID]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByIdentitySortOrder | Unset):
+        group (str | Unset):
+        name (str | Unset):
+        version (str | Unset):
+        purl (str | Unset):
+        cpe (str | Unset):
+        swid_tag_id (str | Unset):
+        project (UUID | Unset):
+        exclude_inactive_projects (bool | Unset):
+        only_latest_project_versions (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Component']]
+        Any | ProblemDetails | list[Component]
     """
 
     return sync_detailed(
@@ -237,52 +261,59 @@ def sync(
         cpe=cpe,
         swid_tag_id=swid_tag_id,
         project=project,
+        exclude_inactive_projects=exclude_inactive_projects,
+        only_latest_project_versions=only_latest_project_versions,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByIdentitySortOrder] = UNSET,
-    group: Union[Unset, str] = UNSET,
-    name: Union[Unset, str] = UNSET,
-    version: Union[Unset, str] = UNSET,
-    purl: Union[Unset, str] = UNSET,
-    cpe: Union[Unset, str] = UNSET,
-    swid_tag_id: Union[Unset, str] = UNSET,
-    project: Union[Unset, UUID] = UNSET,
-) -> Response[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByIdentitySortOrder | Unset = UNSET,
+    group: str | Unset = UNSET,
+    name: str | Unset = UNSET,
+    version: str | Unset = UNSET,
+    purl: str | Unset = UNSET,
+    cpe: str | Unset = UNSET,
+    swid_tag_id: str | Unset = UNSET,
+    project: UUID | Unset = UNSET,
+    exclude_inactive_projects: bool | Unset = UNSET,
+    only_latest_project_versions: bool | Unset = UNSET,
+) -> Response[Any | ProblemDetails | list[Component]]:
     """Returns a list of components that have the specified component identity. This resource accepts
     coordinates (group, name, version) or purl, cpe, or swidTagId
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByIdentitySortOrder]):
-        group (Union[Unset, str]):
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        purl (Union[Unset, str]):
-        cpe (Union[Unset, str]):
-        swid_tag_id (Union[Unset, str]):
-        project (Union[Unset, UUID]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByIdentitySortOrder | Unset):
+        group (str | Unset):
+        name (str | Unset):
+        version (str | Unset):
+        purl (str | Unset):
+        cpe (str | Unset):
+        swid_tag_id (str | Unset):
+        project (UUID | Unset):
+        exclude_inactive_projects (bool | Unset):
+        only_latest_project_versions (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Component']]]
+        Response[Any | ProblemDetails | list[Component]]
     """
 
     kwargs = _get_kwargs(
@@ -299,6 +330,8 @@ async def asyncio_detailed(
         cpe=cpe,
         swid_tag_id=swid_tag_id,
         project=project,
+        exclude_inactive_projects=exclude_inactive_projects,
+        only_latest_project_versions=only_latest_project_versions,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -309,46 +342,51 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByIdentitySortOrder] = UNSET,
-    group: Union[Unset, str] = UNSET,
-    name: Union[Unset, str] = UNSET,
-    version: Union[Unset, str] = UNSET,
-    purl: Union[Unset, str] = UNSET,
-    cpe: Union[Unset, str] = UNSET,
-    swid_tag_id: Union[Unset, str] = UNSET,
-    project: Union[Unset, UUID] = UNSET,
-) -> Optional[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByIdentitySortOrder | Unset = UNSET,
+    group: str | Unset = UNSET,
+    name: str | Unset = UNSET,
+    version: str | Unset = UNSET,
+    purl: str | Unset = UNSET,
+    cpe: str | Unset = UNSET,
+    swid_tag_id: str | Unset = UNSET,
+    project: UUID | Unset = UNSET,
+    exclude_inactive_projects: bool | Unset = UNSET,
+    only_latest_project_versions: bool | Unset = UNSET,
+) -> Any | ProblemDetails | list[Component] | None:
     """Returns a list of components that have the specified component identity. This resource accepts
     coordinates (group, name, version) or purl, cpe, or swidTagId
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByIdentitySortOrder]):
-        group (Union[Unset, str]):
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        purl (Union[Unset, str]):
-        cpe (Union[Unset, str]):
-        swid_tag_id (Union[Unset, str]):
-        project (Union[Unset, UUID]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByIdentitySortOrder | Unset):
+        group (str | Unset):
+        name (str | Unset):
+        version (str | Unset):
+        purl (str | Unset):
+        cpe (str | Unset):
+        swid_tag_id (str | Unset):
+        project (UUID | Unset):
+        exclude_inactive_projects (bool | Unset):
+        only_latest_project_versions (bool | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Component']]
+        Any | ProblemDetails | list[Component]
     """
 
     return (
@@ -367,5 +405,7 @@ async def asyncio(
             cpe=cpe,
             swid_tag_id=swid_tag_id,
             project=project,
+            exclude_inactive_projects=exclude_inactive_projects,
+            only_latest_project_versions=only_latest_project_versions,
         )
     ).parsed

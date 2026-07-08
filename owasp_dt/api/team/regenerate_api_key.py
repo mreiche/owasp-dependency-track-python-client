@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
@@ -15,7 +16,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/v1/team/key/{public_id_or_key}".format(
-            public_id_or_key=public_id_or_key,
+            public_id_or_key=quote(str(public_id_or_key), safe=""),
         ),
     }
 
@@ -23,8 +24,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ApiKey]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ApiKey | None:
     if response.status_code == 200:
         response_200 = ApiKey.from_dict(response.json())
 
@@ -45,8 +46,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ApiKey]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ApiKey]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -59,10 +60,11 @@ def sync_detailed(
     public_id_or_key: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ApiKey]]:
+) -> Response[Any | ApiKey]:
     """Regenerates an API key by removing the specified key, generating a new one and returning its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         public_id_or_key (str):
@@ -72,7 +74,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ApiKey]]
+        Response[Any | ApiKey]
     """
 
     kwargs = _get_kwargs(
@@ -90,10 +92,11 @@ def sync(
     public_id_or_key: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ApiKey]]:
+) -> Any | ApiKey | None:
     """Regenerates an API key by removing the specified key, generating a new one and returning its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         public_id_or_key (str):
@@ -103,7 +106,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ApiKey]
+        Any | ApiKey
     """
 
     return sync_detailed(
@@ -116,10 +119,11 @@ async def asyncio_detailed(
     public_id_or_key: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ApiKey]]:
+) -> Response[Any | ApiKey]:
     """Regenerates an API key by removing the specified key, generating a new one and returning its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         public_id_or_key (str):
@@ -129,7 +133,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ApiKey]]
+        Response[Any | ApiKey]
     """
 
     kwargs = _get_kwargs(
@@ -145,10 +149,11 @@ async def asyncio(
     public_id_or_key: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ApiKey]]:
+) -> Any | ApiKey | None:
     """Regenerates an API key by removing the specified key, generating a new one and returning its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         public_id_or_key (str):
@@ -158,7 +163,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ApiKey]
+        Any | ApiKey
     """
 
     return (

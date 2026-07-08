@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
-from uuid import UUID
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -23,14 +20,12 @@ class AffectedVersionAttribution:
     Attributes:
         first_seen (int): UNIX epoch timestamp in milliseconds
         last_seen (int): UNIX epoch timestamp in milliseconds
-        source (Union[Unset, AffectedVersionAttributionSource]):
-        uuid (Union[Unset, UUID]):
+        source (AffectedVersionAttributionSource | Unset):
     """
 
     first_seen: int
     last_seen: int
-    source: Union[Unset, AffectedVersionAttributionSource] = UNSET
-    uuid: Union[Unset, UUID] = UNSET
+    source: AffectedVersionAttributionSource | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -38,13 +33,9 @@ class AffectedVersionAttribution:
 
         last_seen = self.last_seen
 
-        source: Union[Unset, str] = UNSET
+        source: str | Unset = UNSET
         if not isinstance(self.source, Unset):
             source = self.source.value
-
-        uuid: Union[Unset, str] = UNSET
-        if not isinstance(self.uuid, Unset):
-            uuid = str(self.uuid)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -56,8 +47,6 @@ class AffectedVersionAttribution:
         )
         if source is not UNSET:
             field_dict["source"] = source
-        if uuid is not UNSET:
-            field_dict["uuid"] = uuid
 
         return field_dict
 
@@ -69,24 +58,16 @@ class AffectedVersionAttribution:
         last_seen = d.pop("lastSeen")
 
         _source = d.pop("source", UNSET)
-        source: Union[Unset, AffectedVersionAttributionSource]
+        source: AffectedVersionAttributionSource | Unset
         if isinstance(_source, Unset):
             source = UNSET
         else:
             source = AffectedVersionAttributionSource(_source)
 
-        _uuid = d.pop("uuid", UNSET)
-        uuid: Union[Unset, UUID]
-        if isinstance(_uuid, Unset):
-            uuid = UNSET
-        else:
-            uuid = UUID(_uuid)
-
         affected_version_attribution = cls(
             first_seen=first_seen,
             last_seen=last_seen,
             source=source,
-            uuid=uuid,
         )
 
         affected_version_attribution.additional_properties = d

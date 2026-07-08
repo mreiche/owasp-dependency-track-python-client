@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -19,107 +17,106 @@ T = TypeVar("T", bound="Repository")
 class Repository:
     """
     Attributes:
-        type_ (RepositoryType):
-        identifier (str):
-        url (str):
-        resolution_order (int):
+        authentication_required (bool):
         enabled (bool):
+        identifier (str):
         internal (bool):
+        resolution_order (int):
+        type_ (RepositoryType):
+        url (str):
         uuid (UUID):
-        authentication_required (Union[Unset, bool]):
-        username (Union[Unset, str]):
-        password (Union[Unset, str]):
+        password (str | Unset):
+        username (str | Unset):
     """
 
-    type_: RepositoryType
-    identifier: str
-    url: str
-    resolution_order: int
+    authentication_required: bool
     enabled: bool
+    identifier: str
     internal: bool
+    resolution_order: int
+    type_: RepositoryType
+    url: str
     uuid: UUID
-    authentication_required: Union[Unset, bool] = UNSET
-    username: Union[Unset, str] = UNSET
-    password: Union[Unset, str] = UNSET
+    password: str | Unset = UNSET
+    username: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        type_ = self.type_.value
-
-        identifier = self.identifier
-
-        url = self.url
-
-        resolution_order = self.resolution_order
+        authentication_required = self.authentication_required
 
         enabled = self.enabled
 
+        identifier = self.identifier
+
         internal = self.internal
+
+        resolution_order = self.resolution_order
+
+        type_ = self.type_.value
+
+        url = self.url
 
         uuid = str(self.uuid)
 
-        authentication_required = self.authentication_required
+        password = self.password
 
         username = self.username
-
-        password = self.password
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "type": type_,
-                "identifier": identifier,
-                "url": url,
-                "resolutionOrder": resolution_order,
+                "authenticationRequired": authentication_required,
                 "enabled": enabled,
+                "identifier": identifier,
                 "internal": internal,
+                "resolutionOrder": resolution_order,
+                "type": type_,
+                "url": url,
                 "uuid": uuid,
             }
         )
-        if authentication_required is not UNSET:
-            field_dict["authenticationRequired"] = authentication_required
-        if username is not UNSET:
-            field_dict["username"] = username
         if password is not UNSET:
             field_dict["password"] = password
+        if username is not UNSET:
+            field_dict["username"] = username
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        type_ = RepositoryType(d.pop("type"))
-
-        identifier = d.pop("identifier")
-
-        url = d.pop("url")
-
-        resolution_order = d.pop("resolutionOrder")
+        authentication_required = d.pop("authenticationRequired")
 
         enabled = d.pop("enabled")
 
+        identifier = d.pop("identifier")
+
         internal = d.pop("internal")
+
+        resolution_order = d.pop("resolutionOrder")
+
+        type_ = RepositoryType(d.pop("type"))
+
+        url = d.pop("url")
 
         uuid = UUID(d.pop("uuid"))
 
-        authentication_required = d.pop("authenticationRequired", UNSET)
+        password = d.pop("password", UNSET)
 
         username = d.pop("username", UNSET)
 
-        password = d.pop("password", UNSET)
-
         repository = cls(
-            type_=type_,
-            identifier=identifier,
-            url=url,
-            resolution_order=resolution_order,
-            enabled=enabled,
-            internal=internal,
-            uuid=uuid,
             authentication_required=authentication_required,
-            username=username,
+            enabled=enabled,
+            identifier=identifier,
+            internal=internal,
+            resolution_order=resolution_order,
+            type_=type_,
+            url=url,
+            uuid=uuid,
             password=password,
+            username=username,
         )
 
         repository.additional_properties = d

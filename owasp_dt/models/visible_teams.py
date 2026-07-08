@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -18,18 +16,18 @@ T = TypeVar("T", bound="VisibleTeams")
 class VisibleTeams:
     """
     Attributes:
-        name (Union[Unset, str]):
-        uuid (Union[Unset, UUID]):
+        name (str | Unset):
+        uuid (UUID | Unset):
     """
 
-    name: Union[Unset, str] = UNSET
-    uuid: Union[Unset, UUID] = UNSET
+    name: str | Unset = UNSET
+    uuid: UUID | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        uuid: Union[Unset, str] = UNSET
+        uuid: str | Unset = UNSET
         if not isinstance(self.uuid, Unset):
             uuid = str(self.uuid)
 
@@ -49,7 +47,7 @@ class VisibleTeams:
         name = d.pop("name", UNSET)
 
         _uuid = d.pop("uuid", UNSET)
-        uuid: Union[Unset, UUID]
+        uuid: UUID | Unset
         if isinstance(_uuid, Unset):
             uuid = UNSET
         else:

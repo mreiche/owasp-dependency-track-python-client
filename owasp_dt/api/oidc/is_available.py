@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -18,8 +18,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[bool]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> bool | None:
     if response.status_code == 200:
         response_200 = cast(bool, response.text)
         return response_200
@@ -31,7 +31,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[bool]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -67,7 +67,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[bool]:
+) -> bool | None:
     """Indicates if OpenID Connect is available for this application
 
     Raises:
@@ -107,7 +107,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[bool]:
+) -> bool | None:
     """Indicates if OpenID Connect is available for this application
 
     Raises:

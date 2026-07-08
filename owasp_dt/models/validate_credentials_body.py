@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,39 +15,39 @@ T = TypeVar("T", bound="ValidateCredentialsBody")
 class ValidateCredentialsBody:
     """
     Attributes:
-        username (Union[Unset, str]):
-        password (Union[Unset, str]):
+        password (str | Unset):
+        username (str | Unset):
     """
 
-    username: Union[Unset, str] = UNSET
-    password: Union[Unset, str] = UNSET
+    password: str | Unset = UNSET
+    username: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        username = self.username
-
         password = self.password
+
+        username = self.username
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if username is not UNSET:
-            field_dict["username"] = username
         if password is not UNSET:
             field_dict["password"] = password
+        if username is not UNSET:
+            field_dict["username"] = username
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        username = d.pop("username", UNSET)
-
         password = d.pop("password", UNSET)
 
+        username = d.pop("username", UNSET)
+
         validate_credentials_body = cls(
-            username=username,
             password=password,
+            username=username,
         )
 
         validate_credentials_body.additional_properties = d

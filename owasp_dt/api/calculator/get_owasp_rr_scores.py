@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -29,8 +29,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Score]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Score | None:
     if response.status_code == 200:
         response_200 = Score.from_dict(response.json())
 
@@ -47,8 +47,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Score]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Score]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -61,7 +61,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     vector: str,
-) -> Response[Union[Any, Score]]:
+) -> Response[Any | Score]:
     """Returns the OWASP Risk Rating likelihood score, technical impact score and business impact score
 
     Args:
@@ -72,7 +72,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Score]]
+        Response[Any | Score]
     """
 
     kwargs = _get_kwargs(
@@ -90,7 +90,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     vector: str,
-) -> Optional[Union[Any, Score]]:
+) -> Any | Score | None:
     """Returns the OWASP Risk Rating likelihood score, technical impact score and business impact score
 
     Args:
@@ -101,7 +101,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Score]
+        Any | Score
     """
 
     return sync_detailed(
@@ -114,7 +114,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     vector: str,
-) -> Response[Union[Any, Score]]:
+) -> Response[Any | Score]:
     """Returns the OWASP Risk Rating likelihood score, technical impact score and business impact score
 
     Args:
@@ -125,7 +125,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Score]]
+        Response[Any | Score]
     """
 
     kwargs = _get_kwargs(
@@ -141,7 +141,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     vector: str,
-) -> Optional[Union[Any, Score]]:
+) -> Any | Score | None:
     """Returns the OWASP Risk Rating likelihood score, technical impact score and business impact score
 
     Args:
@@ -152,7 +152,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Score]
+        Any | Score
     """
 
     return (

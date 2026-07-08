@@ -1,11 +1,13 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.problem_details import ProblemDetails
 from ...models.project_metrics import ProjectMetrics
 from ...types import Response
 
@@ -17,8 +19,8 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/metrics/project/{uuid}/days/{days}".format(
-            uuid=uuid,
-            days=days,
+            uuid=quote(str(uuid), safe=""),
+            days=quote(str(days), safe=""),
         ),
     }
 
@@ -26,8 +28,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["ProjectMetrics"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | list[ProjectMetrics] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -43,7 +45,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -57,8 +60,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["ProjectMetrics"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | list[ProjectMetrics]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,7 +75,7 @@ def sync_detailed(
     days: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["ProjectMetrics"]]]:
+) -> Response[Any | ProblemDetails | list[ProjectMetrics]]:
     """Returns X days of historical metrics for a specific project
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -86,7 +89,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ProjectMetrics']]]
+        Response[Any | ProblemDetails | list[ProjectMetrics]]
     """
 
     kwargs = _get_kwargs(
@@ -106,7 +109,7 @@ def sync(
     days: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["ProjectMetrics"]]]:
+) -> Any | ProblemDetails | list[ProjectMetrics] | None:
     """Returns X days of historical metrics for a specific project
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -120,7 +123,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ProjectMetrics']]
+        Any | ProblemDetails | list[ProjectMetrics]
     """
 
     return sync_detailed(
@@ -135,7 +138,7 @@ async def asyncio_detailed(
     days: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["ProjectMetrics"]]]:
+) -> Response[Any | ProblemDetails | list[ProjectMetrics]]:
     """Returns X days of historical metrics for a specific project
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -149,7 +152,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ProjectMetrics']]]
+        Response[Any | ProblemDetails | list[ProjectMetrics]]
     """
 
     kwargs = _get_kwargs(
@@ -167,7 +170,7 @@ async def asyncio(
     days: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["ProjectMetrics"]]]:
+) -> Any | ProblemDetails | list[ProjectMetrics] | None:
     """Returns X days of historical metrics for a specific project
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -181,7 +184,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ProjectMetrics']]
+        Any | ProblemDetails | list[ProjectMetrics]
     """
 
     return (

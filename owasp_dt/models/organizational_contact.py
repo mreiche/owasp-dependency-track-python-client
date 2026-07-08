@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,30 +15,30 @@ T = TypeVar("T", bound="OrganizationalContact")
 class OrganizationalContact:
     """
     Attributes:
-        name (Union[Unset, str]):
-        email (Union[Unset, str]):
-        phone (Union[Unset, str]):
+        email (str | Unset):
+        name (str | Unset):
+        phone (str | Unset):
     """
 
-    name: Union[Unset, str] = UNSET
-    email: Union[Unset, str] = UNSET
-    phone: Union[Unset, str] = UNSET
+    email: str | Unset = UNSET
+    name: str | Unset = UNSET
+    phone: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
-
         email = self.email
+
+        name = self.name
 
         phone = self.phone
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
         if email is not UNSET:
             field_dict["email"] = email
+        if name is not UNSET:
+            field_dict["name"] = name
         if phone is not UNSET:
             field_dict["phone"] = phone
 
@@ -49,15 +47,15 @@ class OrganizationalContact:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
-
         email = d.pop("email", UNSET)
+
+        name = d.pop("name", UNSET)
 
         phone = d.pop("phone", UNSET)
 
         organizational_contact = cls(
-            name=name,
             email=email,
+            name=name,
             phone=phone,
         )
 

@@ -1,11 +1,13 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.problem_details import ProblemDetails
 from ...types import Response
 
 
@@ -15,7 +17,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/metrics/project/{uuid}/refresh".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -23,19 +25,24 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | None:
     if response.status_code == 200:
-        return None
+        response_200 = cast(Any, None)
+        return response_200
 
     if response.status_code == 401:
-        return None
+        response_401 = cast(Any, None)
+        return response_401
 
     if response.status_code == 403:
-        return None
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
 
     if response.status_code == 404:
-        return None
+        response_404 = cast(Any, None)
+        return response_404
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -44,8 +51,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -58,10 +65,11 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Response[Any | ProblemDetails]:
     """Requests a refresh of a specific projects metrics
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -71,7 +79,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -85,14 +93,15 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Any | ProblemDetails | None:
     """Requests a refresh of a specific projects metrics
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -102,7 +111,34 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Any | ProblemDetails
+    """
+
+    return sync_detailed(
+        uuid=uuid,
+        client=client,
+    ).parsed
+
+
+async def asyncio_detailed(
+    uuid: UUID,
+    *,
+    client: AuthenticatedClient,
+) -> Response[Any | ProblemDetails]:
+    """Requests a refresh of a specific projects metrics
+
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
+
+    Args:
+        uuid (UUID):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -112,3 +148,32 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    uuid: UUID,
+    *,
+    client: AuthenticatedClient,
+) -> Any | ProblemDetails | None:
+    """Requests a refresh of a specific projects metrics
+
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
+
+    Args:
+        uuid (UUID):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Any | ProblemDetails
+    """
+
+    return (
+        await asyncio_detailed(
+            uuid=uuid,
+            client=client,
+        )
+    ).parsed

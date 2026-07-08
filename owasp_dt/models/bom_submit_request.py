@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -22,81 +19,80 @@ T = TypeVar("T", bound="BomSubmitRequest")
 class BomSubmitRequest:
     """
     Attributes:
-        project (str):  Example: 38640b33-4ba9-4733-bdab-cbfc40c6f8aa.
-        project_name (str):  Example: Example Application.
-        project_version (str):  Example: 1.0.0.
         bom (str): Base64 encoded BOM Example: ewogICJib21Gb3JtYXQiOiAiQ3ljbG9uZURYIiwKICAic3BlY1ZlcnNpb24iOiAiMS40IiwKI
             CAiY29tcG9uZW50cyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAibGlicmFyeSIsCiAgICAgICJuYW1lIjogImFjbWUtbGliIiwKICAgICAgInZlc
             nNpb24iOiAiMS4wLjAiCiAgICB9CiAgXQp9.
-        project_tags (Union[Unset, list['Tag']]): Overwrite project tags. Modifying the tags of an existing project
-            requires the PORTFOLIO_MANAGEMENT permission.
-        auto_create (Union[Unset, bool]):
-        parent_uuid (Union[Unset, str]):  Example: 5341f53c-611b-4388-9d9c-731026dc5eec.
-        parent_name (Union[Unset, str]):  Example: Example Application Parent.
-        parent_version (Union[Unset, str]):  Example: 1.0.0.
-        is_latest_project_version (Union[Unset, bool]):
+        project (str):  Example: 38640b33-4ba9-4733-bdab-cbfc40c6f8aa.
+        project_name (str):  Example: Example Application.
+        project_version (str):  Example: 1.0.0.
+        auto_create (bool | Unset):
+        is_latest (bool | Unset):
+        parent_name (str | Unset):  Example: Example Application Parent.
+        parent_uuid (str | Unset):  Example: 5341f53c-611b-4388-9d9c-731026dc5eec.
+        parent_version (str | Unset):  Example: 1.0.0.
+        project_tags (list[Tag] | Unset):  Example: tag1, tag2.
     """
 
+    bom: str
     project: str
     project_name: str
     project_version: str
-    bom: str
-    project_tags: Union[Unset, list["Tag"]] = UNSET
-    auto_create: Union[Unset, bool] = UNSET
-    parent_uuid: Union[Unset, str] = UNSET
-    parent_name: Union[Unset, str] = UNSET
-    parent_version: Union[Unset, str] = UNSET
-    is_latest_project_version: Union[Unset, bool] = UNSET
+    auto_create: bool | Unset = UNSET
+    is_latest: bool | Unset = UNSET
+    parent_name: str | Unset = UNSET
+    parent_uuid: str | Unset = UNSET
+    parent_version: str | Unset = UNSET
+    project_tags: list[Tag] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        bom = self.bom
+
         project = self.project
 
         project_name = self.project_name
 
         project_version = self.project_version
 
-        bom = self.bom
+        auto_create = self.auto_create
 
-        project_tags: Union[Unset, list[dict[str, Any]]] = UNSET
+        is_latest = self.is_latest
+
+        parent_name = self.parent_name
+
+        parent_uuid = self.parent_uuid
+
+        parent_version = self.parent_version
+
+        project_tags: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.project_tags, Unset):
             project_tags = []
             for project_tags_item_data in self.project_tags:
                 project_tags_item = project_tags_item_data.to_dict()
                 project_tags.append(project_tags_item)
 
-        auto_create = self.auto_create
-
-        parent_uuid = self.parent_uuid
-
-        parent_name = self.parent_name
-
-        parent_version = self.parent_version
-
-        is_latest_project_version = self.is_latest_project_version
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "bom": bom,
                 "project": project,
                 "projectName": project_name,
                 "projectVersion": project_version,
-                "bom": bom,
             }
         )
-        if project_tags is not UNSET:
-            field_dict["projectTags"] = project_tags
         if auto_create is not UNSET:
             field_dict["autoCreate"] = auto_create
-        if parent_uuid is not UNSET:
-            field_dict["parentUUID"] = parent_uuid
+        if is_latest is not UNSET:
+            field_dict["isLatest"] = is_latest
         if parent_name is not UNSET:
             field_dict["parentName"] = parent_name
+        if parent_uuid is not UNSET:
+            field_dict["parentUUID"] = parent_uuid
         if parent_version is not UNSET:
             field_dict["parentVersion"] = parent_version
-        if is_latest_project_version is not UNSET:
-            field_dict["isLatestProjectVersion"] = is_latest_project_version
+        if project_tags is not UNSET:
+            field_dict["projectTags"] = project_tags
 
         return field_dict
 
@@ -105,42 +101,44 @@ class BomSubmitRequest:
         from ..models.tag import Tag
 
         d = dict(src_dict)
+        bom = d.pop("bom")
+
         project = d.pop("project")
 
         project_name = d.pop("projectName")
 
         project_version = d.pop("projectVersion")
 
-        bom = d.pop("bom")
-
-        project_tags = []
-        _project_tags = d.pop("projectTags", UNSET)
-        for project_tags_item_data in _project_tags or []:
-            project_tags_item = Tag.from_dict(project_tags_item_data)
-
-            project_tags.append(project_tags_item)
-
         auto_create = d.pop("autoCreate", UNSET)
 
-        parent_uuid = d.pop("parentUUID", UNSET)
+        is_latest = d.pop("isLatest", UNSET)
 
         parent_name = d.pop("parentName", UNSET)
 
+        parent_uuid = d.pop("parentUUID", UNSET)
+
         parent_version = d.pop("parentVersion", UNSET)
 
-        is_latest_project_version = d.pop("isLatestProjectVersion", UNSET)
+        _project_tags = d.pop("projectTags", UNSET)
+        project_tags: list[Tag] | Unset = UNSET
+        if _project_tags is not UNSET:
+            project_tags = []
+            for project_tags_item_data in _project_tags:
+                project_tags_item = Tag.from_dict(project_tags_item_data)
+
+                project_tags.append(project_tags_item)
 
         bom_submit_request = cls(
+            bom=bom,
             project=project,
             project_name=project_name,
             project_version=project_version,
-            bom=bom,
-            project_tags=project_tags,
             auto_create=auto_create,
-            parent_uuid=parent_uuid,
+            is_latest=is_latest,
             parent_name=parent_name,
+            parent_uuid=parent_uuid,
             parent_version=parent_version,
-            is_latest_project_version=is_latest_project_version,
+            project_tags=project_tags,
         )
 
         bom_submit_request.additional_properties = d

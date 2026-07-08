@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
@@ -15,7 +16,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/license/{license_id}".format(
-            license_id=license_id,
+            license_id=quote(str(license_id), safe=""),
         ),
     }
 
@@ -23,8 +24,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, License]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | License | None:
     if response.status_code == 200:
         response_200 = License.from_dict(response.json())
 
@@ -45,8 +46,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, License]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | License]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -59,7 +60,7 @@ def sync_detailed(
     license_id: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, License]]:
+) -> Response[Any | License]:
     """Returns a specific license
 
     Args:
@@ -70,7 +71,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, License]]
+        Response[Any | License]
     """
 
     kwargs = _get_kwargs(
@@ -88,7 +89,7 @@ def sync(
     license_id: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, License]]:
+) -> Any | License | None:
     """Returns a specific license
 
     Args:
@@ -99,7 +100,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, License]
+        Any | License
     """
 
     return sync_detailed(
@@ -112,7 +113,7 @@ async def asyncio_detailed(
     license_id: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, License]]:
+) -> Response[Any | License]:
     """Returns a specific license
 
     Args:
@@ -123,7 +124,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, License]]
+        Response[Any | License]
     """
 
     kwargs = _get_kwargs(
@@ -139,7 +140,7 @@ async def asyncio(
     license_id: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, License]]:
+) -> Any | License | None:
     """Returns a specific license
 
     Args:
@@ -150,7 +151,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, License]
+        Any | License
     """
 
     return (
