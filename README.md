@@ -15,7 +15,7 @@ Create the client
 from owasp_dt import Client
 
 client = Client(
-    base_url="http://localhost:8081/api",
+    base_url="http://localhost:8080/api",
     headers={
         "X-Api-Key": "YOUR API KEY"
     },
@@ -42,7 +42,7 @@ This library is part of a wider OWASP Dependency Track tool chain:
 
 ### Update the library
 
-1. Install the requirements: `pip install -r requirements.txt`
+1. Install the requirements: `pip install -e ".[test]"`
 2. Start a OWASP DT instance locally (like via. Docker-Compose): https://docs.dependencytrack.org/getting-started/deploy-docker/
 3. Run `regenerate-api-client.sh [patch-full.json|patch-minimal.json]`
 4. Check if bugs are still in effect
