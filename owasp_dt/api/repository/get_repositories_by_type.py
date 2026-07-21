@@ -1,0 +1,277 @@
+from http import HTTPStatus
+from typing import Any, cast
+from urllib.parse import quote
+
+import httpx
+
+from ... import errors
+from ...client import AuthenticatedClient, Client
+from ...models.get_repositories_by_type_sort_order import GetRepositoriesByTypeSortOrder
+from ...models.get_repositories_by_type_type import GetRepositoriesByTypeType
+from ...models.repository import Repository
+from ...types import UNSET, Response, Unset
+
+
+def _get_kwargs(
+    type_: GetRepositoriesByTypeType,
+    *,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetRepositoriesByTypeSortOrder | Unset = UNSET,
+) -> dict[str, Any]:
+    params: dict[str, Any] = {}
+
+    params["pageNumber"] = page_number
+
+    params["pageSize"] = page_size
+
+    params["offset"] = offset
+
+    params["limit"] = limit
+
+    params["sortName"] = sort_name
+
+    json_sort_order: str | Unset = UNSET
+    if not isinstance(sort_order, Unset):
+        json_sort_order = sort_order.value
+
+    params["sortOrder"] = json_sort_order
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
+    _kwargs: dict[str, Any] = {
+        "method": "get",
+        "url": "/v1/repository/{type_}".format(
+            type_=quote(str(type_), safe=""),
+        ),
+        "params": params,
+    }
+
+    return _kwargs
+
+
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[Repository] | None:
+    if response.status_code == 200:
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in _response_200:
+            response_200_item = Repository.from_dict(response_200_item_data)
+
+            response_200.append(response_200_item)
+
+        return response_200
+
+    if response.status_code == 401:
+        response_401 = cast(Any, None)
+        return response_401
+
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
+
+
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[Repository]]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    type_: GetRepositoriesByTypeType,
+    *,
+    client: AuthenticatedClient,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetRepositoriesByTypeSortOrder | Unset = UNSET,
+) -> Response[Any | list[Repository]]:
+    """Returns repositories that support the specific type
+
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
+
+    Args:
+        type_ (GetRepositoriesByTypeType):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetRepositoriesByTypeSortOrder | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any | list[Repository]]
+    """
+
+    kwargs = _get_kwargs(
+        type_=type_,
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    type_: GetRepositoriesByTypeType,
+    *,
+    client: AuthenticatedClient,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetRepositoriesByTypeSortOrder | Unset = UNSET,
+) -> Any | list[Repository] | None:
+    """Returns repositories that support the specific type
+
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
+
+    Args:
+        type_ (GetRepositoriesByTypeType):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetRepositoriesByTypeSortOrder | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Any | list[Repository]
+    """
+
+    return sync_detailed(
+        type_=type_,
+        client=client,
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
+    ).parsed
+
+
+async def asyncio_detailed(
+    type_: GetRepositoriesByTypeType,
+    *,
+    client: AuthenticatedClient,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetRepositoriesByTypeSortOrder | Unset = UNSET,
+) -> Response[Any | list[Repository]]:
+    """Returns repositories that support the specific type
+
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
+
+    Args:
+        type_ (GetRepositoriesByTypeType):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetRepositoriesByTypeSortOrder | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any | list[Repository]]
+    """
+
+    kwargs = _get_kwargs(
+        type_=type_,
+        page_number=page_number,
+        page_size=page_size,
+        offset=offset,
+        limit=limit,
+        sort_name=sort_name,
+        sort_order=sort_order,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    type_: GetRepositoriesByTypeType,
+    *,
+    client: AuthenticatedClient,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetRepositoriesByTypeSortOrder | Unset = UNSET,
+) -> Any | list[Repository] | None:
+    """Returns repositories that support the specific type
+
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
+
+    Args:
+        type_ (GetRepositoriesByTypeType):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetRepositoriesByTypeSortOrder | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Any | list[Repository]
+    """
+
+    return (
+        await asyncio_detailed(
+            type_=type_,
+            client=client,
+            page_number=page_number,
+            page_size=page_size,
+            offset=offset,
+            limit=limit,
+            sort_name=sort_name,
+            sort_order=sort_order,
+        )
+    ).parsed
