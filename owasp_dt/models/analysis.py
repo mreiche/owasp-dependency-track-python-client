@@ -23,11 +23,11 @@ T = TypeVar("T", bound="Analysis")
 class Analysis:
     """
     Attributes:
-        analysis_details (str):
-        analysis_justification (AnalysisAnalysisJustification):
-        analysis_response (AnalysisAnalysisResponse):
-        analysis_state (AnalysisAnalysisState):
         analysis_comments (list[AnalysisComment] | Unset):
+        analysis_details (str | Unset):
+        analysis_justification (AnalysisAnalysisJustification | Unset):
+        analysis_response (AnalysisAnalysisResponse | Unset):
+        analysis_state (AnalysisAnalysisState | Unset):
         cvss_v2_score (float | Unset):
         cvss_v2_vector (str | Unset):
         cvss_v3_score (float | Unset):
@@ -40,11 +40,11 @@ class Analysis:
         severity (AnalysisSeverity | Unset):
     """
 
-    analysis_details: str
-    analysis_justification: AnalysisAnalysisJustification
-    analysis_response: AnalysisAnalysisResponse
-    analysis_state: AnalysisAnalysisState
     analysis_comments: list[AnalysisComment] | Unset = UNSET
+    analysis_details: str | Unset = UNSET
+    analysis_justification: AnalysisAnalysisJustification | Unset = UNSET
+    analysis_response: AnalysisAnalysisResponse | Unset = UNSET
+    analysis_state: AnalysisAnalysisState | Unset = UNSET
     cvss_v2_score: float | Unset = UNSET
     cvss_v2_vector: str | Unset = UNSET
     cvss_v3_score: float | Unset = UNSET
@@ -58,20 +58,26 @@ class Analysis:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        analysis_details = self.analysis_details
-
-        analysis_justification = self.analysis_justification.value
-
-        analysis_response = self.analysis_response.value
-
-        analysis_state = self.analysis_state.value
-
         analysis_comments: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.analysis_comments, Unset):
             analysis_comments = []
             for analysis_comments_item_data in self.analysis_comments:
                 analysis_comments_item = analysis_comments_item_data.to_dict()
                 analysis_comments.append(analysis_comments_item)
+
+        analysis_details = self.analysis_details
+
+        analysis_justification: str | Unset = UNSET
+        if not isinstance(self.analysis_justification, Unset):
+            analysis_justification = self.analysis_justification.value
+
+        analysis_response: str | Unset = UNSET
+        if not isinstance(self.analysis_response, Unset):
+            analysis_response = self.analysis_response.value
+
+        analysis_state: str | Unset = UNSET
+        if not isinstance(self.analysis_state, Unset):
+            analysis_state = self.analysis_state.value
 
         cvss_v2_score = self.cvss_v2_score
 
@@ -97,16 +103,17 @@ class Analysis:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "analysisDetails": analysis_details,
-                "analysisJustification": analysis_justification,
-                "analysisResponse": analysis_response,
-                "analysisState": analysis_state,
-            }
-        )
+        field_dict.update({})
         if analysis_comments is not UNSET:
             field_dict["analysisComments"] = analysis_comments
+        if analysis_details is not UNSET:
+            field_dict["analysisDetails"] = analysis_details
+        if analysis_justification is not UNSET:
+            field_dict["analysisJustification"] = analysis_justification
+        if analysis_response is not UNSET:
+            field_dict["analysisResponse"] = analysis_response
+        if analysis_state is not UNSET:
+            field_dict["analysisState"] = analysis_state
         if cvss_v2_score is not UNSET:
             field_dict["cvssV2Score"] = cvss_v2_score
         if cvss_v2_vector is not UNSET:
@@ -135,16 +142,6 @@ class Analysis:
         from ..models.analysis_comment import AnalysisComment
 
         d = dict(src_dict)
-        analysis_details = d.pop("analysisDetails")
-
-        analysis_justification = AnalysisAnalysisJustification(
-            d.pop("analysisJustification")
-        )
-
-        analysis_response = AnalysisAnalysisResponse(d.pop("analysisResponse"))
-
-        analysis_state = AnalysisAnalysisState(d.pop("analysisState"))
-
         _analysis_comments = d.pop("analysisComments", UNSET)
         analysis_comments: list[AnalysisComment] | Unset = UNSET
         if _analysis_comments is not UNSET:
@@ -155,6 +152,31 @@ class Analysis:
                 )
 
                 analysis_comments.append(analysis_comments_item)
+
+        analysis_details = d.pop("analysisDetails", UNSET)
+
+        _analysis_justification = d.pop("analysisJustification", UNSET)
+        analysis_justification: AnalysisAnalysisJustification | Unset
+        if isinstance(_analysis_justification, Unset):
+            analysis_justification = UNSET
+        else:
+            analysis_justification = AnalysisAnalysisJustification(
+                _analysis_justification
+            )
+
+        _analysis_response = d.pop("analysisResponse", UNSET)
+        analysis_response: AnalysisAnalysisResponse | Unset
+        if isinstance(_analysis_response, Unset):
+            analysis_response = UNSET
+        else:
+            analysis_response = AnalysisAnalysisResponse(_analysis_response)
+
+        _analysis_state = d.pop("analysisState", UNSET)
+        analysis_state: AnalysisAnalysisState | Unset
+        if isinstance(_analysis_state, Unset):
+            analysis_state = UNSET
+        else:
+            analysis_state = AnalysisAnalysisState(_analysis_state)
 
         cvss_v2_score = d.pop("cvssV2Score", UNSET)
 
@@ -182,11 +204,11 @@ class Analysis:
             severity = AnalysisSeverity(_severity)
 
         analysis = cls(
+            analysis_comments=analysis_comments,
             analysis_details=analysis_details,
             analysis_justification=analysis_justification,
             analysis_response=analysis_response,
             analysis_state=analysis_state,
-            analysis_comments=analysis_comments,
             cvss_v2_score=cvss_v2_score,
             cvss_v2_vector=cvss_v2_vector,
             cvss_v3_score=cvss_v3_score,

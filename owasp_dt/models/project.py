@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -29,15 +29,12 @@ T = TypeVar("T", bound="Project")
 class Project:
     """
     Attributes:
-        last_bom_import (int): UNIX epoch timestamp in milliseconds
-        name (str):
-        uuid (UUID):
         access_teams (list[Team] | Unset):
         active (bool | Unset):
         author (str | Unset):
         authors (list[OrganizationalContact] | Unset):
         bom_ref (str | Unset):
-        children (list[Project] | Unset):
+        children (list[Project] | None | Unset):
         classifier (ProjectClassifier | Unset):
         collection_logic (ProjectCollectionLogic | Unset):
         collection_tag (Tag | Unset):
@@ -48,31 +45,31 @@ class Project:
         group (str | Unset):
         inactive_since (int | Unset): UNIX epoch timestamp in milliseconds
         is_latest (bool | Unset):
+        last_bom_import (int | Unset): UNIX epoch timestamp in milliseconds
         last_bom_import_format (str | Unset):
         last_inherited_risk_score (float | Unset):
         last_vulnerability_analysis (int | Unset): UNIX epoch timestamp in milliseconds
         manufacturer (OrganizationalEntity | Unset):
         metadata (ProjectMetadata | Unset):
         metrics (ProjectMetrics | Unset):
+        name (str | Unset):
         parent (Project | Unset):
         publisher (str | Unset):
         purl (str | Unset):
         supplier (OrganizationalEntity | Unset):
         swid_tag_id (str | Unset):
         tags (list[Tag] | Unset):
+        uuid (UUID | Unset):
         version (str | Unset):
         versions (list[ProjectVersion] | Unset):
     """
 
-    last_bom_import: int
-    name: str
-    uuid: UUID
     access_teams: list[Team] | Unset = UNSET
     active: bool | Unset = UNSET
     author: str | Unset = UNSET
     authors: list[OrganizationalContact] | Unset = UNSET
     bom_ref: str | Unset = UNSET
-    children: list[Project] | Unset = UNSET
+    children: list[Project] | None | Unset = UNSET
     classifier: ProjectClassifier | Unset = UNSET
     collection_logic: ProjectCollectionLogic | Unset = UNSET
     collection_tag: Tag | Unset = UNSET
@@ -83,29 +80,26 @@ class Project:
     group: str | Unset = UNSET
     inactive_since: int | Unset = UNSET
     is_latest: bool | Unset = UNSET
+    last_bom_import: int | Unset = UNSET
     last_bom_import_format: str | Unset = UNSET
     last_inherited_risk_score: float | Unset = UNSET
     last_vulnerability_analysis: int | Unset = UNSET
     manufacturer: OrganizationalEntity | Unset = UNSET
     metadata: ProjectMetadata | Unset = UNSET
     metrics: ProjectMetrics | Unset = UNSET
+    name: str | Unset = UNSET
     parent: Project | Unset = UNSET
     publisher: str | Unset = UNSET
     purl: str | Unset = UNSET
     supplier: OrganizationalEntity | Unset = UNSET
     swid_tag_id: str | Unset = UNSET
     tags: list[Tag] | Unset = UNSET
+    uuid: UUID | Unset = UNSET
     version: str | Unset = UNSET
     versions: list[ProjectVersion] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        last_bom_import = self.last_bom_import
-
-        name = self.name
-
-        uuid = str(self.uuid)
-
         access_teams: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.access_teams, Unset):
             access_teams = []
@@ -126,12 +120,17 @@ class Project:
 
         bom_ref = self.bom_ref
 
-        children: list[dict[str, Any]] | Unset = UNSET
-        if not isinstance(self.children, Unset):
+        children: list[dict[str, Any]] | None | Unset
+        if isinstance(self.children, Unset):
+            children = UNSET
+        elif isinstance(self.children, list):
             children = []
-            for children_item_data in self.children:
-                children_item = children_item_data.to_dict()
-                children.append(children_item)
+            for children_type_0_item_data in self.children:
+                children_type_0_item = children_type_0_item_data.to_dict()
+                children.append(children_type_0_item)
+
+        else:
+            children = self.children
 
         classifier: str | Unset = UNSET
         if not isinstance(self.classifier, Unset):
@@ -164,6 +163,8 @@ class Project:
 
         is_latest = self.is_latest
 
+        last_bom_import = self.last_bom_import
+
         last_bom_import_format = self.last_bom_import_format
 
         last_inherited_risk_score = self.last_inherited_risk_score
@@ -181,6 +182,8 @@ class Project:
         metrics: dict[str, Any] | Unset = UNSET
         if not isinstance(self.metrics, Unset):
             metrics = self.metrics.to_dict()
+
+        name = self.name
 
         parent: dict[str, Any] | Unset = UNSET
         if not isinstance(self.parent, Unset):
@@ -203,6 +206,10 @@ class Project:
                 tags_item = tags_item_data.to_dict()
                 tags.append(tags_item)
 
+        uuid: str | Unset = UNSET
+        if not isinstance(self.uuid, Unset):
+            uuid = str(self.uuid)
+
         version = self.version
 
         versions: list[dict[str, Any]] | Unset = UNSET
@@ -214,13 +221,7 @@ class Project:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "lastBomImport": last_bom_import,
-                "name": name,
-                "uuid": uuid,
-            }
-        )
+        field_dict.update({})
         if access_teams is not UNSET:
             field_dict["accessTeams"] = access_teams
         if active is not UNSET:
@@ -253,6 +254,8 @@ class Project:
             field_dict["inactiveSince"] = inactive_since
         if is_latest is not UNSET:
             field_dict["isLatest"] = is_latest
+        if last_bom_import is not UNSET:
+            field_dict["lastBomImport"] = last_bom_import
         if last_bom_import_format is not UNSET:
             field_dict["lastBomImportFormat"] = last_bom_import_format
         if last_inherited_risk_score is not UNSET:
@@ -265,6 +268,8 @@ class Project:
             field_dict["metadata"] = metadata
         if metrics is not UNSET:
             field_dict["metrics"] = metrics
+        if name is not UNSET:
+            field_dict["name"] = name
         if parent is not UNSET:
             field_dict["parent"] = parent
         if publisher is not UNSET:
@@ -277,6 +282,8 @@ class Project:
             field_dict["swidTagId"] = swid_tag_id
         if tags is not UNSET:
             field_dict["tags"] = tags
+        if uuid is not UNSET:
+            field_dict["uuid"] = uuid
         if version is not UNSET:
             field_dict["version"] = version
         if versions is not UNSET:
@@ -296,12 +303,6 @@ class Project:
         from ..models.team import Team
 
         d = dict(src_dict)
-        last_bom_import = d.pop("lastBomImport")
-
-        name = d.pop("name")
-
-        uuid = UUID(d.pop("uuid"))
-
         _access_teams = d.pop("accessTeams", UNSET)
         access_teams: list[Team] | Unset = UNSET
         if _access_teams is not UNSET:
@@ -326,14 +327,27 @@ class Project:
 
         bom_ref = d.pop("bomRef", UNSET)
 
-        _children = d.pop("children", UNSET)
-        children: list[Project] | Unset = UNSET
-        if _children is not UNSET:
-            children = []
-            for children_item_data in _children:
-                children_item = Project.from_dict(children_item_data)
+        def _parse_children(data: object) -> list[Project] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                children_type_0 = []
+                _children_type_0 = data
+                for children_type_0_item_data in _children_type_0:
+                    children_type_0_item = Project.from_dict(children_type_0_item_data)
 
-                children.append(children_item)
+                    children_type_0.append(children_type_0_item)
+
+                return children_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[Project] | None | Unset, data)
+
+        children = _parse_children(d.pop("children", UNSET))
 
         _classifier = d.pop("classifier", UNSET)
         classifier: ProjectClassifier | Unset
@@ -379,6 +393,8 @@ class Project:
 
         is_latest = d.pop("isLatest", UNSET)
 
+        last_bom_import = d.pop("lastBomImport", UNSET)
+
         last_bom_import_format = d.pop("lastBomImportFormat", UNSET)
 
         last_inherited_risk_score = d.pop("lastInheritedRiskScore", UNSET)
@@ -405,6 +421,8 @@ class Project:
             metrics = UNSET
         else:
             metrics = ProjectMetrics.from_dict(_metrics)
+
+        name = d.pop("name", UNSET)
 
         _parent = d.pop("parent", UNSET)
         parent: Project | Unset
@@ -435,6 +453,13 @@ class Project:
 
                 tags.append(tags_item)
 
+        _uuid = d.pop("uuid", UNSET)
+        uuid: UUID | Unset
+        if isinstance(_uuid, Unset):
+            uuid = UNSET
+        else:
+            uuid = UUID(_uuid)
+
         version = d.pop("version", UNSET)
 
         _versions = d.pop("versions", UNSET)
@@ -447,9 +472,6 @@ class Project:
                 versions.append(versions_item)
 
         project = cls(
-            last_bom_import=last_bom_import,
-            name=name,
-            uuid=uuid,
             access_teams=access_teams,
             active=active,
             author=author,
@@ -466,18 +488,21 @@ class Project:
             group=group,
             inactive_since=inactive_since,
             is_latest=is_latest,
+            last_bom_import=last_bom_import,
             last_bom_import_format=last_bom_import_format,
             last_inherited_risk_score=last_inherited_risk_score,
             last_vulnerability_analysis=last_vulnerability_analysis,
             manufacturer=manufacturer,
             metadata=metadata,
             metrics=metrics,
+            name=name,
             parent=parent,
             publisher=publisher,
             purl=purl,
             supplier=supplier,
             swid_tag_id=swid_tag_id,
             tags=tags,
+            uuid=uuid,
             version=version,
             versions=versions,
         )
