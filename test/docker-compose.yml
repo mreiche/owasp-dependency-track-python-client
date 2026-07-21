@@ -1,6 +1,6 @@
 services:
   apiserver:
-    image: dependencytrack/apiserver:5.0.2
+    image: dependencytrack/apiserver:5.0.3
     depends_on:
       postgres:
         condition: service_healthy
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: dependencytrack/frontend:5.0.2
+    image: dependencytrack/frontend:5.0.3
     environment:
       API_BASE_URL: "http://localhost:8080"
     ports:

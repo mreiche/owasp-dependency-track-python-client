@@ -15,30 +15,30 @@ T = TypeVar("T", bound="OrganizationalContact")
 class OrganizationalContact:
     """
     Attributes:
-        name (str | Unset): Name of the organizational contact
-        email (str | Unset): Email of the organizational contact
-        phone (str | Unset): Phone of the organizational contact
+        email (str | Unset):
+        name (str | Unset):
+        phone (str | Unset):
     """
 
-    name: str | Unset = UNSET
     email: str | Unset = UNSET
+    name: str | Unset = UNSET
     phone: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
-
         email = self.email
+
+        name = self.name
 
         phone = self.phone
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
         if email is not UNSET:
             field_dict["email"] = email
+        if name is not UNSET:
+            field_dict["name"] = name
         if phone is not UNSET:
             field_dict["phone"] = phone
 
@@ -47,15 +47,15 @@ class OrganizationalContact:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
-
         email = d.pop("email", UNSET)
+
+        name = d.pop("name", UNSET)
 
         phone = d.pop("phone", UNSET)
 
         organizational_contact = cls(
-            name=name,
             email=email,
+            name=name,
             phone=phone,
         )
 
