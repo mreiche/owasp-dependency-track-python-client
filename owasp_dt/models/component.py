@@ -30,6 +30,8 @@ T = TypeVar("T", bound="Component")
 class Component:
     """
     Attributes:
+        classifier (ComponentClassifier):
+        name (str):
         project (Project):
         uuid (UUID):
         author (str | Unset):
@@ -39,7 +41,6 @@ class Component:
         blake2b_512 (str | Unset):
         blake3 (str | Unset):
         children (list[Component] | Unset):
-        classifier (ComponentClassifier | Unset):
         copyright_ (str | Unset):
         cpe (str | Unset):
         dependency_graph (list[str] | Unset):
@@ -57,7 +58,6 @@ class Component:
         license_url (str | Unset):
         md5 (str | Unset):
         metrics (DependencyMetrics | Unset):
-        name (str | Unset):
         notes (str | Unset):
         occurrence_count (int | Unset):
         parent (Component | Unset):
@@ -81,6 +81,8 @@ class Component:
         vulnerabilities (list[Vulnerability] | Unset):
     """
 
+    classifier: ComponentClassifier
+    name: str
     project: Project
     uuid: UUID
     author: str | Unset = UNSET
@@ -90,7 +92,6 @@ class Component:
     blake2b_512: str | Unset = UNSET
     blake3: str | Unset = UNSET
     children: list[Component] | Unset = UNSET
-    classifier: ComponentClassifier | Unset = UNSET
     copyright_: str | Unset = UNSET
     cpe: str | Unset = UNSET
     dependency_graph: list[str] | Unset = UNSET
@@ -108,7 +109,6 @@ class Component:
     license_url: str | Unset = UNSET
     md5: str | Unset = UNSET
     metrics: DependencyMetrics | Unset = UNSET
-    name: str | Unset = UNSET
     notes: str | Unset = UNSET
     occurrence_count: int | Unset = UNSET
     parent: Component | Unset = UNSET
@@ -133,6 +133,10 @@ class Component:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        classifier = self.classifier.value
+
+        name = self.name
+
         project = self.project.to_dict()
 
         uuid = str(self.uuid)
@@ -160,10 +164,6 @@ class Component:
             for children_item_data in self.children:
                 children_item = children_item_data.to_dict()
                 children.append(children_item)
-
-        classifier: str | Unset = UNSET
-        if not isinstance(self.classifier, Unset):
-            classifier = self.classifier.value
 
         copyright_ = self.copyright_
 
@@ -207,8 +207,6 @@ class Component:
         metrics: dict[str, Any] | Unset = UNSET
         if not isinstance(self.metrics, Unset):
             metrics = self.metrics.to_dict()
-
-        name = self.name
 
         notes = self.notes
 
@@ -276,6 +274,8 @@ class Component:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "classifier": classifier,
+                "name": name,
                 "project": project,
                 "uuid": uuid,
             }
@@ -294,8 +294,6 @@ class Component:
             field_dict["blake3"] = blake3
         if children is not UNSET:
             field_dict["children"] = children
-        if classifier is not UNSET:
-            field_dict["classifier"] = classifier
         if copyright_ is not UNSET:
             field_dict["copyright"] = copyright_
         if cpe is not UNSET:
@@ -330,8 +328,6 @@ class Component:
             field_dict["md5"] = md5
         if metrics is not UNSET:
             field_dict["metrics"] = metrics
-        if name is not UNSET:
-            field_dict["name"] = name
         if notes is not UNSET:
             field_dict["notes"] = notes
         if occurrence_count is not UNSET:
@@ -390,6 +386,10 @@ class Component:
         from ..models.vulnerability import Vulnerability
 
         d = dict(src_dict)
+        classifier = ComponentClassifier(d.pop("classifier"))
+
+        name = d.pop("name")
+
         project = Project.from_dict(d.pop("project"))
 
         uuid = UUID(d.pop("uuid"))
@@ -421,13 +421,6 @@ class Component:
                 children_item = Component.from_dict(children_item_data)
 
                 children.append(children_item)
-
-        _classifier = d.pop("classifier", UNSET)
-        classifier: ComponentClassifier | Unset
-        if isinstance(_classifier, Unset):
-            classifier = UNSET
-        else:
-            classifier = ComponentClassifier(_classifier)
 
         copyright_ = d.pop("copyright", UNSET)
 
@@ -476,8 +469,6 @@ class Component:
             metrics = UNSET
         else:
             metrics = DependencyMetrics.from_dict(_metrics)
-
-        name = d.pop("name", UNSET)
 
         notes = d.pop("notes", UNSET)
 
@@ -563,6 +554,8 @@ class Component:
                 vulnerabilities.append(vulnerabilities_item)
 
         component = cls(
+            classifier=classifier,
+            name=name,
             project=project,
             uuid=uuid,
             author=author,
@@ -572,7 +565,6 @@ class Component:
             blake2b_512=blake2b_512,
             blake3=blake3,
             children=children,
-            classifier=classifier,
             copyright_=copyright_,
             cpe=cpe,
             dependency_graph=dependency_graph,
@@ -590,7 +582,6 @@ class Component:
             license_url=license_url,
             md5=md5,
             metrics=metrics,
-            name=name,
             notes=notes,
             occurrence_count=occurrence_count,
             parent=parent,

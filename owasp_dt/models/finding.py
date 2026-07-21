@@ -10,7 +10,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.finding_analysis import FindingAnalysis
-    from ..models.finding_attrib import FindingAttrib
+    from ..models.finding_attribution import FindingAttribution
     from ..models.finding_component import FindingComponent
     from ..models.finding_vulnerability import FindingVulnerability
 
@@ -23,14 +23,14 @@ class Finding:
     """
     Attributes:
         analysis (FindingAnalysis | Unset):
-        attribution (FindingAttrib | Unset):
+        attribution (FindingAttribution | Unset):
         component (FindingComponent | Unset):
         matrix (str | Unset):
         vulnerability (FindingVulnerability | Unset):
     """
 
     analysis: FindingAnalysis | Unset = UNSET
-    attribution: FindingAttrib | Unset = UNSET
+    attribution: FindingAttribution | Unset = UNSET
     component: FindingComponent | Unset = UNSET
     matrix: str | Unset = UNSET
     vulnerability: FindingVulnerability | Unset = UNSET
@@ -74,7 +74,7 @@ class Finding:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.finding_analysis import FindingAnalysis
-        from ..models.finding_attrib import FindingAttrib
+        from ..models.finding_attribution import FindingAttribution
         from ..models.finding_component import FindingComponent
         from ..models.finding_vulnerability import FindingVulnerability
 
@@ -87,11 +87,11 @@ class Finding:
             analysis = FindingAnalysis.from_dict(_analysis)
 
         _attribution = d.pop("attribution", UNSET)
-        attribution: FindingAttrib | Unset
+        attribution: FindingAttribution | Unset
         if isinstance(_attribution, Unset):
             attribution = UNSET
         else:
-            attribution = FindingAttrib.from_dict(_attribution)
+            attribution = FindingAttribution.from_dict(_attribution)
 
         _component = d.pop("component", UNSET)
         component: FindingComponent | Unset
