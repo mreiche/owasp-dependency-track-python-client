@@ -60,7 +60,25 @@ podman|docker compose up
 
 ### Clean database init
 
-- Enable proxy environment variables in `test/docker-compose.yml`
+- Prepare `test/docker-compose.yml`
+```yaml
+init-keys:
+  volumes:
+    # Comment out init dir
+    # - './init:/init:ro'
+
+apiserver:
+  environment:
+    # Comment in proxy env variables
+    HTTP_PROXY: "http://localhost"
+    HTTPS_PROXY: "http://localhost"
+
+postgres:
+  volumes:
+    # Comment out init.sql
+    # - "./init/init.sql:/docker-entrypoint-initdb.d/init.sql"
+```
+
 - Delete the volumes first
    ```shell
    podman volume rm test_postgres-data
@@ -69,14 +87,21 @@ podman|docker compose up
 - Start the stack
 - Perform login and change password to `admin2`
 - Create an *Administrators* API key and update `test/test.env`
-- Stop the API container
-   ```shell
-   podman stop test_apiserver_1
-   ```
+
 - Dump the data
-   ```shell
-   podman exec test_postgres_1 bash -c "pg_dump -U \$POSTGRES_USER -d \$POSTGRES_DB > /tmp/init.sql"
-   podman cp test_postgres_1:/tmp/init.sql "$(pwd)/test/postgres-init/init.sql"
-   ```
-- Disable proxy environment variables
+  ```shell
+  podman exec test_postgres_1 bash -c "pg_dump -U \$POSTGRES_USER -d \$POSTGRES_DB > /tmp/init.sql"
+  podman cp test_postgres_1:/tmp/init.sql "$(pwd)/test/init/init.sql"
+  ```
+
+- Remove all data from tables
+  - `dex_workflow_run`
+  - `dex_workflow_history*`
+  
+
+- Save the KEK key
+  ```shell
+  podman cp test_apiserver_1:/data/.dependency-track/keys/secret-management-kek.json "$(pwd)/test/init/secret-management-kek.json"
+  ```
+- Revert changes in `test/docker-compose.yml`
 - Restart the stack

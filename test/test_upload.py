@@ -9,7 +9,7 @@ from owasp_dt.api.event import is_token_being_processed_1
 from owasp_dt.models import UploadBomBody, IsTokenBeingProcessedResponse
 from owasp_dt.types import File
 
-
+@pytest.mark.depends(on=['test/test_vulnerabilities.py::test_get_vulnerabilities'])
 def test_upload_sbom(client: owasp_dt.Client):
     with open(test.base_dir / "files/test.sbom.xml") as sbom_io:
         sbom_file = File(payload=sbom_io.read())

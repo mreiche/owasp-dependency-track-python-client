@@ -34,11 +34,11 @@ from owasp_dt.models import ConfigPropertyResponse, ConfigPropertyResponseProper
 #     resp = update_config_property.sync_detailed(client=client, body=[config_property])
 #     assert resp.status_code == 200
 
-def test_mirror_nvd(client_v2: owasp_dt.Client):
+def test_trigger_mirror_nvd(client_v2: owasp_dt.Client):
     resp = trigger_vuln_data_source_mirror_run.sync_detailed(client=client_v2, name="nvd")
     assert resp.status_code in [202, 409]
 
-@pytest.mark.depends(on=['test_mirror_nvd'])
+@pytest.mark.depends(on=['test_trigger_mirror_nvd'])
 def test_get_vulnerabilities(client: owasp_dt.Client):
     def _get_vulnerabilities():
         resp = get_all_vulnerabilities.sync_detailed(client=client, page_size=1)
