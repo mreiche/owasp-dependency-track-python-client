@@ -80,3 +80,5 @@ podman|docker compose up
    podman exec test_postgres_1 bash -c "pg_dump -U \$POSTGRES_USER -d \$POSTGRES_DB > /tmp/init.sql"
    podman cp test_postgres_1:/tmp/init.sql "$(pwd)/test/postgres-init/init.sql"
    ```
+- Disable proxy environment variables
+- Restart the stack
