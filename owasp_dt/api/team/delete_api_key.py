@@ -12,6 +12,7 @@ from ...types import Response
 def _get_kwargs(
     public_id_or_key: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/team/key/{public_id_or_key}".format(

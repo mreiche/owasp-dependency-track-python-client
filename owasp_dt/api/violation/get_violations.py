@@ -29,6 +29,7 @@ def _get_kwargs(
     text_search_field: str | Unset = UNSET,
     text_search_input: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

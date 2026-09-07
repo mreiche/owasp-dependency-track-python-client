@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PolicyConditionViolationType(str, Enum):
+class PolicyConditionViolationType(StrEnum):
     LICENSE = "LICENSE"
     OPERATIONAL = "OPERATIONAL"
     SECURITY = "SECURITY"

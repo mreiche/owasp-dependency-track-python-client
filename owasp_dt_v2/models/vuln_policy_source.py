@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicySource(str, Enum):
+class VulnPolicySource(StrEnum):
     BUNDLE = "BUNDLE"
     USER = "USER"
 

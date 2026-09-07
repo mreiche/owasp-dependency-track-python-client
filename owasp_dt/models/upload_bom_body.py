@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from io import BytesIO
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from .. import types
-from ..types import UNSET, Unset
+from ..types import UNSET, File, FileTypes, Unset
 
 T = TypeVar("T", bound="UploadBomBody")
 
@@ -17,7 +18,8 @@ class UploadBomBody:
     """
     Attributes:
         auto_create (bool | Unset):  Default: False.
-        bom (str | Unset):
+        bom (File | Unset):
+        is_active (bool | Unset):
         is_latest (bool | Unset):  Default: False.
         parent_name (str | Unset):
         parent_uuid (str | Unset):
@@ -29,7 +31,8 @@ class UploadBomBody:
     """
 
     auto_create: bool | Unset = False
-    bom: str | Unset = UNSET
+    bom: File | Unset = UNSET
+    is_active: bool | Unset = UNSET
     is_latest: bool | Unset = False
     parent_name: str | Unset = UNSET
     parent_uuid: str | Unset = UNSET
@@ -43,7 +46,11 @@ class UploadBomBody:
     def to_dict(self) -> dict[str, Any]:
         auto_create = self.auto_create
 
-        bom = self.bom
+        bom: FileTypes | Unset = UNSET
+        if not isinstance(self.bom, Unset):
+            bom = self.bom.to_tuple()
+
+        is_active = self.is_active
 
         is_latest = self.is_latest
 
@@ -68,6 +75,8 @@ class UploadBomBody:
             field_dict["autoCreate"] = auto_create
         if bom is not UNSET:
             field_dict["bom"] = bom
+        if is_active is not UNSET:
+            field_dict["isActive"] = is_active
         if is_latest is not UNSET:
             field_dict["isLatest"] = is_latest
         if parent_name is not UNSET:
@@ -96,7 +105,12 @@ class UploadBomBody:
             )
 
         if not isinstance(self.bom, Unset):
-            files.append(("bom", (None, str(self.bom).encode(), "text/plain")))
+            files.append(("bom", self.bom.to_tuple()))
+
+        if not isinstance(self.is_active, Unset):
+            files.append(
+                ("isActive", (None, str(self.is_active).encode(), "text/plain"))
+            )
 
         if not isinstance(self.is_latest, Unset):
             files.append(
@@ -148,11 +162,18 @@ class UploadBomBody:
         return files
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         auto_create = d.pop("autoCreate", UNSET)
 
-        bom = d.pop("bom", UNSET)
+        _bom = d.pop("bom", UNSET)
+        bom: File | Unset
+        if isinstance(_bom, Unset):
+            bom = UNSET
+        else:
+            bom = File(payload=BytesIO(_bom))
+
+        is_active = d.pop("isActive", UNSET)
 
         is_latest = d.pop("isLatest", UNSET)
 
@@ -173,6 +194,7 @@ class UploadBomBody:
         upload_bom_body = cls(
             auto_create=auto_create,
             bom=bom,
+            is_active=is_active,
             is_latest=is_latest,
             parent_name=parent_name,
             parent_uuid=parent_uuid,

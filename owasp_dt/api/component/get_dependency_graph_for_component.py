@@ -18,6 +18,7 @@ def _get_kwargs(
     project_uuid: UUID,
     component_uuids: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/component/project/{project_uuid}/dependencyGraph/{component_uuids}".format(

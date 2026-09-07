@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class RepositoryMetaComponentRepositoryType(str, Enum):
+class RepositoryMetaComponentRepositoryType(StrEnum):
     CARGO = "CARGO"
     COMPOSER = "COMPOSER"
     CPAN = "CPAN"

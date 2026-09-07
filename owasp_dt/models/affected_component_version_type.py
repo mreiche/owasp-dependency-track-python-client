@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AffectedComponentVersionType(str, Enum):
+class AffectedComponentVersionType(StrEnum):
     EXACT = "EXACT"
     RANGE = "RANGE"
 

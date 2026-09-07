@@ -5,13 +5,14 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.license_group import LicenseGroup
+from ...models.create_license_group_request import CreateLicenseGroupRequest
+from ...models.license_group_response import LicenseGroupResponse
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: LicenseGroup | Unset = UNSET,
+    body: CreateLicenseGroupRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -31,9 +32,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | LicenseGroup | None:
+) -> Any | LicenseGroupResponse | None:
     if response.status_code == 201:
-        response_201 = LicenseGroup.from_dict(response.json())
+        response_201 = LicenseGroupResponse.from_dict(response.json())
 
         return response_201
 
@@ -53,7 +54,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | LicenseGroup]:
+) -> Response[Any | LicenseGroupResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -65,22 +66,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup | Unset = UNSET,
-) -> Response[Any | LicenseGroup]:
+    body: CreateLicenseGroupRequest | Unset = UNSET,
+) -> Response[Any | LicenseGroupResponse]:
     """Creates a new license group
 
      <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
     <strong>POLICY_MANAGEMENT_CREATE</strong></p>
 
     Args:
-        body (LicenseGroup | Unset):
+        body (CreateLicenseGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | LicenseGroup]
+        Response[Any | LicenseGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -97,22 +98,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup | Unset = UNSET,
-) -> Any | LicenseGroup | None:
+    body: CreateLicenseGroupRequest | Unset = UNSET,
+) -> Any | LicenseGroupResponse | None:
     """Creates a new license group
 
      <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
     <strong>POLICY_MANAGEMENT_CREATE</strong></p>
 
     Args:
-        body (LicenseGroup | Unset):
+        body (CreateLicenseGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | LicenseGroup
+        Any | LicenseGroupResponse
     """
 
     return sync_detailed(
@@ -124,22 +125,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup | Unset = UNSET,
-) -> Response[Any | LicenseGroup]:
+    body: CreateLicenseGroupRequest | Unset = UNSET,
+) -> Response[Any | LicenseGroupResponse]:
     """Creates a new license group
 
      <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
     <strong>POLICY_MANAGEMENT_CREATE</strong></p>
 
     Args:
-        body (LicenseGroup | Unset):
+        body (CreateLicenseGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | LicenseGroup]
+        Response[Any | LicenseGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -154,22 +155,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: LicenseGroup | Unset = UNSET,
-) -> Any | LicenseGroup | None:
+    body: CreateLicenseGroupRequest | Unset = UNSET,
+) -> Any | LicenseGroupResponse | None:
     """Creates a new license group
 
      <p>Requires permission <strong>POLICY_MANAGEMENT</strong> or
     <strong>POLICY_MANAGEMENT_CREATE</strong></p>
 
     Args:
-        body (LicenseGroup | Unset):
+        body (CreateLicenseGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | LicenseGroup
+        Any | LicenseGroupResponse
     """
 
     return (

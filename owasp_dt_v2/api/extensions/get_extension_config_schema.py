@@ -14,6 +14,7 @@ def _get_kwargs(
     extension_point_name: str,
     extension_name: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/extension-points/{extension_point_name}/extensions/{extension_name}/config-schema".format(

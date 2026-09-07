@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,6 +18,7 @@ class ConciseProjectMetrics:
         critical (int): Number of vulnerabilities with critical severity
         high (int): Number of vulnerabilities with high severity
         inherited_risk_score (float): The inherited risk score
+        kev (int): Number of vulnerabilities known to be exploited
         low (int): Number of vulnerabilities with low severity
         medium (int): Number of vulnerabilities with medium severity
         policy_violations_fail (int): Number of policy violations with status FAIL
@@ -35,6 +36,7 @@ class ConciseProjectMetrics:
     critical: int
     high: int
     inherited_risk_score: float
+    kev: int
     low: int
     medium: int
     policy_violations_fail: int
@@ -56,6 +58,8 @@ class ConciseProjectMetrics:
         high = self.high
 
         inherited_risk_score = self.inherited_risk_score
+
+        kev = self.kev
 
         low = self.low
 
@@ -87,6 +91,7 @@ class ConciseProjectMetrics:
                 "critical": critical,
                 "high": high,
                 "inheritedRiskScore": inherited_risk_score,
+                "kev": kev,
                 "low": low,
                 "medium": medium,
                 "policyViolationsFail": policy_violations_fail,
@@ -104,7 +109,7 @@ class ConciseProjectMetrics:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         components = d.pop("components")
 
@@ -113,6 +118,8 @@ class ConciseProjectMetrics:
         high = d.pop("high")
 
         inherited_risk_score = d.pop("inheritedRiskScore")
+
+        kev = d.pop("kev")
 
         low = d.pop("low")
 
@@ -141,6 +148,7 @@ class ConciseProjectMetrics:
             critical=critical,
             high=high,
             inherited_risk_score=inherited_risk_score,
+            kev=kev,
             low=low,
             medium=medium,
             policy_violations_fail=policy_violations_fail,

@@ -10,6 +10,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.finding import Finding
 from ...models.get_findings_by_project_sort_order import GetFindingsByProjectSortOrder
 from ...models.get_findings_by_project_source import GetFindingsByProjectSource
+from ...models.get_findings_by_project_total_count import GetFindingsByProjectTotalCount
 from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
@@ -29,6 +30,9 @@ def _get_kwargs(
     has_analysis: bool | Unset = UNSET,
     epss_from: float | Unset = UNSET,
     epss_to: float | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetFindingsByProjectTotalCount
+    | Unset = GetFindingsByProjectTotalCount.EXACT,
     accept: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
@@ -69,6 +73,14 @@ def _get_kwargs(
 
     params["epssTo"] = epss_to
 
+    params["isKev"] = is_kev
+
+    json_total_count: str | Unset = UNSET
+    if not isinstance(total_count, Unset):
+        json_total_count = total_count.value
+
+    params["totalCount"] = json_total_count
+
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
@@ -95,6 +107,11 @@ def _parse_response(
             response_200.append(response_200_item)
 
         return response_200
+
+    if response.status_code == 400:
+        response_400 = ProblemDetails.from_dict(response.json())
+
+        return response_400
 
     if response.status_code == 401:
         response_401 = cast(Any, None)
@@ -142,6 +159,9 @@ def sync_detailed(
     has_analysis: bool | Unset = UNSET,
     epss_from: float | Unset = UNSET,
     epss_to: float | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetFindingsByProjectTotalCount
+    | Unset = GetFindingsByProjectTotalCount.EXACT,
     accept: str | Unset = UNSET,
 ) -> Response[Any | ProblemDetails | list[Finding]]:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
@@ -163,6 +183,9 @@ def sync_detailed(
         has_analysis (bool | Unset):
         epss_from (float | Unset):
         epss_to (float | Unset):
+        is_kev (bool | Unset):
+        total_count (GetFindingsByProjectTotalCount | Unset): The counting mode for the `X-Total-
+            Count` response header. Default: GetFindingsByProjectTotalCount.EXACT.
         accept (str | Unset):
 
     Raises:
@@ -187,6 +210,8 @@ def sync_detailed(
         has_analysis=has_analysis,
         epss_from=epss_from,
         epss_to=epss_to,
+        is_kev=is_kev,
+        total_count=total_count,
         accept=accept,
     )
 
@@ -213,6 +238,9 @@ def sync(
     has_analysis: bool | Unset = UNSET,
     epss_from: float | Unset = UNSET,
     epss_to: float | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetFindingsByProjectTotalCount
+    | Unset = GetFindingsByProjectTotalCount.EXACT,
     accept: str | Unset = UNSET,
 ) -> Any | ProblemDetails | list[Finding] | None:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
@@ -234,6 +262,9 @@ def sync(
         has_analysis (bool | Unset):
         epss_from (float | Unset):
         epss_to (float | Unset):
+        is_kev (bool | Unset):
+        total_count (GetFindingsByProjectTotalCount | Unset): The counting mode for the `X-Total-
+            Count` response header. Default: GetFindingsByProjectTotalCount.EXACT.
         accept (str | Unset):
 
     Raises:
@@ -259,6 +290,8 @@ def sync(
         has_analysis=has_analysis,
         epss_from=epss_from,
         epss_to=epss_to,
+        is_kev=is_kev,
+        total_count=total_count,
         accept=accept,
     ).parsed
 
@@ -279,6 +312,9 @@ async def asyncio_detailed(
     has_analysis: bool | Unset = UNSET,
     epss_from: float | Unset = UNSET,
     epss_to: float | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetFindingsByProjectTotalCount
+    | Unset = GetFindingsByProjectTotalCount.EXACT,
     accept: str | Unset = UNSET,
 ) -> Response[Any | ProblemDetails | list[Finding]]:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
@@ -300,6 +336,9 @@ async def asyncio_detailed(
         has_analysis (bool | Unset):
         epss_from (float | Unset):
         epss_to (float | Unset):
+        is_kev (bool | Unset):
+        total_count (GetFindingsByProjectTotalCount | Unset): The counting mode for the `X-Total-
+            Count` response header. Default: GetFindingsByProjectTotalCount.EXACT.
         accept (str | Unset):
 
     Raises:
@@ -324,6 +363,8 @@ async def asyncio_detailed(
         has_analysis=has_analysis,
         epss_from=epss_from,
         epss_to=epss_to,
+        is_kev=is_kev,
+        total_count=total_count,
         accept=accept,
     )
 
@@ -348,6 +389,9 @@ async def asyncio(
     has_analysis: bool | Unset = UNSET,
     epss_from: float | Unset = UNSET,
     epss_to: float | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetFindingsByProjectTotalCount
+    | Unset = GetFindingsByProjectTotalCount.EXACT,
     accept: str | Unset = UNSET,
 ) -> Any | ProblemDetails | list[Finding] | None:
     """Returns a list of all findings for a specific project or generates SARIF file if Accept:
@@ -369,6 +413,9 @@ async def asyncio(
         has_analysis (bool | Unset):
         epss_from (float | Unset):
         epss_to (float | Unset):
+        is_kev (bool | Unset):
+        total_count (GetFindingsByProjectTotalCount | Unset): The counting mode for the `X-Total-
+            Count` response header. Default: GetFindingsByProjectTotalCount.EXACT.
         accept (str | Unset):
 
     Raises:
@@ -395,6 +442,8 @@ async def asyncio(
             has_analysis=has_analysis,
             epss_from=epss_from,
             epss_to=epss_to,
+            is_kev=is_kev,
+            total_count=total_count,
             accept=accept,
         )
     ).parsed

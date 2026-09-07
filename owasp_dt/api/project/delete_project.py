@@ -14,6 +14,7 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/project/{uuid}".format(
@@ -41,7 +42,8 @@ def _parse_response(
         return response_403
 
     if response.status_code == 404:
-        response_404 = cast(Any, None)
+        response_404 = ProblemDetails.from_dict(response.json())
+
         return response_404
 
     if response.status_code == 500:

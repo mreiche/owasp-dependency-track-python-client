@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyRatingSeverity(str, Enum):
+class VulnPolicyRatingSeverity(StrEnum):
     CRITICAL = "CRITICAL"
     HIGH = "HIGH"
     INFO = "INFO"

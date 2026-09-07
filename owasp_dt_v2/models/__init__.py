@@ -19,6 +19,9 @@ from .get_extension_config_response_config import GetExtensionConfigResponseConf
 from .get_vuln_policy_response import GetVulnPolicyResponse
 from .hashes import Hashes
 from .json_schema_validation_error import JsonSchemaValidationError
+from .kev_assertion import KevAssertion
+from .kev_data_source_mirror_status import KevDataSourceMirrorStatus
+from .kev_data_source_mirror_status_status import KevDataSourceMirrorStatusStatus
 from .license_ import License
 from .list_components_hash_type import ListComponentsHashType
 from .list_components_response_item import ListComponentsResponseItem
@@ -99,6 +102,9 @@ __all__ = (
     "GetVulnPolicyResponse",
     "Hashes",
     "JsonSchemaValidationError",
+    "KevAssertion",
+    "KevDataSourceMirrorStatus",
+    "KevDataSourceMirrorStatusStatus",
     "License",
     "ListComponentsHashType",
     "ListComponentsResponseItem",

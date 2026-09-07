@@ -15,6 +15,7 @@ def _get_kwargs(
     permission: str,
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/v1/permission/{permission}/team/{uuid}".format(

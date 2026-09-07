@@ -25,6 +25,7 @@ def _get_kwargs(
     only_outdated: bool | Unset = UNSET,
     only_direct: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

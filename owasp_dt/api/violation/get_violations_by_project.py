@@ -26,6 +26,7 @@ def _get_kwargs(
     sort_order: GetViolationsByProjectSortOrder | Unset = UNSET,
     suppressed: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

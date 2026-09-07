@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ConciseProjectClassifier(str, Enum):
+class ConciseProjectClassifier(StrEnum):
     APPLICATION = "APPLICATION"
     CONTAINER = "CONTAINER"
     CRYPTOGRAPHIC_ASSET = "CRYPTOGRAPHIC_ASSET"

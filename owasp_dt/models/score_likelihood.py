@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ScoreLikelihood(str, Enum):
+class ScoreLikelihood(StrEnum):
     HIGH = "HIGH"
     LOW = "LOW"
     MEDIUM = "MEDIUM"

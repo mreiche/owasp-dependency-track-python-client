@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class TaskQueueStatus(str, Enum):
+class TaskQueueStatus(StrEnum):
     ACTIVE = "ACTIVE"
     PAUSED = "PAUSED"
 

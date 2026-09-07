@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class CreateScheduledNotificationRuleRequestLevel(str, Enum):
+class CreateScheduledNotificationRuleRequestLevel(StrEnum):
     ERROR = "ERROR"
     INFORMATIONAL = "INFORMATIONAL"
     WARNING = "WARNING"

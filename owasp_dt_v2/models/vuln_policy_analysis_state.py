@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyAnalysisState(str, Enum):
+class VulnPolicyAnalysisState(StrEnum):
     EXPLOITABLE = "EXPLOITABLE"
     FALSE_POSITIVE = "FALSE_POSITIVE"
     IN_TRIAGE = "IN_TRIAGE"

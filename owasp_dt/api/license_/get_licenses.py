@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.get_licenses_sort_order import GetLicensesSortOrder
-from ...models.license_ import License
+from ...models.license_response import LicenseResponse
 from ...types import UNSET, Response, Unset
 
 
@@ -19,6 +19,7 @@ def _get_kwargs(
     sort_name: str | Unset = UNSET,
     sort_order: GetLicensesSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -50,12 +51,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[License] | None:
+) -> Any | list[LicenseResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = License.from_dict(response_200_item_data)
+            response_200_item = LicenseResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -73,7 +74,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[License]]:
+) -> Response[Any | list[LicenseResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -91,7 +92,7 @@ def sync_detailed(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetLicensesSortOrder | Unset = UNSET,
-) -> Response[Any | list[License]]:
+) -> Response[Any | list[LicenseResponse]]:
     """Returns a list of all licenses with complete metadata for each license
 
     Args:
@@ -107,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[License]]
+        Response[Any | list[LicenseResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -135,7 +136,7 @@ def sync(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetLicensesSortOrder | Unset = UNSET,
-) -> Any | list[License] | None:
+) -> Any | list[LicenseResponse] | None:
     """Returns a list of all licenses with complete metadata for each license
 
     Args:
@@ -151,7 +152,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[License]
+        Any | list[LicenseResponse]
     """
 
     return sync_detailed(
@@ -174,7 +175,7 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetLicensesSortOrder | Unset = UNSET,
-) -> Response[Any | list[License]]:
+) -> Response[Any | list[LicenseResponse]]:
     """Returns a list of all licenses with complete metadata for each license
 
     Args:
@@ -190,7 +191,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[License]]
+        Response[Any | list[LicenseResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -216,7 +217,7 @@ async def asyncio(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetLicensesSortOrder | Unset = UNSET,
-) -> Any | list[License] | None:
+) -> Any | list[LicenseResponse] | None:
     """Returns a list of all licenses with complete metadata for each license
 
     Args:
@@ -232,7 +233,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[License]
+        Any | list[LicenseResponse]
     """
 
     return (

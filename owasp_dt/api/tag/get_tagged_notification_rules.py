@@ -23,6 +23,7 @@ def _get_kwargs(
     sort_name: str | Unset = UNSET,
     sort_order: GetTaggedNotificationRulesSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

@@ -17,6 +17,7 @@ def _get_kwargs(
     component: UUID,
     vulnerability: UUID,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     json_project: str | Unset = UNSET

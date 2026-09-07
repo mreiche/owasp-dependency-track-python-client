@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -188,12 +188,14 @@ class ListComponentsResponseItem:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.component_project import ComponentProject
         from ..models.dependency_metrics import DependencyMetrics
         from ..models.hashes import Hashes
         from ..models.license_ import License
-        from ..models.package_artifact_metadata import PackageArtifactMetadata
+        from ..models.package_artifact_metadata import (
+            PackageArtifactMetadata,
+        )
         from ..models.package_metadata import PackageMetadata
 
         d = dict(src_dict)

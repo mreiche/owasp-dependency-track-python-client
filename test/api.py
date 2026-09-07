@@ -2,15 +2,15 @@ from typing import Generator, Callable, TypeVar
 
 from owasp_dt import Client
 from owasp_dt.api.project_property import create_property_1, update_property
-from owasp_dt.models import ProjectProperty
+from owasp_dt.models import ProjectPropertyResponse, UpdateProjectPropertyRequest, CreateProjectPropertyRequest
 from owasp_dt.types import Response
 from test import config
 
 
-def create_client_from_env() -> Client:
+def create_client_from_env(api_base_path: str = "/api") -> Client:
     base_url = config.reqenv("OWASP_DTRACK_URL")
     return Client(
-        base_url=f"{base_url}/api",
+        base_url=f"{base_url}{api_base_path}",
         headers={
             "X-Api-Key": config.reqenv("OWASP_DTRACK_API_KEY")
         },
@@ -22,10 +22,15 @@ def create_client_from_env() -> Client:
         }
     )
 
-def upsert_project_property(client: Client, uuid: str, property: ProjectProperty):
+def upsert_project_property(client: Client, uuid: str, property: CreateProjectPropertyRequest):
     resp = create_property_1.sync_detailed(client=client, uuid=uuid, body=property)
     if resp.status_code == 409:
-        resp = update_property.sync_detailed(client=client, uuid=uuid, body=property)
+        update_property_request = UpdateProjectPropertyRequest(
+            group_name=property.group_name,
+            property_name=property.property_name,
+            property_value=property.property_value,
+        )
+        resp = update_property.sync_detailed(client=client, uuid=uuid, body=update_property_request)
 
     assert resp.status_code in [200, 201]
 

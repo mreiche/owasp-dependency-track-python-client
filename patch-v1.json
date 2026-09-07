@@ -122,6 +122,24 @@
             }
           }
         }
+      },
+      "ManagedUser": {
+        "required": [
+          "username",
+          "email"
+        ]
+      },
+      "Vulnerability": {
+        "required": [
+          "source",
+          "uuid",
+          "vulnId"
+        ]
+      },
+      "Component": {
+        "required": [
+          "name"
+        ]
       }
     }
   }

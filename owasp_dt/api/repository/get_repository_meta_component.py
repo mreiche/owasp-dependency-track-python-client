@@ -13,6 +13,7 @@ def _get_kwargs(
     *,
     purl: str,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["purl"] = purl

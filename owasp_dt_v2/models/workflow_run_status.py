@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class WorkflowRunStatus(str, Enum):
+class WorkflowRunStatus(StrEnum):
     CANCELLED = "CANCELLED"
     COMPLETED = "COMPLETED"
     CREATED = "CREATED"

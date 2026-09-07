@@ -7,15 +7,15 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.delete_project_property_request import DeleteProjectPropertyRequest
 from ...models.problem_details import ProblemDetails
-from ...models.project_property import ProjectProperty
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     uuid: UUID,
     *,
-    body: ProjectProperty | Unset = UNSET,
+    body: DeleteProjectPropertyRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -76,7 +76,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
+    body: DeleteProjectPropertyRequest | Unset = UNSET,
 ) -> Response[Any | ProblemDetails]:
     """Deletes a config property
 
@@ -85,7 +85,7 @@ def sync_detailed(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (DeleteProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -111,7 +111,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
+    body: DeleteProjectPropertyRequest | Unset = UNSET,
 ) -> Any | ProblemDetails | None:
     """Deletes a config property
 
@@ -120,7 +120,7 @@ def sync(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (DeleteProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,7 +141,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
+    body: DeleteProjectPropertyRequest | Unset = UNSET,
 ) -> Response[Any | ProblemDetails]:
     """Deletes a config property
 
@@ -150,7 +150,7 @@ async def asyncio_detailed(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (DeleteProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -174,7 +174,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
+    body: DeleteProjectPropertyRequest | Unset = UNSET,
 ) -> Any | ProblemDetails | None:
     """Deletes a config property
 
@@ -183,7 +183,7 @@ async def asyncio(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (DeleteProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

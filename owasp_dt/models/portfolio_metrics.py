@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -24,6 +24,7 @@ class PortfolioMetrics:
         findings_unaudited (int | Unset):
         high (int | Unset):
         inherited_risk_score (float | Unset):
+        kev (int | Unset):
         low (int | Unset):
         medium (int | Unset):
         policy_violations_audited (int | Unset):
@@ -58,6 +59,7 @@ class PortfolioMetrics:
     findings_unaudited: int | Unset = UNSET
     high: int | Unset = UNSET
     inherited_risk_score: float | Unset = UNSET
+    kev: int | Unset = UNSET
     low: int | Unset = UNSET
     medium: int | Unset = UNSET
     policy_violations_audited: int | Unset = UNSET
@@ -101,6 +103,8 @@ class PortfolioMetrics:
         high = self.high
 
         inherited_risk_score = self.inherited_risk_score
+
+        kev = self.kev
 
         low = self.low
 
@@ -174,6 +178,8 @@ class PortfolioMetrics:
             field_dict["high"] = high
         if inherited_risk_score is not UNSET:
             field_dict["inheritedRiskScore"] = inherited_risk_score
+        if kev is not UNSET:
+            field_dict["kev"] = kev
         if low is not UNSET:
             field_dict["low"] = low
         if medium is not UNSET:
@@ -240,7 +246,7 @@ class PortfolioMetrics:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         first_occurrence = d.pop("firstOccurrence")
 
@@ -259,6 +265,8 @@ class PortfolioMetrics:
         high = d.pop("high", UNSET)
 
         inherited_risk_score = d.pop("inheritedRiskScore", UNSET)
+
+        kev = d.pop("kev", UNSET)
 
         low = d.pop("low", UNSET)
 
@@ -330,6 +338,7 @@ class PortfolioMetrics:
             findings_unaudited=findings_unaudited,
             high=high,
             inherited_risk_score=inherited_risk_score,
+            kev=kev,
             low=low,
             medium=medium,
             policy_violations_audited=policy_violations_audited,

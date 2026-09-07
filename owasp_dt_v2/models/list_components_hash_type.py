@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ListComponentsHashType(str, Enum):
+class ListComponentsHashType(StrEnum):
     BLAKE2B_256 = "BLAKE2B_256"
     BLAKE2B_384 = "BLAKE2B_384"
     BLAKE2B_512 = "BLAKE2B_512"
@@ -14,6 +14,8 @@ class ListComponentsHashType(str, Enum):
     SHA_256 = "SHA_256"
     SHA_384 = "SHA_384"
     SHA_512 = "SHA_512"
+    STREEBOG_256 = "STREEBOG_256"
+    STREEBOG_512 = "STREEBOG_512"
 
     def __str__(self) -> str:
         return str(self.value)

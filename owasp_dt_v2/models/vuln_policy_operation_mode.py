@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyOperationMode(str, Enum):
+class VulnPolicyOperationMode(StrEnum):
     APPLY = "APPLY"
     DISABLED = "DISABLED"
     LOG = "LOG"

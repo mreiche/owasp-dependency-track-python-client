@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PolicyConditionSubject(str, Enum):
+class PolicyConditionSubject(StrEnum):
     AGE = "AGE"
     COMPONENT_HASH = "COMPONENT_HASH"
     COORDINATES = "COORDINATES"

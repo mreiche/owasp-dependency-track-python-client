@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ProjectPropertyPropertyType(str, Enum):
+class CreateComponentPropertyRequestPropertyType(StrEnum):
     BOOLEAN = "BOOLEAN"
     INTEGER = "INTEGER"
     NUMBER = "NUMBER"

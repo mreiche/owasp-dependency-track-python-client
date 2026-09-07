@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AffectedComponentIdentityType(str, Enum):
+class AffectedComponentIdentityType(StrEnum):
     CPE = "CPE"
     PURL = "PURL"
 

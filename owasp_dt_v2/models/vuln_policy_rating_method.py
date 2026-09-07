@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyRatingMethod(str, Enum):
+class VulnPolicyRatingMethod(StrEnum):
     CVSSV2 = "CVSSV2"
     CVSSV3 = "CVSSV3"
     CVSSV4 = "CVSSV4"

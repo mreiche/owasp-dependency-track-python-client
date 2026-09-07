@@ -16,6 +16,7 @@ def _get_kwargs(
     policy_uuid: UUID,
     project_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/policy/{policy_uuid}/project/{project_uuid}".format(

@@ -21,26 +21,53 @@ from .analysis_request_analysis_response import AnalysisRequestAnalysisResponse
 from .analysis_request_analysis_state import AnalysisRequestAnalysisState
 from .analysis_severity import AnalysisSeverity
 from .api_key import ApiKey
+from .available_teams_sort_order import AvailableTeamsSortOrder
 from .bom_submit_request import BomSubmitRequest
 from .bom_upload_response import BomUploadResponse
 from .cel_expression_error import CelExpressionError
 from .clone_project_request import CloneProjectRequest
+from .comment import Comment
 from .component import Component
 from .component_classifier import ComponentClassifier
 from .component_occurrence import ComponentOccurrence
 from .component_property import ComponentProperty
 from .component_property_property_type import ComponentPropertyPropertyType
+from .component_property_response import ComponentPropertyResponse
+from .component_property_response_property_type import (
+    ComponentPropertyResponsePropertyType,
+)
 from .component_scope import ComponentScope
+from .concise_license_response import ConciseLicenseResponse
 from .concise_project import ConciseProject
 from .concise_project_classifier import ConciseProjectClassifier
 from .concise_project_collection_logic import ConciseProjectCollectionLogic
 from .concise_project_metrics import ConciseProjectMetrics
-from .config_property import ConfigProperty
-from .config_property_property_type import ConfigPropertyPropertyType
+from .config_property_response import ConfigPropertyResponse
+from .config_property_response_property_type import ConfigPropertyResponsePropertyType
+from .create_component_property_request import CreateComponentPropertyRequest
+from .create_component_property_request_property_type import (
+    CreateComponentPropertyRequestPropertyType,
+)
+from .create_license_group_request import CreateLicenseGroupRequest
+from .create_license_request import CreateLicenseRequest
 from .create_notification_publisher_request import CreateNotificationPublisherRequest
 from .create_notification_rule_request import CreateNotificationRuleRequest
 from .create_notification_rule_request_level import CreateNotificationRuleRequestLevel
 from .create_notification_rule_request_scope import CreateNotificationRuleRequestScope
+from .create_policy_condition_request import CreatePolicyConditionRequest
+from .create_policy_condition_request_operator import (
+    CreatePolicyConditionRequestOperator,
+)
+from .create_policy_condition_request_subject import CreatePolicyConditionRequestSubject
+from .create_policy_condition_request_violation_type import (
+    CreatePolicyConditionRequestViolationType,
+)
+from .create_project_property_request import CreateProjectPropertyRequest
+from .create_project_property_request_property_type import (
+    CreateProjectPropertyRequestPropertyType,
+)
+from .create_repository_request import CreateRepositoryRequest
+from .create_repository_request_type import CreateRepositoryRequestType
 from .create_scheduled_notification_rule_request import (
     CreateScheduledNotificationRuleRequest,
 )
@@ -54,6 +81,7 @@ from .cvss_score_response import CvssScoreResponse
 from .cwe import Cwe
 from .data_classification import DataClassification
 from .data_classification_direction import DataClassificationDirection
+from .delete_project_property_request import DeleteProjectPropertyRequest
 from .dependency_graph_response import DependencyGraphResponse
 from .dependency_metrics import DependencyMetrics
 from .epss import Epss
@@ -73,7 +101,9 @@ from .framework import Framework
 from .get_affected_project_sort_order import GetAffectedProjectSortOrder
 from .get_all_components_sort_order import GetAllComponentsSortOrder
 from .get_all_findings_1_sort_order import GetAllFindings1SortOrder
+from .get_all_findings_1_total_count import GetAllFindings1TotalCount
 from .get_all_findings_sort_order import GetAllFindingsSortOrder
+from .get_all_findings_total_count import GetAllFindingsTotalCount
 from .get_all_notification_rules_sort_order import GetAllNotificationRulesSortOrder
 from .get_all_notification_rules_trigger_type import GetAllNotificationRulesTriggerType
 from .get_all_permissions_response_200 import GetAllPermissionsResponse200
@@ -96,6 +126,7 @@ from .get_dependency_graph_for_component_response_200 import (
 )
 from .get_findings_by_project_sort_order import GetFindingsByProjectSortOrder
 from .get_findings_by_project_source import GetFindingsByProjectSource
+from .get_findings_by_project_total_count import GetFindingsByProjectTotalCount
 from .get_license_groups_sort_order import GetLicenseGroupsSortOrder
 from .get_licenses_sort_order import GetLicensesSortOrder
 from .get_occurrences_sort_order import GetOccurrencesSortOrder
@@ -134,9 +165,14 @@ from .invalid_notification_filter_expression_problem_details import (
     InvalidNotificationFilterExpressionProblemDetails,
 )
 from .is_token_being_processed_response import IsTokenBeingProcessedResponse
+from .is_token_being_processed_response_status import (
+    IsTokenBeingProcessedResponseStatus,
+)
 from .ldap_user import LdapUser
 from .license_ import License
 from .license_group import LicenseGroup
+from .license_group_response import LicenseGroupResponse
+from .license_response import LicenseResponse
 from .list_projects_response_item import ListProjectsResponseItem
 from .list_projects_response_item_classifier import ListProjectsResponseItemClassifier
 from .list_projects_response_item_collection_logic import (
@@ -148,6 +184,7 @@ from .mapped_ldap_group_request import MappedLdapGroupRequest
 from .mapped_oidc_group import MappedOidcGroup
 from .mapped_oidc_group_request import MappedOidcGroupRequest
 from .notification_publisher import NotificationPublisher
+from .notification_publisher_response import NotificationPublisherResponse
 from .notification_rule import NotificationRule
 from .notification_rule_notification_level import NotificationRuleNotificationLevel
 from .notification_rule_notify_on_item import NotificationRuleNotifyOnItem
@@ -162,6 +199,12 @@ from .permission import Permission
 from .policy import Policy
 from .policy_condition import PolicyCondition
 from .policy_condition_operator import PolicyConditionOperator
+from .policy_condition_response import PolicyConditionResponse
+from .policy_condition_response_operator import PolicyConditionResponseOperator
+from .policy_condition_response_subject import PolicyConditionResponseSubject
+from .policy_condition_response_violation_type import (
+    PolicyConditionResponseViolationType,
+)
 from .policy_condition_subject import PolicyConditionSubject
 from .policy_condition_violation_type import PolicyConditionViolationType
 from .policy_operator import PolicyOperator
@@ -175,16 +218,16 @@ from .project_classifier import ProjectClassifier
 from .project_collection_logic import ProjectCollectionLogic
 from .project_metadata import ProjectMetadata
 from .project_metrics import ProjectMetrics
-from .project_property import ProjectProperty
-from .project_property_property_type import ProjectPropertyPropertyType
+from .project_property_response import ProjectPropertyResponse
+from .project_property_response_property_type import ProjectPropertyResponsePropertyType
 from .project_version import ProjectVersion
 from .publisher import Publisher
-from .repository import Repository
 from .repository_meta_component import RepositoryMetaComponent
 from .repository_meta_component_repository_type import (
     RepositoryMetaComponentRepositoryType,
 )
-from .repository_type import RepositoryType
+from .repository_response import RepositoryResponse
+from .repository_response_type import RepositoryResponseType
 from .retrieve_projects_sort_order import RetrieveProjectsSortOrder
 from .score import Score
 from .score_business_impact import ScoreBusinessImpact
@@ -210,6 +253,8 @@ from .team_permissions_set_request_permissions_item import (
 from .team_self_response import TeamSelfResponse
 from .teams_set_request import TeamsSetRequest
 from .tools import Tools
+from .update_config_property_request import UpdateConfigPropertyRequest
+from .update_license_group_request import UpdateLicenseGroupRequest
 from .update_notification_publisher_request import UpdateNotificationPublisherRequest
 from .update_notification_rule_request import UpdateNotificationRuleRequest
 from .update_notification_rule_request_level import UpdateNotificationRuleRequestLevel
@@ -217,6 +262,16 @@ from .update_notification_rule_request_notify_on_item import (
     UpdateNotificationRuleRequestNotifyOnItem,
 )
 from .update_notification_rule_request_scope import UpdateNotificationRuleRequestScope
+from .update_policy_condition_request import UpdatePolicyConditionRequest
+from .update_policy_condition_request_operator import (
+    UpdatePolicyConditionRequestOperator,
+)
+from .update_policy_condition_request_subject import UpdatePolicyConditionRequestSubject
+from .update_policy_condition_request_violation_type import (
+    UpdatePolicyConditionRequestViolationType,
+)
+from .update_project_property_request import UpdateProjectPropertyRequest
+from .update_repository_request import UpdateRepositoryRequest
 from .upload_bom_body import UploadBomBody
 from .upload_vex_1_body import UploadVex1Body
 from .user import User
@@ -233,6 +288,10 @@ from .violation_analysis_comment import ViolationAnalysisComment
 from .violation_analysis_request import ViolationAnalysisRequest
 from .violation_analysis_request_analysis_state import (
     ViolationAnalysisRequestAnalysisState,
+)
+from .violation_analysis_response import ViolationAnalysisResponse
+from .violation_analysis_response_analysis_state import (
+    ViolationAnalysisResponseAnalysisState,
 )
 from .violation_analysis_violation_analysis_state import (
     ViolationAnalysisViolationAnalysisState,
@@ -263,26 +322,43 @@ __all__ = (
     "AnalysisRequestAnalysisState",
     "AnalysisSeverity",
     "ApiKey",
+    "AvailableTeamsSortOrder",
     "BomSubmitRequest",
     "BomUploadResponse",
     "CelExpressionError",
     "CloneProjectRequest",
+    "Comment",
     "Component",
     "ComponentClassifier",
     "ComponentOccurrence",
     "ComponentProperty",
     "ComponentPropertyPropertyType",
+    "ComponentPropertyResponse",
+    "ComponentPropertyResponsePropertyType",
     "ComponentScope",
+    "ConciseLicenseResponse",
     "ConciseProject",
     "ConciseProjectClassifier",
     "ConciseProjectCollectionLogic",
     "ConciseProjectMetrics",
-    "ConfigProperty",
-    "ConfigPropertyPropertyType",
+    "ConfigPropertyResponse",
+    "ConfigPropertyResponsePropertyType",
+    "CreateComponentPropertyRequest",
+    "CreateComponentPropertyRequestPropertyType",
+    "CreateLicenseGroupRequest",
+    "CreateLicenseRequest",
     "CreateNotificationPublisherRequest",
     "CreateNotificationRuleRequest",
     "CreateNotificationRuleRequestLevel",
     "CreateNotificationRuleRequestScope",
+    "CreatePolicyConditionRequest",
+    "CreatePolicyConditionRequestOperator",
+    "CreatePolicyConditionRequestSubject",
+    "CreatePolicyConditionRequestViolationType",
+    "CreateProjectPropertyRequest",
+    "CreateProjectPropertyRequestPropertyType",
+    "CreateRepositoryRequest",
+    "CreateRepositoryRequestType",
     "CreateScheduledNotificationRuleRequest",
     "CreateScheduledNotificationRuleRequestLevel",
     "CreateScheduledNotificationRuleRequestScope",
@@ -290,6 +366,7 @@ __all__ = (
     "Cwe",
     "DataClassification",
     "DataClassificationDirection",
+    "DeleteProjectPropertyRequest",
     "DependencyGraphResponse",
     "DependencyMetrics",
     "Epss",
@@ -307,7 +384,9 @@ __all__ = (
     "GetAffectedProjectSortOrder",
     "GetAllComponentsSortOrder",
     "GetAllFindings1SortOrder",
+    "GetAllFindings1TotalCount",
     "GetAllFindingsSortOrder",
+    "GetAllFindingsTotalCount",
     "GetAllNotificationRulesSortOrder",
     "GetAllNotificationRulesTriggerType",
     "GetAllPermissionsResponse200",
@@ -324,6 +403,7 @@ __all__ = (
     "GetDependencyGraphForComponentResponse200",
     "GetFindingsByProjectSortOrder",
     "GetFindingsByProjectSource",
+    "GetFindingsByProjectTotalCount",
     "GetLicenseGroupsSortOrder",
     "GetLicensesSortOrder",
     "GetOccurrencesSortOrder",
@@ -352,9 +432,12 @@ __all__ = (
     "InvalidBomProblemDetails",
     "InvalidNotificationFilterExpressionProblemDetails",
     "IsTokenBeingProcessedResponse",
+    "IsTokenBeingProcessedResponseStatus",
     "LdapUser",
     "License",
     "LicenseGroup",
+    "LicenseGroupResponse",
+    "LicenseResponse",
     "ListProjectsResponseItem",
     "ListProjectsResponseItemClassifier",
     "ListProjectsResponseItemCollectionLogic",
@@ -364,6 +447,7 @@ __all__ = (
     "MappedOidcGroup",
     "MappedOidcGroupRequest",
     "NotificationPublisher",
+    "NotificationPublisherResponse",
     "NotificationRule",
     "NotificationRuleNotificationLevel",
     "NotificationRuleNotifyOnItem",
@@ -378,6 +462,10 @@ __all__ = (
     "Policy",
     "PolicyCondition",
     "PolicyConditionOperator",
+    "PolicyConditionResponse",
+    "PolicyConditionResponseOperator",
+    "PolicyConditionResponseSubject",
+    "PolicyConditionResponseViolationType",
     "PolicyConditionSubject",
     "PolicyConditionViolationType",
     "PolicyOperator",
@@ -391,14 +479,14 @@ __all__ = (
     "ProjectCollectionLogic",
     "ProjectMetadata",
     "ProjectMetrics",
-    "ProjectProperty",
-    "ProjectPropertyPropertyType",
+    "ProjectPropertyResponse",
+    "ProjectPropertyResponsePropertyType",
     "ProjectVersion",
     "Publisher",
-    "Repository",
     "RepositoryMetaComponent",
     "RepositoryMetaComponentRepositoryType",
-    "RepositoryType",
+    "RepositoryResponse",
+    "RepositoryResponseType",
     "RetrieveProjectsSortOrder",
     "Score",
     "ScoreBusinessImpact",
@@ -406,13 +494,13 @@ __all__ = (
     "ScoreTechnicalImpact",
     "ServiceComponent",
     "Tag",
+    "TagListResponseItem",
+    "TagOperationProblemDetails",
+    "TagOperationProblemDetailsErrors",
     "TaggedCollectionProjectListResponseItem",
     "TaggedPolicyListResponseItem",
     "TaggedProjectListResponseItem",
     "TaggedVulnerabilityListResponseItem",
-    "TagListResponseItem",
-    "TagOperationProblemDetails",
-    "TagOperationProblemDetailsErrors",
     "Team",
     "TeamAlreadyExistsProblemDetails",
     "TeamPermissionsSetRequest",
@@ -420,11 +508,19 @@ __all__ = (
     "TeamSelfResponse",
     "TeamsSetRequest",
     "Tools",
+    "UpdateConfigPropertyRequest",
+    "UpdateLicenseGroupRequest",
     "UpdateNotificationPublisherRequest",
     "UpdateNotificationRuleRequest",
     "UpdateNotificationRuleRequestLevel",
     "UpdateNotificationRuleRequestNotifyOnItem",
     "UpdateNotificationRuleRequestScope",
+    "UpdatePolicyConditionRequest",
+    "UpdatePolicyConditionRequestOperator",
+    "UpdatePolicyConditionRequestSubject",
+    "UpdatePolicyConditionRequestViolationType",
+    "UpdateProjectPropertyRequest",
+    "UpdateRepositoryRequest",
     "UploadBomBody",
     "UploadVex1Body",
     "User",
@@ -438,6 +534,8 @@ __all__ = (
     "ViolationAnalysisComment",
     "ViolationAnalysisRequest",
     "ViolationAnalysisRequestAnalysisState",
+    "ViolationAnalysisResponse",
+    "ViolationAnalysisResponseAnalysisState",
     "ViolationAnalysisViolationAnalysisState",
     "VisibleTeams",
     "Vulnerability",

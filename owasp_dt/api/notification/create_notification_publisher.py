@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.create_notification_publisher_request import (
     CreateNotificationPublisherRequest,
 )
-from ...models.notification_publisher import NotificationPublisher
+from ...models.notification_publisher_response import NotificationPublisherResponse
 from ...types import UNSET, Response, Unset
 
 
@@ -34,9 +34,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | NotificationPublisher | None:
+) -> Any | NotificationPublisherResponse | None:
     if response.status_code == 201:
-        response_201 = NotificationPublisher.from_dict(response.json())
+        response_201 = NotificationPublisherResponse.from_dict(response.json())
 
         return response_201
 
@@ -60,7 +60,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | NotificationPublisher]:
+) -> Response[Any | NotificationPublisherResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,7 +73,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: CreateNotificationPublisherRequest | Unset = UNSET,
-) -> Response[Any | NotificationPublisher]:
+) -> Response[Any | NotificationPublisherResponse]:
     """Creates a new notification publisher
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -87,7 +87,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | NotificationPublisher]
+        Response[Any | NotificationPublisherResponse]
     """
 
     kwargs = _get_kwargs(
@@ -105,7 +105,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: CreateNotificationPublisherRequest | Unset = UNSET,
-) -> Any | NotificationPublisher | None:
+) -> Any | NotificationPublisherResponse | None:
     """Creates a new notification publisher
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -119,7 +119,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | NotificationPublisher
+        Any | NotificationPublisherResponse
     """
 
     return sync_detailed(
@@ -132,7 +132,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: CreateNotificationPublisherRequest | Unset = UNSET,
-) -> Response[Any | NotificationPublisher]:
+) -> Response[Any | NotificationPublisherResponse]:
     """Creates a new notification publisher
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -146,7 +146,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | NotificationPublisher]
+        Response[Any | NotificationPublisherResponse]
     """
 
     kwargs = _get_kwargs(
@@ -162,7 +162,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: CreateNotificationPublisherRequest | Unset = UNSET,
-) -> Any | NotificationPublisher | None:
+) -> Any | NotificationPublisherResponse | None:
     """Creates a new notification publisher
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -176,7 +176,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | NotificationPublisher
+        Any | NotificationPublisherResponse
     """
 
     return (

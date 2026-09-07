@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ComponentScope(str, Enum):
+class ComponentScope(StrEnum):
     EXCLUDED = "EXCLUDED"
     OPTIONAL = "OPTIONAL"
     REQUIRED = "REQUIRED"

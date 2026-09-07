@@ -25,6 +25,7 @@ def _get_kwargs(
     sort_order: GetAllNotificationRulesSortOrder | Unset = UNSET,
     trigger_type: GetAllNotificationRulesTriggerType | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

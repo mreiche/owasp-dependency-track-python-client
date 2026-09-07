@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyAnalysisVendorResponse(str, Enum):
+class VulnPolicyAnalysisVendorResponse(StrEnum):
     CAN_NOT_FIX = "CAN_NOT_FIX"
     ROLLBACK = "ROLLBACK"
     UPDATE = "UPDATE"

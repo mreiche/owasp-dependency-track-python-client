@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetAllPermissionsResponse200(str, Enum):
+class GetAllPermissionsResponse200(StrEnum):
     ACCESS_MANAGEMENT = "ACCESS_MANAGEMENT"
     ACCESS_MANAGEMENT_CREATE = "ACCESS_MANAGEMENT_CREATE"
     ACCESS_MANAGEMENT_DELETE = "ACCESS_MANAGEMENT_DELETE"

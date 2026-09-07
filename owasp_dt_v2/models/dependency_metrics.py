@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,6 +20,7 @@ class DependencyMetrics:
         medium (int | Unset):
         low (int | Unset):
         unassigned (int | Unset):
+        kev (int | Unset):
         vulnerabilities (int | Unset):
         suppressed (int | Unset):
         inherited_risk_score (float | Unset):
@@ -48,6 +49,7 @@ class DependencyMetrics:
     medium: int | Unset = UNSET
     low: int | Unset = UNSET
     unassigned: int | Unset = UNSET
+    kev: int | Unset = UNSET
     vulnerabilities: int | Unset = UNSET
     suppressed: int | Unset = UNSET
     inherited_risk_score: float | Unset = UNSET
@@ -81,6 +83,8 @@ class DependencyMetrics:
         low = self.low
 
         unassigned = self.unassigned
+
+        kev = self.kev
 
         vulnerabilities = self.vulnerabilities
 
@@ -141,6 +145,8 @@ class DependencyMetrics:
             field_dict["low"] = low
         if unassigned is not UNSET:
             field_dict["unassigned"] = unassigned
+        if kev is not UNSET:
+            field_dict["kev"] = kev
         if vulnerabilities is not UNSET:
             field_dict["vulnerabilities"] = vulnerabilities
         if suppressed is not UNSET:
@@ -205,7 +211,7 @@ class DependencyMetrics:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         critical = d.pop("critical", UNSET)
 
@@ -216,6 +222,8 @@ class DependencyMetrics:
         low = d.pop("low", UNSET)
 
         unassigned = d.pop("unassigned", UNSET)
+
+        kev = d.pop("kev", UNSET)
 
         vulnerabilities = d.pop("vulnerabilities", UNSET)
 
@@ -283,6 +291,7 @@ class DependencyMetrics:
             medium=medium,
             low=low,
             unassigned=unassigned,
+            kev=kev,
             vulnerabilities=vulnerabilities,
             suppressed=suppressed,
             inherited_risk_score=inherited_risk_score,

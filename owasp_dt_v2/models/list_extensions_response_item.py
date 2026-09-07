@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,17 +14,21 @@ class ListExtensionsResponseItem:
     """
     Attributes:
         name (str):
+        display_name (str): Human-readable name of the extension.
         configurable (bool): Whether the extension supports runtime configuration.
         testable (bool): Whether the extension can be tested.
     """
 
     name: str
+    display_name: str
     configurable: bool
     testable: bool
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
+
+        display_name = self.display_name
 
         configurable = self.configurable
 
@@ -35,6 +39,7 @@ class ListExtensionsResponseItem:
         field_dict.update(
             {
                 "name": name,
+                "display_name": display_name,
                 "configurable": configurable,
                 "testable": testable,
             }
@@ -43,9 +48,11 @@ class ListExtensionsResponseItem:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         name = d.pop("name")
+
+        display_name = d.pop("display_name")
 
         configurable = d.pop("configurable")
 
@@ -53,6 +60,7 @@ class ListExtensionsResponseItem:
 
         list_extensions_response_item = cls(
             name=name,
+            display_name=display_name,
             configurable=configurable,
             testable=testable,
         )

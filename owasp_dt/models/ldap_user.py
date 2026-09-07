@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,6 +10,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.permission import Permission
+    from ..models.team import Team
 
 
 T = TypeVar("T", bound="LdapUser")
@@ -23,12 +24,14 @@ class LdapUser:
         dn (str | Unset):
         email (str | Unset):
         permissions (list[Permission] | Unset):
+        teams (list[Team] | Unset):
     """
 
     username: str
     dn: str | Unset = UNSET
     email: str | Unset = UNSET
     permissions: list[Permission] | Unset = UNSET
+    teams: list[Team] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -45,6 +48,13 @@ class LdapUser:
                 permissions_item = permissions_item_data.to_dict()
                 permissions.append(permissions_item)
 
+        teams: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.teams, Unset):
+            teams = []
+            for teams_item_data in self.teams:
+                teams_item = teams_item_data.to_dict()
+                teams.append(teams_item)
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -58,12 +68,15 @@ class LdapUser:
             field_dict["email"] = email
         if permissions is not UNSET:
             field_dict["permissions"] = permissions
+        if teams is not UNSET:
+            field_dict["teams"] = teams
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.permission import Permission
+        from ..models.team import Team
 
         d = dict(src_dict)
         username = d.pop("username")
@@ -81,11 +94,21 @@ class LdapUser:
 
                 permissions.append(permissions_item)
 
+        _teams = d.pop("teams", UNSET)
+        teams: list[Team] | Unset = UNSET
+        if _teams is not UNSET:
+            teams = []
+            for teams_item_data in _teams:
+                teams_item = Team.from_dict(teams_item_data)
+
+                teams.append(teams_item)
+
         ldap_user = cls(
             username=username,
             dn=dn,
             email=email,
             permissions=permissions,
+            teams=teams,
         )
 
         ldap_user.additional_properties = d

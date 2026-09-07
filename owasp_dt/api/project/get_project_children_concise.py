@@ -30,6 +30,7 @@ def _get_kwargs(
     active: bool | Unset = UNSET,
     include_metrics: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

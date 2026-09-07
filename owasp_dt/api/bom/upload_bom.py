@@ -91,10 +91,21 @@ def sync_detailed(
       or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
-      MediaType supported for BOM artifact is 'application/xml' or 'application/json'.
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
@@ -138,10 +149,21 @@ def sync(
       or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
-      MediaType supported for BOM artifact is 'application/xml' or 'application/json'.
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
@@ -180,10 +202,21 @@ async def asyncio_detailed(
       or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
-      MediaType supported for BOM artifact is 'application/xml' or 'application/json'.
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
@@ -225,10 +258,21 @@ async def asyncio(
       or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
-      MediaType supported for BOM artifact is 'application/xml' or 'application/json'.
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 

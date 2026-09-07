@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class UpdateNotificationRuleRequestScope(str, Enum):
+class UpdateNotificationRuleRequestScope(StrEnum):
     PORTFOLIO = "PORTFOLIO"
     SYSTEM = "SYSTEM"
 

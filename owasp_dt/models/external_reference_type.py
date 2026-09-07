@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ExternalReferenceType(str, Enum):
+class ExternalReferenceType(StrEnum):
     ADVERSARY_MODEL = "adversary-model"
     ADVISORIES = "advisories"
     ATTESTATION = "attestation"
@@ -10,6 +10,7 @@ class ExternalReferenceType(str, Enum):
     BUILD_SYSTEM = "build-system"
     CERTIFICATION_REPORT = "certification-report"
     CHAT = "chat"
+    CITATION = "citation"
     CODIFIED_INFRASTRUCTURE = "codified-infrastructure"
     COMPONENT_ANALYSIS_REPORT = "component-analysis-report"
     CONFIGURATION = "configuration"
@@ -27,9 +28,13 @@ class ExternalReferenceType(str, Enum):
     LOG = "log"
     MAILING_LIST = "mailing-list"
     MATURITY_REPORT = "maturity-report"
-    MODEL_CARD = "model_card"
+    MODEL_CARD = "model-card"
     OTHER = "other"
+    PATENT = "patent"
+    PATENT_ASSERTION = "patent-assertion"
+    PATENT_FAMILY = "patent-family"
     PENTEST_REPORT = "pentest-report"
+    POAM = "poam"
     QUALITY_METRICS = "quality-metrics"
     RELEASE_NOTES = "release-notes"
     RFC_9116 = "rfc-9116"

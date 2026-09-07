@@ -7,15 +7,16 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.create_project_property_request import CreateProjectPropertyRequest
 from ...models.problem_details import ProblemDetails
-from ...models.project_property import ProjectProperty
+from ...models.project_property_response import ProjectPropertyResponse
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     uuid: UUID,
     *,
-    body: ProjectProperty | Unset = UNSET,
+    body: CreateProjectPropertyRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -37,9 +38,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | ProblemDetails | ProjectProperty | None:
+) -> Any | ProblemDetails | ProjectPropertyResponse | None:
     if response.status_code == 201:
-        response_201 = ProjectProperty.from_dict(response.json())
+        response_201 = ProjectPropertyResponse.from_dict(response.json())
 
         return response_201
 
@@ -68,7 +69,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | ProblemDetails | ProjectProperty]:
+) -> Response[Any | ProblemDetails | ProjectPropertyResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -81,8 +82,8 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
-) -> Response[Any | ProblemDetails | ProjectProperty]:
+    body: CreateProjectPropertyRequest | Unset = UNSET,
+) -> Response[Any | ProblemDetails | ProjectPropertyResponse]:
     """Creates a new project property
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -90,14 +91,14 @@ def sync_detailed(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (CreateProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ProblemDetails | ProjectProperty]
+        Response[Any | ProblemDetails | ProjectPropertyResponse]
     """
 
     kwargs = _get_kwargs(
@@ -116,8 +117,8 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
-) -> Any | ProblemDetails | ProjectProperty | None:
+    body: CreateProjectPropertyRequest | Unset = UNSET,
+) -> Any | ProblemDetails | ProjectPropertyResponse | None:
     """Creates a new project property
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -125,14 +126,14 @@ def sync(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (CreateProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ProblemDetails | ProjectProperty
+        Any | ProblemDetails | ProjectPropertyResponse
     """
 
     return sync_detailed(
@@ -146,8 +147,8 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
-) -> Response[Any | ProblemDetails | ProjectProperty]:
+    body: CreateProjectPropertyRequest | Unset = UNSET,
+) -> Response[Any | ProblemDetails | ProjectPropertyResponse]:
     """Creates a new project property
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -155,14 +156,14 @@ async def asyncio_detailed(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (CreateProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ProblemDetails | ProjectProperty]
+        Response[Any | ProblemDetails | ProjectPropertyResponse]
     """
 
     kwargs = _get_kwargs(
@@ -179,8 +180,8 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ProjectProperty | Unset = UNSET,
-) -> Any | ProblemDetails | ProjectProperty | None:
+    body: CreateProjectPropertyRequest | Unset = UNSET,
+) -> Any | ProblemDetails | ProjectPropertyResponse | None:
     """Creates a new project property
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -188,14 +189,14 @@ async def asyncio(
 
     Args:
         uuid (UUID):
-        body (ProjectProperty | Unset):
+        body (CreateProjectPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ProblemDetails | ProjectProperty
+        Any | ProblemDetails | ProjectPropertyResponse
     """
 
     return (

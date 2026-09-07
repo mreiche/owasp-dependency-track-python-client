@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class UpdateNotificationRuleRequestNotifyOnItem(str, Enum):
+class UpdateNotificationRuleRequestNotifyOnItem(StrEnum):
     ANALYZER = "ANALYZER"
     BOM_CONSUMED = "BOM_CONSUMED"
     BOM_PROCESSED = "BOM_PROCESSED"

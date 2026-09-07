@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetRepositoriesByTypeType(str, Enum):
+class GetRepositoriesByTypeType(StrEnum):
     CARGO = "CARGO"
     COMPOSER = "COMPOSER"
     CPAN = "CPAN"

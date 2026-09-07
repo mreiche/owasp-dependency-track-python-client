@@ -7,14 +7,15 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.problem_details import ProblemDetails
 from ...models.project import Project
-from ...types import UNSET, Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     name: str,
-    version: str,
+    version: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["name"] = name
@@ -74,7 +75,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     name: str,
-    version: str,
+    version: str | Unset = UNSET,
 ) -> Response[Any | ProblemDetails | Project]:
     """Returns a specific project by its name and version
 
@@ -82,7 +83,7 @@ def sync_detailed(
 
     Args:
         name (str):
-        version (str):
+        version (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -108,7 +109,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     name: str,
-    version: str,
+    version: str | Unset = UNSET,
 ) -> Any | ProblemDetails | Project | None:
     """Returns a specific project by its name and version
 
@@ -116,7 +117,7 @@ def sync(
 
     Args:
         name (str):
-        version (str):
+        version (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -137,7 +138,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     name: str,
-    version: str,
+    version: str | Unset = UNSET,
 ) -> Response[Any | ProblemDetails | Project]:
     """Returns a specific project by its name and version
 
@@ -145,7 +146,7 @@ async def asyncio_detailed(
 
     Args:
         name (str):
-        version (str):
+        version (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -169,7 +170,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     name: str,
-    version: str,
+    version: str | Unset = UNSET,
 ) -> Any | ProblemDetails | Project | None:
     """Returns a specific project by its name and version
 
@@ -177,7 +178,7 @@ async def asyncio(
 
     Args:
         name (str):
-        version (str):
+        version (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

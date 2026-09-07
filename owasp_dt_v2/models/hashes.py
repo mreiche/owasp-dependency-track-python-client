@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -26,6 +26,8 @@ class Hashes:
         blake2b_384 (str | Unset):
         blake2b_512 (str | Unset):
         blake3 (str | Unset):
+        streebog_256 (str | Unset):
+        streebog_512 (str | Unset):
         md5 (str | Unset):
     """
 
@@ -40,6 +42,8 @@ class Hashes:
     blake2b_384: str | Unset = UNSET
     blake2b_512: str | Unset = UNSET
     blake3: str | Unset = UNSET
+    streebog_256: str | Unset = UNSET
+    streebog_512: str | Unset = UNSET
     md5: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -65,6 +69,10 @@ class Hashes:
         blake2b_512 = self.blake2b_512
 
         blake3 = self.blake3
+
+        streebog_256 = self.streebog_256
+
+        streebog_512 = self.streebog_512
 
         md5 = self.md5
 
@@ -93,13 +101,17 @@ class Hashes:
             field_dict["blake2b_512"] = blake2b_512
         if blake3 is not UNSET:
             field_dict["blake3"] = blake3
+        if streebog_256 is not UNSET:
+            field_dict["streebog_256"] = streebog_256
+        if streebog_512 is not UNSET:
+            field_dict["streebog_512"] = streebog_512
         if md5 is not UNSET:
             field_dict["md5"] = md5
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         sha1 = d.pop("sha1", UNSET)
 
@@ -123,6 +135,10 @@ class Hashes:
 
         blake3 = d.pop("blake3", UNSET)
 
+        streebog_256 = d.pop("streebog_256", UNSET)
+
+        streebog_512 = d.pop("streebog_512", UNSET)
+
         md5 = d.pop("md5", UNSET)
 
         hashes = cls(
@@ -137,6 +153,8 @@ class Hashes:
             blake2b_384=blake2b_384,
             blake2b_512=blake2b_512,
             blake3=blake3,
+            streebog_256=streebog_256,
+            streebog_512=streebog_512,
             md5=md5,
         )
 

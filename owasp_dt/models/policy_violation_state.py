@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PolicyViolationState(str, Enum):
+class PolicyViolationState(StrEnum):
     FAIL = "FAIL"
     INFO = "INFO"
     WARN = "WARN"

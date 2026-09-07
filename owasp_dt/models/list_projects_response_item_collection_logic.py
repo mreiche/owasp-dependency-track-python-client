@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ListProjectsResponseItemCollectionLogic(str, Enum):
+class ListProjectsResponseItemCollectionLogic(StrEnum):
     AGGREGATE_DIRECT_CHILDREN = "AGGREGATE_DIRECT_CHILDREN"
     AGGREGATE_DIRECT_CHILDREN_WITH_TAG = "AGGREGATE_DIRECT_CHILDREN_WITH_TAG"
     AGGREGATE_LATEST_VERSION_CHILDREN = "AGGREGATE_LATEST_VERSION_CHILDREN"

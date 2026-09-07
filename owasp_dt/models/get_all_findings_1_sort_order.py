@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetAllFindings1SortOrder(str, Enum):
+class GetAllFindings1SortOrder(StrEnum):
     ASC_DESC = "asc, desc"
 
     def __str__(self) -> str:

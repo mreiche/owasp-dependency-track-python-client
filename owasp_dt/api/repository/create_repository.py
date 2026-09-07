@@ -5,13 +5,14 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.repository import Repository
+from ...models.create_repository_request import CreateRepositoryRequest
+from ...models.repository_response import RepositoryResponse
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: Repository | Unset = UNSET,
+    body: CreateRepositoryRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -31,9 +32,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | Repository | None:
+) -> Any | RepositoryResponse | None:
     if response.status_code == 201:
-        response_201 = Repository.from_dict(response.json())
+        response_201 = RepositoryResponse.from_dict(response.json())
 
         return response_201
 
@@ -53,7 +54,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | Repository]:
+) -> Response[Any | RepositoryResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -65,22 +66,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: Repository | Unset = UNSET,
-) -> Response[Any | Repository]:
+    body: CreateRepositoryRequest | Unset = UNSET,
+) -> Response[Any | RepositoryResponse]:
     """Creates a new repository
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
     <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (Repository | Unset):
+        body (CreateRepositoryRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | Repository]
+        Response[Any | RepositoryResponse]
     """
 
     kwargs = _get_kwargs(
@@ -97,22 +98,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: Repository | Unset = UNSET,
-) -> Any | Repository | None:
+    body: CreateRepositoryRequest | Unset = UNSET,
+) -> Any | RepositoryResponse | None:
     """Creates a new repository
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
     <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (Repository | Unset):
+        body (CreateRepositoryRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | Repository
+        Any | RepositoryResponse
     """
 
     return sync_detailed(
@@ -124,22 +125,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: Repository | Unset = UNSET,
-) -> Response[Any | Repository]:
+    body: CreateRepositoryRequest | Unset = UNSET,
+) -> Response[Any | RepositoryResponse]:
     """Creates a new repository
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
     <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (Repository | Unset):
+        body (CreateRepositoryRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | Repository]
+        Response[Any | RepositoryResponse]
     """
 
     kwargs = _get_kwargs(
@@ -154,22 +155,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: Repository | Unset = UNSET,
-) -> Any | Repository | None:
+    body: CreateRepositoryRequest | Unset = UNSET,
+) -> Any | RepositoryResponse | None:
     """Creates a new repository
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
     <strong>SYSTEM_CONFIGURATION_CREATE</strong></p>
 
     Args:
-        body (Repository | Unset):
+        body (CreateRepositoryRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | Repository
+        Any | RepositoryResponse
     """
 
     return (

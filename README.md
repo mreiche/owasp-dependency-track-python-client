@@ -2,7 +2,7 @@
 
 # OWASP Dependency Track Python API client
 
-This is a generated library based on the official OWASP Dependency Track OpenAPI spec (`/api/openapi.json`) using [openapi-python-client](https://github.com/openapi-generators/openapi-python-client).
+This is a generated library based on the official OWASP Dependency Track OpenAPI spec using [openapi-python-client](https://github.com/openapi-generators/openapi-python-client) including some sanity patches.
 
 ## Usage
 
@@ -16,6 +16,7 @@ from owasp_dt import Client
 
 client = Client(
     base_url="http://localhost:8080/api",
+    # base_url="http://localhost:8080/api/v2",  # For v2 API
     headers={
         "X-Api-Key": "YOUR API KEY"
     },
@@ -31,19 +32,16 @@ projects = get_projects.sync(client=client)
 assert len(projects) > 0
 ```
 
-## More OWASP Dependency Track utils
+## OWASP Dependency Track CLI
 
-This library is part of a wider OWASP Dependency Track tool chain:
-- OWASP Dependency Track Python API client: https://github.com/mreiche/owasp-dependency-track-python-client
-- OWASP Dependency Track CLI: https://github.com/mreiche/owasp-dependency-track-cli
-- OWASP Dependency Track Azure DevOps Sync: https://github.com/mreiche/owasp-dependency-track-azure-devops
+Looking for a CLI? Check out https://github.com/mreiche/owasp-dependency-track-cli
 
 ## Development
 
 ### Update the library
 
-1. Install the requirements: `uv sync --extra test`
-2. Start a OWASP DT instance locally (like via. Docker-Compose): https://docs.dependencytrack.org/getting-started/deploy-docker/
+1. Install the requirements: `pip install -e ".[test]` or `uv sync --extra test`
+2. Start an OWASP DT instance locally (see [Start the test environment](#start-the-test-environment)): https://docs.dependencytrack.org/getting-started/deploy-docker/
 3. Run `regenerate-api-client.sh`
 4. Check if bugs are still in effect
    - https://github.com/openapi-generators/openapi-python-client/issues/1256

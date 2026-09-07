@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,12 +20,12 @@ T = TypeVar("T", bound="ManagedUser")
 class ManagedUser:
     """
     Attributes:
-        last_password_change (int): UNIX epoch timestamp in milliseconds
+        email (str):
         username (str):
         confirm_password (str | Unset):
-        email (str | Unset):
         force_password_change (bool | Unset):
         fullname (str | Unset):
+        last_password_change (int | Unset): UNIX epoch timestamp in milliseconds
         new_password (str | Unset):
         non_expiry_password (bool | Unset):
         permissions (list[Permission] | Unset):
@@ -33,12 +33,12 @@ class ManagedUser:
         teams (list[Team] | Unset):
     """
 
-    last_password_change: int
+    email: str
     username: str
     confirm_password: str | Unset = UNSET
-    email: str | Unset = UNSET
     force_password_change: bool | Unset = UNSET
     fullname: str | Unset = UNSET
+    last_password_change: int | Unset = UNSET
     new_password: str | Unset = UNSET
     non_expiry_password: bool | Unset = UNSET
     permissions: list[Permission] | Unset = UNSET
@@ -47,17 +47,17 @@ class ManagedUser:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        last_password_change = self.last_password_change
+        email = self.email
 
         username = self.username
 
         confirm_password = self.confirm_password
 
-        email = self.email
-
         force_password_change = self.force_password_change
 
         fullname = self.fullname
+
+        last_password_change = self.last_password_change
 
         new_password = self.new_password
 
@@ -83,18 +83,18 @@ class ManagedUser:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "lastPasswordChange": last_password_change,
+                "email": email,
                 "username": username,
             }
         )
         if confirm_password is not UNSET:
             field_dict["confirmPassword"] = confirm_password
-        if email is not UNSET:
-            field_dict["email"] = email
         if force_password_change is not UNSET:
             field_dict["forcePasswordChange"] = force_password_change
         if fullname is not UNSET:
             field_dict["fullname"] = fullname
+        if last_password_change is not UNSET:
+            field_dict["lastPasswordChange"] = last_password_change
         if new_password is not UNSET:
             field_dict["newPassword"] = new_password
         if non_expiry_password is not UNSET:
@@ -109,22 +109,22 @@ class ManagedUser:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.permission import Permission
         from ..models.team import Team
 
         d = dict(src_dict)
-        last_password_change = d.pop("lastPasswordChange")
+        email = d.pop("email")
 
         username = d.pop("username")
 
         confirm_password = d.pop("confirmPassword", UNSET)
 
-        email = d.pop("email", UNSET)
-
         force_password_change = d.pop("forcePasswordChange", UNSET)
 
         fullname = d.pop("fullname", UNSET)
+
+        last_password_change = d.pop("lastPasswordChange", UNSET)
 
         new_password = d.pop("newPassword", UNSET)
 
@@ -151,12 +151,12 @@ class ManagedUser:
                 teams.append(teams_item)
 
         managed_user = cls(
-            last_password_change=last_password_change,
+            email=email,
             username=username,
             confirm_password=confirm_password,
-            email=email,
             force_password_change=force_password_change,
             fullname=fullname,
+            last_password_change=last_password_change,
             new_password=new_password,
             non_expiry_password=non_expiry_password,
             permissions=permissions,

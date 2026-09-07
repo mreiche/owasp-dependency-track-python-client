@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ConfigPropertyPropertyType(str, Enum):
+class CreateProjectPropertyRequestPropertyType(StrEnum):
     BOOLEAN = "BOOLEAN"
     INTEGER = "INTEGER"
     NUMBER = "NUMBER"

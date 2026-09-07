@@ -1,31 +1,33 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.project_property_property_type import ProjectPropertyPropertyType
+from ..models.config_property_response_property_type import (
+    ConfigPropertyResponsePropertyType,
+)
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ProjectProperty")
+T = TypeVar("T", bound="ConfigPropertyResponse")
 
 
 @_attrs_define
-class ProjectProperty:
+class ConfigPropertyResponse:
     """
     Attributes:
-        group_name (str):
-        property_name (str):
-        property_type (ProjectPropertyPropertyType):
-        description (str | Unset):
-        property_value (str | Unset):
+        group_name (str): Group the property belongs to
+        property_name (str): Name of the property
+        property_type (ConfigPropertyResponsePropertyType): Type of the property
+        description (str | Unset): Description of the property
+        property_value (str | Unset): Value of the property
     """
 
     group_name: str
     property_name: str
-    property_type: ProjectPropertyPropertyType
+    property_type: ConfigPropertyResponsePropertyType
     description: str | Unset = UNSET
     property_value: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -58,19 +60,19 @@ class ProjectProperty:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         group_name = d.pop("groupName")
 
         property_name = d.pop("propertyName")
 
-        property_type = ProjectPropertyPropertyType(d.pop("propertyType"))
+        property_type = ConfigPropertyResponsePropertyType(d.pop("propertyType"))
 
         description = d.pop("description", UNSET)
 
         property_value = d.pop("propertyValue", UNSET)
 
-        project_property = cls(
+        config_property_response = cls(
             group_name=group_name,
             property_name=property_name,
             property_type=property_type,
@@ -78,8 +80,8 @@ class ProjectProperty:
             property_value=property_value,
         )
 
-        project_property.additional_properties = d
-        return project_property
+        config_property_response.additional_properties = d
+        return config_property_response
 
     @property
     def additional_keys(self) -> list[str]:

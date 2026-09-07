@@ -24,6 +24,7 @@ def _get_kwargs(
     exclude_inactive: bool | Unset = UNSET,
     only_root: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

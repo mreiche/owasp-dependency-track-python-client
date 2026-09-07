@@ -5,13 +5,14 @@
       "name": "The Dependency-Track Authors",
       "url": "https://github.com/DependencyTrack/dependency-track"
     },
-    "description": "REST API of OWASP Dependency-Track\n\n> **Note:** This API version is in maintenance mode and will be\n> superseded by v2, available under `/api/v2`, which follows a\n> spec-first approach. New operations will be added there.\n>\n> This specification is generated and may not always accurately\n> reflect the actual response content of every operation. When\n> in doubt, treat observed runtime behavior as authoritative.\n\n## Authentication\n\nTwo credential types are accepted:\n\n- **API key** via the `X-Api-Key` request header. API keys are\n  long-lived and intended for machine-to-machine integrations.\n- **Bearer token** via the `Authorization: Bearer <token>` request\n  header. Bearer tokens are short-lived, user-bound, and opaque\n  server-issued session tokens.\n\nBearer tokens are obtained from one of the following endpoints:\n\n- `POST /api/v1/user/login`\n- `POST /api/v1/user/oidc/login`\n\nTokens are valid for 8 hours by default and **cannot be refreshed**.\nClients must re-authenticate once a token expires.\n\nRequests with missing or invalid credentials are rejected with\n`401 Unauthorized`.\n\n## Authorization\n\nAccess is gated by named permissions. Operations document\nthe permission(s) they require; operations without a documented\npermission requirement only require authentication.\n\nWhen the *Portfolio Access Control* feature is enabled\n(disabled by default), project-scoped operations additionally enforce\nper-project access via team membership. The `PORTFOLIO_ACCESS_CONTROL_BYPASS`\npermission grants access to all projects regardless of team mappings.\nWhen the feature is disabled, all authenticated callers holding the required\npermission can access all projects.\n\nAuthenticated requests that lack the required permission, or that\ntarget a project the caller cannot access, are rejected with\n`403 Forbidden`.\n\n## Pagination\n\nCollection endpoints support page-based pagination via the\nfollowing query parameters:\n\n| Parameter    | Description                              | Default |\n|--------------|------------------------------------------|---------|\n| `pageNumber` | The page to retrieve (1-based).          | `1`     |\n| `pageSize`   | The maximum number of items per page.    | `100`   |\n\nThe total number of items in the collection across all pages is\nreturned in the `X-Total-Count` response header.\n\n## HTTP Methods\n\n| Method   | Semantics                                |\n|----------|------------------------------------------|\n| `GET`    | Retrieve a resource.                     |\n| `PUT`    | **Create** a new resource.               |\n| `POST`   | **Update** an existing resource.         |\n| `DELETE` | Delete a resource.                       |\n\nNote that the use of `PUT` for create and `POST` for update is\nthe inverse of the convention followed by most other REST APIs,\nincluding API v2.\n\n## Response Conventions\n\nCreate (`PUT`) and update (`POST`) operations typically return\nthe full resource representation in the response body, with\nstatus `201 Created` and `200 OK` respectively.\n\nDelete (`DELETE`) operations typically return `204 No Content`.\n\n## Deprecations\n\nOperations may be removed or replaced over time. When a response\ncarries the `X-API-Deprecated: true` header, the operation that\nproduced it is deprecated and may be removed in a future release.\nClients should check for this header on every response and surface\nit (e.g. via a log warning) so that operators are aware of\nupcoming breakages. The respective operation's description points\nout which alternative operation(s) to use.",
+    "description": "REST API of OWASP Dependency-Track\n\n> **Note:** This API version is in maintenance mode and will be\n> superseded by v2, available under `/api/v2`, which follows a\n> spec-first approach. New operations will be added there.\n>\n> This specification is generated and may not always accurately\n> reflect the actual response content of every operation. When\n> in doubt, treat observed runtime behavior as authoritative.\n\n## Authentication\n\nTwo credential types are accepted:\n\n- **API key** via the `X-Api-Key` request header. API keys are\n  long-lived and intended for machine-to-machine integrations.\n- **Bearer token** via the `Authorization: Bearer <token>` request\n  header. Bearer tokens are short-lived, user-bound, and opaque\n  server-issued session tokens.\n\nBearer tokens are obtained from one of the following endpoints:\n\n- `POST /api/v1/user/login`\n- `POST /api/v1/user/oidc/login`\n\nTokens are valid for 8 hours by default and **cannot be refreshed**.\nClients must re-authenticate once a token expires.\n\nRequests with missing or invalid credentials are rejected with\n`401 Unauthorized`.\n\n## Authorization\n\nAccess is gated by named permissions. Operations document\nthe permission(s) they require; operations without a documented\npermission requirement only require authentication.\n\nWhen the *Portfolio Access Control* feature is enabled\n(disabled by default), project-scoped operations additionally enforce\nper-project access via team membership. The `PORTFOLIO_ACCESS_CONTROL_BYPASS`\npermission grants access to all projects regardless of team mappings.\nWhen the feature is disabled, all authenticated callers holding the required\npermission can access all projects.\n\nAuthenticated requests that lack the required permission, or that\ntarget a project the caller cannot access, are rejected with\n`403 Forbidden`.\n\n## Pagination\n\nCollection endpoints support page-based pagination via the\nfollowing query parameters:\n\n| Parameter    | Description                              | Default |\n|--------------|------------------------------------------|---------|\n| `pageNumber` | The page to retrieve (1-based).          | `1`     |\n| `pageSize`   | The maximum number of items per page.    | `100`   |\n\nThe total number of items in the collection across all pages is\nreturned in the `X-Total-Count` response header.\n\n### Bounded total counts\n\nAn exact `X-Total-Count` gets more expensive as a collection grows, and on large\ncollections it can time out. Some endpoints therefore accept an optional `totalCount`\nquery parameter that caps the cost of counting:\n\n| `totalCount` | Description                                                        |\n|--------------|--------------------------------------------------------------------|\n| `EXACT`      | Count every matching item. The default. Can time out.              |\n| `BOUNDED`    | Stop counting at a server-side cap. May return only a lower bound. |\n\nAny other value is rejected with `400`. Each endpoint documents how it computes the\nbounded count, on its `totalCount` parameter.\n\nEndpoints that accept `totalCount` also return an `X-Total-Count-Type` header saying\nhow to read `X-Total-Count`. They return it on every collection response, including\nones that did not opt in.\n\n| `X-Total-Count-Type` | Meaning                                                              |\n|----------------------|----------------------------------------------------------------------|\n| `EXACT`              | `X-Total-Count` is the true total.                                   |\n| `AT_LEAST`           | `X-Total-Count` is only a lower bound. The true total may be higher. |\n\n## HTTP Methods\n\n| Method   | Semantics                                |\n|----------|------------------------------------------|\n| `GET`    | Retrieve a resource.                     |\n| `PUT`    | **Create** a new resource.               |\n| `POST`   | **Update** an existing resource.         |\n| `DELETE` | Delete a resource.                       |\n\nNote that the use of `PUT` for create and `POST` for update is\nthe inverse of the convention followed by most other REST APIs,\nincluding API v2.\n\n## Response Conventions\n\nCreate (`PUT`) and update (`POST`) operations typically return\nthe full resource representation in the response body, with\nstatus `201 Created` and `200 OK` respectively.\n\nDelete (`DELETE`) operations typically return `204 No Content`.\n\n## Timeouts\n\nA request that takes too long to complete is aborted and answered\nwith `504 Gateway Timeout` and a problem details body. Any operation\ncan time out, so operations do not document it individually.\n\nRequesting a bounded total count can avoid the timeout where the\noperation supports it, because counting is often the expensive part.\n\n## Deprecations\n\nOperations may be removed or replaced over time. When a response\ncarries the `X-API-Deprecated: true` header, the operation that\nproduced it is deprecated and may be removed in a future release.\nClients should check for this header on every response and surface\nit (e.g. via a log warning) so that operators are aware of\nupcoming breakages. The respective operation's description points\nout which alternative operation(s) to use.",
     "license": {
       "name": "Apache-2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "title": "OWASP Dependency-Track",
-    "version": "1.0.0"
+    "title": "OWASP Dependency-Track (Server v5.1.0)",
+    "version": "1.0.0",
+    "x-server-version": "5.1.0"
   },
   "servers": [
     {
@@ -25,7 +26,7 @@
         "operationId": "addMapping",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AclMappingRequest"
               }
@@ -572,7 +573,7 @@
     },
     "/v1/bom": {
       "post": {
-        "description": "<p>\n  Expects CycloneDX and a valid project UUID. If a UUID is not specified,\n  then the <code>projectName</code> and <code>projectVersion</code> must be specified.\n  Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not exist,\n  the project will be created. In this scenario, the principal making the request will\n  additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>, <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,\n  or <strong>PROJECT_CREATION_UPLOAD</strong> permission.\n</p>\n<p>\n  MediaType supported for BOM artifact is 'application/xml' or 'application/json'.\n  The BOM will be validated against the CycloneDX schema. If schema validation fails,\n  a response with problem details in RFC 9457 format will be returned. In this case,\n  the response's content type will be <code>application/problem+json</code>.\n</p>\n<p>Requires permission <strong>BOM_UPLOAD</strong></p>",
+        "description": "<p>\n  Expects CycloneDX and a valid project UUID. If a UUID is not specified,\n  then the <code>projectName</code> and <code>projectVersion</code> must be specified.\n  Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not exist,\n  the project will be created. In this scenario, the principal making the request will\n  additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>, <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,\n  or <strong>PROJECT_CREATION_UPLOAD</strong> permission.\n</p>\n<p>\n  The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,\n  the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,\n  the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual\n  compression of the data.\n  The BOM will be validated against the CycloneDX schema. If schema validation fails,\n  a response with problem details in RFC 9457 format will be returned. In this case,\n  the response's content type will be <code>application/problem+json</code>.\n</p>\n<p>\n  When creating projects, <code>parentUUID</code> or <code>parentName</code> and\n  <code>parentVersion</code> can place the new project under a parent,\n  <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as\n  the latest version. The <code>isActive</code> parameter sets the project's active\n  state whenever it is provided, including when the target project already exists, so\n  clients should send it only when they intend to change that state.\n</p>\n<p>Requires permission <strong>BOM_UPLOAD</strong></p>",
         "operationId": "UploadBom",
         "requestBody": {
           "content": {
@@ -585,7 +586,11 @@
                     "default": false
                   },
                   "bom": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "isActive": {
+                    "type": "boolean"
                   },
                   "isLatest": {
                     "type": "boolean",
@@ -662,7 +667,7 @@
         ]
       },
       "put": {
-        "description": "<p>\n  Expects CycloneDX and a valid project UUID. If a UUID is not specified,\n  then the <code>projectName</code> and <code>projectVersion</code> must be specified.\n  Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not exist,\n  the project will be created. In this scenario, the principal making the request will\n  additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>, <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,\n  or <strong>PROJECT_CREATION_UPLOAD</strong> permission.\n</p>\n<p>\n  The BOM will be validated against the CycloneDX schema. If schema validation fails,\n  a response with problem details in RFC 9457 format will be returned. In this case,\n  the response's content type will be <code>application/problem+json</code>.\n</p>\n<p>\n  The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.\n  When uploading large BOMs, the <code>POST</code> endpoint is preferred,\n  as it does not have this limit.\n</p>\n<p>Requires permission <strong>BOM_UPLOAD</strong></p>",
+        "description": "<p>\n  Expects CycloneDX and a valid project UUID. If a UUID is not specified,\n  then the <code>projectName</code> and <code>projectVersion</code> must be specified.\n  Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not exist,\n  the project will be created. In this scenario, the principal making the request will\n  additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>, <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,\n  or <strong>PROJECT_CREATION_UPLOAD</strong> permission.\n</p>\n<p>\n  The BOM will be validated against the CycloneDX schema. If schema validation fails,\n  a response with problem details in RFC 9457 format will be returned. In this case,\n  the response's content type will be <code>application/problem+json</code>.\n</p>\n<p>\n  When creating projects, <code>parentUUID</code> or <code>parentName</code> and\n  <code>parentVersion</code> can place the new project under a parent,\n  <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as\n  the latest version. The <code>isActive</code> parameter sets the project's active\n  state whenever it is provided, including when the target project already exists, so\n  clients should send it only when they intend to change that state.\n</p>\n<p>\n  The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.\n  When uploading large BOMs, the <code>POST</code> endpoint is preferred,\n  as it does not have this limit.\n</p>\n<p>Requires permission <strong>BOM_UPLOAD</strong></p>",
         "operationId": "UploadBomBase64Encoded",
         "requestBody": {
           "content": {
@@ -1148,7 +1153,7 @@
             }
           },
           {
-            "description": "The MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-256, SHA3-384, SHA3-512, BLAKE2b-256, BLAKE2b-384, BLAKE2b-512, or BLAKE3 hash of the component to retrieve",
+            "description": "The MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-256, SHA3-384, SHA3-512, BLAKE2b-256, BLAKE2b-384, BLAKE2b-512, BLAKE3, Streebog-256, or Streebog-512 hash of the component to retrieve",
             "in": "path",
             "name": "hash",
             "required": true,
@@ -1937,7 +1942,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ComponentProperty"
+                    "$ref": "#/components/schemas/ComponentPropertyResponse"
                   }
                 }
               }
@@ -1993,7 +1998,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ComponentProperty"
+                "$ref": "#/components/schemas/CreateComponentPropertyRequest"
               }
             }
           }
@@ -2003,7 +2008,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComponentProperty"
+                  "$ref": "#/components/schemas/ComponentPropertyResponse"
                 }
               }
             },
@@ -2115,7 +2120,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ConfigProperty"
+                    "$ref": "#/components/schemas/ConfigPropertyResponse"
                   }
                 }
               }
@@ -2141,12 +2146,12 @@
       },
       "post": {
         "description": "<p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>",
-        "operationId": "updateConfigProperty",
+        "operationId": "updateConfigProperty_1",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ConfigProperty"
+                "$ref": "#/components/schemas/UpdateConfigPropertyRequest"
               }
             }
           }
@@ -2156,7 +2161,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConfigProperty"
+                  "$ref": "#/components/schemas/ConfigPropertyResponse"
                 }
               }
             },
@@ -2186,14 +2191,14 @@
     "/v1/configProperty/aggregate": {
       "post": {
         "description": "<p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or <strong>SYSTEM_CONFIGURATION_UPDATE</strong></p>",
-        "operationId": "updateConfigProperty_1",
+        "operationId": "updateConfigProperty",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ConfigProperty"
+                  "$ref": "#/components/schemas/UpdateConfigPropertyRequest"
                 }
               }
             }
@@ -2206,18 +2211,23 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ConfigProperty"
+                    "type": "string",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/ConfigPropertyResponse"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
                   }
                 }
               }
             },
-            "description": "The updated config properties"
+            "description": "The updated config properties. Each array element is either a successfully updated `ConfigPropertyResponse`, or an error message string if the entry's property could not be found, is read-only, or its requested value is invalid."
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "One or more config properties could not be found"
           }
         },
         "security": [
@@ -2229,6 +2239,65 @@
           }
         ],
         "summary": "Updates an array of config properties",
+        "tags": [
+          "configProperty"
+        ]
+      }
+    },
+    "/v1/configProperty/internal/{groupName}/{propertyName}": {
+      "get": {
+        "description": "<p>\n  Requires authentication, but no permission.\n  Returns both internal and public properties\n</p>",
+        "operationId": "getInternalConfigProperty",
+        "parameters": [
+          {
+            "description": "The group name of the value to retrieve",
+            "in": "path",
+            "name": "groupName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The property name of the value to retrieve",
+            "in": "path",
+            "name": "propertyName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigPropertyResponse"
+                }
+              }
+            },
+            "description": "The internal config property"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not an internal- or public-readable config property"
+          },
+          "404": {
+            "description": "The config property could not be found"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Returns an internal ConfigProperty",
         "tags": [
           "configProperty"
         ]
@@ -2263,7 +2332,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConfigProperty"
+                  "$ref": "#/components/schemas/ConfigPropertyResponse"
                 }
               }
             },
@@ -2271,6 +2340,9 @@
           },
           "403": {
             "description": "This is not a public visible ConfigProperty"
+          },
+          "404": {
+            "description": "The config property could not be found"
           }
         },
         "security": [
@@ -2833,6 +2905,28 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Filter by known exploited vulnerability (KEV) status: omit for any, true for KEVs only, false to exclude KEVs",
+            "in": "query",
+            "name": "isKev",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "The counting mode for `X-Total-Count`. With `BOUNDED`, the count stops at a fixed server-side cap. `X-Total-Count` is then exact when the count finishes within the cap, or when the requested page ends the result set. Otherwise it is a lower bound, never below the end of the requested page. `X-Total-Count-Type` says which case applies. See the Pagination section of the API description.",
+            "in": "query",
+            "name": "totalCount",
+            "schema": {
+              "type": "string",
+              "default": "EXACT",
+              "description": "The counting mode for the `X-Total-Count` response header.",
+              "enum": [
+                "EXACT",
+                "BOUNDED"
+              ]
+            }
           }
         ],
         "responses": {
@@ -2850,13 +2944,27 @@
             "description": "A list of all findings",
             "headers": {
               "X-Total-Count": {
-                "description": "The total number of findings",
+                "description": "The number of findings, exact or a lower bound. See `X-Total-Count-Type`.",
                 "schema": {
                   "format": "integer"
                 },
                 "style": "simple"
+              },
+              "X-Total-Count-Type": {
+                "$ref": "#/components/headers/TotalCountType",
+                "style": "simple"
               }
             }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
           },
           "401": {
             "description": "Unauthorized"
@@ -3077,6 +3185,28 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Filter by known exploited vulnerability (KEV) status: omit for any, true for KEVs only, false to exclude KEVs",
+            "in": "query",
+            "name": "isKev",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "The counting mode for `X-Total-Count`. With `BOUNDED`, the count is skipped and `X-Total-Count` reports what the requested page itself proves. `X-Total-Count-Type` is then `EXACT` when the page ends the result set, and `AT_LEAST` otherwise. A page past the end reports `AT_LEAST` with a count of 0, which means the total is unknown. See the Pagination section of the API description.",
+            "in": "query",
+            "name": "totalCount",
+            "schema": {
+              "type": "string",
+              "default": "EXACT",
+              "description": "The counting mode for the `X-Total-Count` response header.",
+              "enum": [
+                "EXACT",
+                "BOUNDED"
+              ]
+            }
           }
         ],
         "responses": {
@@ -3094,13 +3224,27 @@
             "description": "A list of all findings grouped by vulnerability",
             "headers": {
               "X-Total-Count": {
-                "description": "The total number of findings",
+                "description": "The number of findings, exact or a lower bound. See `X-Total-Count-Type`.",
                 "schema": {
                   "format": "integer"
                 },
                 "style": "simple"
+              },
+              "X-Total-Count-Type": {
+                "$ref": "#/components/headers/TotalCountType",
+                "style": "simple"
               }
             }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
           },
           "401": {
             "description": "Unauthorized"
@@ -3218,6 +3362,8 @@
                 "INTERNAL",
                 "OSV",
                 "SNYK",
+                "CX",
+                "JVN",
                 "UNKNOWN"
               ]
             }
@@ -3252,6 +3398,28 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "description": "Filter by known exploited vulnerability (KEV) status: omit for any, true for KEVs only, false to exclude KEVs",
+            "in": "query",
+            "name": "isKev",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "The counting mode for `X-Total-Count`. With `BOUNDED`, the count stops at a fixed server-side cap. `X-Total-Count` is then exact when the count finishes within the cap, or when the requested page ends the result set. Otherwise it is a lower bound, never below the end of the requested page. `X-Total-Count-Type` says which case applies. See the Pagination section of the API description.",
+            "in": "query",
+            "name": "totalCount",
+            "schema": {
+              "type": "string",
+              "default": "EXACT",
+              "description": "The counting mode for the `X-Total-Count` response header.",
+              "enum": [
+                "EXACT",
+                "BOUNDED"
+              ]
+            }
           }
         ],
         "responses": {
@@ -3271,16 +3439,30 @@
                 }
               }
             },
-            "description": "A list of all findings for a specific project, or a SARIF file",
+            "description": "A list of all findings for a specific project, or a SARIF file. SARIF responses carry no count headers.",
             "headers": {
               "X-Total-Count": {
-                "description": "The total number of findings",
+                "description": "The number of findings, exact or a lower bound. See `X-Total-Count-Type`.",
                 "schema": {
                   "format": "integer"
                 },
                 "style": "simple"
+              },
+              "X-Total-Count-Type": {
+                "$ref": "#/components/headers/TotalCountType",
+                "style": "simple"
               }
             }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
           },
           "401": {
             "description": "Unauthorized"
@@ -3480,7 +3662,7 @@
         "operationId": "addMapping_1",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MappedLdapGroupRequest"
               }
@@ -3679,7 +3861,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/License"
+                    "$ref": "#/components/schemas/LicenseResponse"
                   }
                 }
               }
@@ -3717,9 +3899,9 @@
         "operationId": "createLicense",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/License"
+                "$ref": "#/components/schemas/CreateLicenseRequest"
               }
             }
           }
@@ -3729,7 +3911,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/License"
+                  "$ref": "#/components/schemas/LicenseResponse"
                 }
               }
             },
@@ -3766,7 +3948,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/License"
+                    "$ref": "#/components/schemas/ConciseLicenseResponse"
                   }
                 }
               }
@@ -3860,7 +4042,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/License"
+                  "$ref": "#/components/schemas/LicenseResponse"
                 }
               }
             },
@@ -3953,7 +4135,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LicenseGroup"
+                    "$ref": "#/components/schemas/LicenseGroupResponse"
                   }
                 }
               }
@@ -3993,7 +4175,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LicenseGroup"
+                "$ref": "#/components/schemas/UpdateLicenseGroupRequest"
               }
             }
           }
@@ -4003,7 +4185,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LicenseGroup"
+                  "$ref": "#/components/schemas/LicenseGroupResponse"
                 }
               }
             },
@@ -4036,7 +4218,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LicenseGroup"
+                "$ref": "#/components/schemas/CreateLicenseGroupRequest"
               }
             }
           }
@@ -4046,7 +4228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LicenseGroup"
+                  "$ref": "#/components/schemas/LicenseGroupResponse"
                 }
               }
             },
@@ -4133,7 +4315,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LicenseGroup"
+                  "$ref": "#/components/schemas/LicenseGroupResponse"
                 }
               }
             },
@@ -4191,7 +4373,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LicenseGroup"
+                  "$ref": "#/components/schemas/LicenseGroupResponse"
                 }
               }
             },
@@ -4250,7 +4432,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LicenseGroup"
+                  "$ref": "#/components/schemas/LicenseGroupResponse"
                 }
               }
             },
@@ -4983,7 +5165,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NotificationPublisher"
+                    "$ref": "#/components/schemas/NotificationPublisherResponse"
                   }
                 }
               }
@@ -5024,7 +5206,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificationPublisher"
+                  "$ref": "#/components/schemas/NotificationPublisherResponse"
                 }
               }
             },
@@ -5073,7 +5255,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificationPublisher"
+                  "$ref": "#/components/schemas/NotificationPublisherResponse"
                 }
               }
             },
@@ -6082,7 +6264,7 @@
         "operationId": "addMapping_2",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MappedOidcGroupRequest"
               }
@@ -6766,13 +6948,13 @@
     },
     "/v1/policy/condition": {
       "post": {
-        "description": "<p>Requires permission <strong>POLICY_MANAGEMENT</strong> or <strong>POLICY_MANAGEMENT_UPDATE</strong></p>",
+        "description": "<p>\n  Requires permission <strong>POLICY_MANAGEMENT</strong>\n  or <strong>POLICY_MANAGEMENT_UPDATE</strong>\n</p>\n",
         "operationId": "updatePolicyCondition",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PolicyCondition"
+                "$ref": "#/components/schemas/UpdatePolicyConditionRequest"
               }
             }
           }
@@ -6782,7 +6964,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PolicyCondition"
+                  "$ref": "#/components/schemas/PolicyConditionResponse"
                 }
               }
             },
@@ -6811,7 +6993,7 @@
     },
     "/v1/policy/condition/{uuid}": {
       "delete": {
-        "description": "<p>Requires permission <strong>POLICY_MANAGEMENT</strong> or <strong>POLICY_MANAGEMENT_UPDATE</strong></p>",
+        "description": "<p>\n  Requires permission <strong>POLICY_MANAGEMENT</strong>\n  or <strong>POLICY_MANAGEMENT_UPDATE</strong>\n</p>\n",
         "operationId": "deletePolicyCondition",
         "parameters": [
           {
@@ -7079,7 +7261,7 @@
     },
     "/v1/policy/{uuid}/condition": {
       "put": {
-        "description": "<p>Requires permission <strong>POLICY_MANAGEMENT</strong> or <strong>POLICY_MANAGEMENT_UPDATE</strong></p>",
+        "description": "<p>\n  Requires permission <strong>POLICY_MANAGEMENT</strong>\n  or <strong>POLICY_MANAGEMENT_UPDATE</strong>\n</p>\n",
         "operationId": "createPolicyCondition",
         "parameters": [
           {
@@ -7097,7 +7279,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PolicyCondition"
+                "$ref": "#/components/schemas/CreatePolicyConditionRequest"
               }
             }
           }
@@ -7107,7 +7289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PolicyCondition"
+                  "$ref": "#/components/schemas/PolicyConditionResponse"
                 }
               }
             },
@@ -8024,7 +8206,6 @@
             "description": "The version of the project to query on",
             "in": "query",
             "name": "version",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -8370,6 +8551,13 @@
             "description": "Access to the requested project is forbidden"
           },
           "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
             "description": "The UUID of the project could not be found"
           },
           "500": {
@@ -8963,7 +9151,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectProperty"
+                "$ref": "#/components/schemas/DeleteProjectPropertyRequest"
               }
             }
           }
@@ -9024,7 +9212,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProjectProperty"
+                    "$ref": "#/components/schemas/ProjectPropertyResponse"
                   }
                 }
               }
@@ -9080,7 +9268,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectProperty"
+                "$ref": "#/components/schemas/UpdateProjectPropertyRequest"
               }
             }
           }
@@ -9090,7 +9278,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProjectProperty"
+                  "$ref": "#/components/schemas/ProjectPropertyResponse"
                 }
               }
             },
@@ -9145,7 +9333,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectProperty"
+                "$ref": "#/components/schemas/CreateProjectPropertyRequest"
               }
             }
           }
@@ -9155,7 +9343,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProjectProperty"
+                  "$ref": "#/components/schemas/ProjectPropertyResponse"
                 }
               }
             },
@@ -9261,7 +9449,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Repository"
+                    "$ref": "#/components/schemas/RepositoryResponse"
                   }
                 }
               }
@@ -9301,7 +9489,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Repository"
+                "$ref": "#/components/schemas/UpdateRepositoryRequest"
               }
             }
           }
@@ -9311,7 +9499,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Repository"
+                  "$ref": "#/components/schemas/RepositoryResponse"
                 }
               }
             },
@@ -9344,7 +9532,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Repository"
+                "$ref": "#/components/schemas/CreateRepositoryRequest"
               }
             }
           }
@@ -9354,7 +9542,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Repository"
+                  "$ref": "#/components/schemas/RepositoryResponse"
                 }
               }
             },
@@ -9524,7 +9712,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Repository"
+                    "$ref": "#/components/schemas/RepositoryResponse"
                   }
                 }
               }
@@ -11560,8 +11748,71 @@
     },
     "/v1/team/visible": {
       "get": {
-        "description": "<p></p>",
+        "description": "<p>Optional query parameter <code>searchText</code>. The search is case insensitive and matches team names.</p>",
         "operationId": "availableTeams",
+        "parameters": [
+          {
+            "description": "Optional case-insensitive substring match on team name.",
+            "in": "query",
+            "name": "searchText",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The page to return. To be used in conjunction with <code>pageSize</code>.",
+            "in": "query",
+            "name": "pageNumber",
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          },
+          {
+            "description": "Number of elements to return per page. To be used in conjunction with <code>pageNumber</code>.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "string",
+              "default": "100"
+            }
+          },
+          {
+            "description": "Offset to start returning elements from. To be used in conjunction with <code>limit</code>.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of elements to return per page. To be used in conjunction with <code>offset</code>.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the resource field to sort on.",
+            "in": "query",
+            "name": "sortName",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering of items when sorting with <code>sortName</code>.",
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc, desc"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -11574,7 +11825,16 @@
                 }
               }
             },
-            "description": "The Visible Teams"
+            "description": "The Visible Teams",
+            "headers": {
+              "X-Total-Count": {
+                "description": "The total number of visible teams",
+                "schema": {
+                  "format": "integer"
+                },
+                "style": "simple"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -12402,7 +12662,7 @@
         "operationId": "updateSelf",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ManagedUser"
               }
@@ -13029,7 +13289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ViolationAnalysis"
+                  "$ref": "#/components/schemas/ViolationAnalysisResponse"
                 }
               }
             },
@@ -13082,7 +13342,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ViolationAnalysis"
+                  "$ref": "#/components/schemas/ViolationAnalysisResponse"
                 }
               }
             },
@@ -14487,6 +14747,18 @@
     }
   },
   "components": {
+    "headers": {
+      "TotalCountType": {
+        "description": "Whether `X-Total-Count` is exact (`EXACT`) or a lower bound (`AT_LEAST`). `AT_LEAST` with a count of 0 means the total is unknown.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "EXACT",
+            "AT_LEAST"
+          ]
+        }
+      }
+    },
     "schemas": {
       "About": {
         "type": "object",
@@ -14611,7 +14883,8 @@
           "lastSeen": {
             "type": "integer",
             "format": "int64",
-            "description": "UNIX epoch timestamp in milliseconds"
+            "deprecated": true,
+            "description": "Deprecated; always equal to firstSeen"
           },
           "source": {
             "type": "string",
@@ -14623,6 +14896,8 @@
               "INTERNAL",
               "OSV",
               "SNYK",
+              "CX",
+              "JVN",
               "UNKNOWN"
             ]
           }
@@ -14857,9 +15132,13 @@
           },
           "bom": {
             "type": "string",
+            "format": "bytes",
             "description": "Base64 encoded BOM",
             "example": "ewogICJib21Gb3JtYXQiOiAiQ3ljbG9uZURYIiwKICAic3BlY1ZlcnNpb24iOiAiMS40IiwKICAiY29tcG9uZW50cyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAibGlicmFyeSIsCiAgICAgICJuYW1lIjogImFjbWUtbGliIiwKICAgICAgInZlcnNpb24iOiAiMS4wLjAiCiAgICB9CiAgXQp9",
             "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          },
+          "isActive": {
+            "type": "boolean"
           },
           "isLatest": {
             "type": "boolean"
@@ -14999,6 +15278,29 @@
         "required": [
           "project",
           "version"
+        ]
+      },
+      "Comment": {
+        "type": "object",
+        "description": "Audit trail of analysis comments",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The comment text"
+          },
+          "commenter": {
+            "type": "string",
+            "description": "Identifier of the user who wrote the comment"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Timestamp the comment was recorded at"
+          }
+        },
+        "required": [
+          "comment",
+          "timestamp"
         ]
       },
       "Component": {
@@ -15224,6 +15526,14 @@
             "type": "string",
             "pattern": "^[0-9a-fA-F]{128}$"
           },
+          "streebog_256": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{64}$"
+          },
+          "streebog_512": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{128}$"
+          },
           "supplier": {
             "$ref": "#/components/schemas/OrganizationalEntity"
           },
@@ -15251,10 +15561,7 @@
           }
         },
         "required": [
-          "classifier",
-          "name",
-          "project",
-          "uuid"
+          "name"
         ]
       },
       "ComponentOccurrence": {
@@ -15332,6 +15639,93 @@
         "required": [
           "propertyName",
           "propertyType",
+          "uuid"
+        ]
+      },
+      "ComponentPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description of the property"
+          },
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property"
+          },
+          "propertyType": {
+            "type": "string",
+            "description": "Type of the property",
+            "enum": [
+              "BOOLEAN",
+              "INTEGER",
+              "NUMBER",
+              "STRING",
+              "TIMESTAMP",
+              "URL",
+              "UUID"
+            ]
+          },
+          "propertyValue": {
+            "type": "string",
+            "description": "Value of the property"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the property"
+          }
+        },
+        "required": [
+          "propertyName",
+          "propertyType",
+          "uuid"
+        ]
+      },
+      "ConciseLicenseResponse": {
+        "type": "object",
+        "properties": {
+          "isCustomLicense": {
+            "type": "boolean",
+            "description": "Whether the license is a custom license created by a user"
+          },
+          "isDeprecatedLicenseId": {
+            "type": "boolean",
+            "description": "Whether the licenseId has been deprecated by SPDX"
+          },
+          "isFsfLibre": {
+            "type": "boolean",
+            "description": "Whether the license is FSF libre"
+          },
+          "isOsiApproved": {
+            "type": "boolean",
+            "description": "Whether the license is approved by the OSI"
+          },
+          "licenseId": {
+            "type": "string",
+            "description": "Identifier of the license"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the license"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the license"
+          }
+        },
+        "required": [
+          "isCustomLicense",
+          "isDeprecatedLicenseId",
+          "isFsfLibre",
+          "isOsiApproved",
+          "licenseId",
+          "name",
           "uuid"
         ]
       },
@@ -15459,6 +15853,11 @@
             "format": "double",
             "description": "The inherited risk score"
           },
+          "kev": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of vulnerabilities known to be exploited"
+          },
           "low": {
             "type": "integer",
             "format": "int32",
@@ -15520,6 +15919,7 @@
           "critical",
           "high",
           "inheritedRiskScore",
+          "kev",
           "low",
           "medium",
           "policyViolationsFail",
@@ -15533,29 +15933,24 @@
           "vulnerabilities"
         ]
       },
-      "ConfigProperty": {
+      "ConfigPropertyResponse": {
         "type": "object",
         "properties": {
           "description": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 0,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Description of the property"
           },
           "groupName": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Group the property belongs to"
           },
           "propertyName": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Name of the property"
           },
           "propertyType": {
             "type": "string",
+            "description": "Type of the property",
             "enum": [
               "BOOLEAN",
               "INTEGER",
@@ -15568,13 +15963,137 @@
           },
           "propertyValue": {
             "type": "string",
-            "pattern": "[\\P{Cc}]+"
+            "description": "Value of the property"
           }
         },
         "required": [
           "groupName",
           "propertyName",
           "propertyType"
+        ]
+      },
+      "CreateComponentPropertyRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description of the property",
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "\\P{Cc}+"
+          },
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyType": {
+            "type": "string",
+            "description": "Type of the property",
+            "enum": [
+              "BOOLEAN",
+              "INTEGER",
+              "NUMBER",
+              "STRING",
+              "TIMESTAMP",
+              "URL",
+              "UUID"
+            ]
+          },
+          "propertyValue": {
+            "type": "string",
+            "description": "Value of the property",
+            "maxLength": 1024,
+            "minLength": 0,
+            "pattern": "\\P{Cc}+"
+          }
+        },
+        "required": [
+          "propertyName",
+          "propertyType"
+        ]
+      },
+      "CreateLicenseGroupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the license group",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]*$"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreateLicenseRequest": {
+        "type": "object",
+        "properties": {
+          "isDeprecatedLicenseId": {
+            "type": "boolean",
+            "description": "Whether the licenseId has been deprecated by SPDX"
+          },
+          "isFsfLibre": {
+            "type": "boolean",
+            "description": "Whether the license is FSF libre"
+          },
+          "isOsiApproved": {
+            "type": "boolean",
+            "description": "Whether the license is approved by the OSI"
+          },
+          "licenseComments": {
+            "type": "string",
+            "description": "Comments about the license"
+          },
+          "licenseId": {
+            "type": "string",
+            "description": "Identifier of the license",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.\\-+]*$"
+          },
+          "licenseText": {
+            "type": "string",
+            "description": "Full license text"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the license",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]*$"
+          },
+          "seeAlso": {
+            "type": "array",
+            "description": "Additional URLs with information about the license",
+            "items": {
+              "type": "string",
+              "description": "Additional URLs with information about the license"
+            }
+          },
+          "standardLicenseHeader": {
+            "type": "string",
+            "description": "Standard license header typically added to the top of source code"
+          },
+          "standardLicenseTemplate": {
+            "type": "string",
+            "description": "Standard license template used to derive the license text"
+          }
+        },
+        "required": [
+          "licenseId",
+          "name"
         ]
       },
       "CreateNotificationPublisherRequest": {
@@ -15634,6 +16153,183 @@
           "name",
           "publisher",
           "scope"
+        ]
+      },
+      "CreatePolicyConditionRequest": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "description": "Operator used to compare the subject to the value",
+            "enum": [
+              "IS",
+              "IS_NOT",
+              "MATCHES",
+              "NO_MATCH",
+              "NUMERIC_GREATER_THAN",
+              "NUMERIC_LESS_THAN",
+              "NUMERIC_EQUAL",
+              "NUMERIC_NOT_EQUAL",
+              "NUMERIC_GREATER_THAN_OR_EQUAL",
+              "NUMERIC_LESSER_THAN_OR_EQUAL",
+              "CONTAINS_ALL",
+              "CONTAINS_ANY"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject the condition evaluates",
+            "enum": [
+              "AGE",
+              "COORDINATES",
+              "CPE",
+              "EXPRESSION",
+              "LICENSE",
+              "LICENSE_GROUP",
+              "PACKAGE_URL",
+              "SEVERITY",
+              "SWID_TAGID",
+              "VERSION",
+              "COMPONENT_HASH",
+              "IS_INTERNAL",
+              "CWE",
+              "VULNERABILITY_ID",
+              "VERSION_DISTANCE",
+              "EPSS"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "Value the subject is compared to",
+            "minLength": 1
+          },
+          "violationType": {
+            "type": "string",
+            "description": "Violation type produced when the condition matches. Required for `EXPRESSION` subjects",
+            "enum": [
+              "LICENSE",
+              "SECURITY",
+              "OPERATIONAL"
+            ]
+          }
+        },
+        "required": [
+          "operator",
+          "subject",
+          "value"
+        ]
+      },
+      "CreateProjectPropertyRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description of the property",
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "\\P{Cc}+"
+          },
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyType": {
+            "type": "string",
+            "description": "Type of the property",
+            "enum": [
+              "BOOLEAN",
+              "INTEGER",
+              "NUMBER",
+              "STRING",
+              "TIMESTAMP",
+              "URL",
+              "UUID"
+            ]
+          },
+          "propertyValue": {
+            "type": "string",
+            "description": "Value of the property",
+            "maxLength": 1024,
+            "minLength": 0,
+            "pattern": "\\P{Cc}+"
+          }
+        },
+        "required": [
+          "groupName",
+          "propertyName",
+          "propertyType"
+        ]
+      },
+      "CreateRepositoryRequest": {
+        "type": "object",
+        "properties": {
+          "authenticationRequired": {
+            "type": "boolean",
+            "description": "Whether the repository requires authentication"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the repository is enabled"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Unique identifier of the repository within its type",
+            "minLength": 1
+          },
+          "internal": {
+            "type": "boolean",
+            "description": "Whether the repository is internal to the organization"
+          },
+          "password": {
+            "type": "string",
+            "description": "Name of the secret holding the password or token"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the repository",
+            "enum": [
+              "MAVEN",
+              "NPM",
+              "GEM",
+              "PYPI",
+              "NUGET",
+              "HEX",
+              "COMPOSER",
+              "CARGO",
+              "GO_MODULES",
+              "CPAN",
+              "GITHUB",
+              "HACKAGE",
+              "NIXPKGS",
+              "UNSUPPORTED"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the repository",
+            "minLength": 1
+          },
+          "username": {
+            "type": "string",
+            "description": "Username to authenticate with"
+          }
+        },
+        "required": [
+          "authenticationRequired",
+          "enabled",
+          "identifier",
+          "type",
+          "url"
         ]
       },
       "CreateScheduledNotificationRuleRequest": {
@@ -15730,6 +16426,29 @@
           }
         }
       },
+      "DeleteProjectPropertyRequest": {
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          }
+        },
+        "required": [
+          "groupName",
+          "propertyName"
+        ]
+      },
       "DependencyGraphResponse": {
         "type": "object",
         "properties": {
@@ -15785,6 +16504,10 @@
           "inheritedRiskScore": {
             "type": "number",
             "format": "double"
+          },
+          "kev": {
+            "type": "integer",
+            "format": "int32"
           },
           "lastOccurrence": {
             "type": "integer",
@@ -15919,7 +16642,7 @@
               "build-system",
               "release-notes",
               "security-contact",
-              "model_card",
+              "model-card",
               "attestation",
               "threat-model",
               "adversary-model",
@@ -15942,6 +16665,11 @@
               "rfc-9116",
               "electronic-signature",
               "digital-signature",
+              "patent",
+              "patent-family",
+              "patent-assertion",
+              "citation",
+              "poam",
               "other"
             ]
           },
@@ -16162,6 +16890,17 @@
         "properties": {
           "processing": {
             "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "description": "The processing status associated with the token. Null when no processing is associated with the token.",
+            "enum": [
+              "PENDING",
+              "RUNNING",
+              "COMPLETED",
+              "FAILED"
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -16187,6 +16926,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Permission"
+            }
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
             }
           },
           "username": {
@@ -16287,6 +17032,113 @@
           }
         },
         "required": [
+          "name",
+          "uuid"
+        ]
+      },
+      "LicenseGroupResponse": {
+        "type": "object",
+        "properties": {
+          "licenses": {
+            "type": "array",
+            "description": "Licenses belonging to the license group",
+            "items": {
+              "$ref": "#/components/schemas/License"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the license group"
+          },
+          "riskWeight": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Risk weight assigned to violations of this group"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the license group"
+          }
+        },
+        "required": [
+          "licenses",
+          "name",
+          "riskWeight",
+          "uuid"
+        ]
+      },
+      "LicenseResponse": {
+        "type": "object",
+        "properties": {
+          "isCustomLicense": {
+            "type": "boolean",
+            "description": "Whether the license is a custom license created by a user"
+          },
+          "isDeprecatedLicenseId": {
+            "type": "boolean",
+            "description": "Whether the licenseId has been deprecated by SPDX"
+          },
+          "isFsfLibre": {
+            "type": "boolean",
+            "description": "Whether the license is FSF libre"
+          },
+          "isOsiApproved": {
+            "type": "boolean",
+            "description": "Whether the license is approved by the OSI"
+          },
+          "licenseComments": {
+            "type": "string",
+            "description": "Comments about the license"
+          },
+          "licenseGroups": {
+            "type": "array",
+            "description": "License groups the license belongs to",
+            "items": {
+              "$ref": "#/components/schemas/LicenseGroup"
+            }
+          },
+          "licenseId": {
+            "type": "string",
+            "description": "Identifier of the license"
+          },
+          "licenseText": {
+            "type": "string",
+            "description": "Full license text"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the license"
+          },
+          "seeAlso": {
+            "type": "array",
+            "description": "Additional URLs with information about the license",
+            "items": {
+              "type": "string",
+              "description": "Additional URLs with information about the license"
+            }
+          },
+          "standardLicenseHeader": {
+            "type": "string",
+            "description": "Standard license header typically added to the top of source code"
+          },
+          "standardLicenseTemplate": {
+            "type": "string",
+            "description": "Standard license template used to derive the license text"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the license"
+          }
+        },
+        "required": [
+          "isCustomLicense",
+          "isDeprecatedLicenseId",
+          "isFsfLibre",
+          "isOsiApproved",
+          "licenseGroups",
+          "licenseId",
           "name",
           "uuid"
         ]
@@ -16483,8 +17335,8 @@
           }
         },
         "required": [
-          "lastPasswordChange",
-          "username"
+          "username",
+          "email"
         ]
       },
       "MappedLdapGroup": {
@@ -16590,6 +17442,47 @@
           }
         },
         "required": [
+          "extensionName",
+          "name",
+          "templateMimeType",
+          "uuid"
+        ]
+      },
+      "NotificationPublisherResponse": {
+        "type": "object",
+        "properties": {
+          "defaultPublisher": {
+            "type": "boolean",
+            "description": "Whether the publisher is one of the built-in defaults"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the notification publisher"
+          },
+          "extensionName": {
+            "type": "string",
+            "description": "Name of the publisher extension that handles delivery"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the notification publisher"
+          },
+          "template": {
+            "type": "string",
+            "description": "Template used to render the notification payload"
+          },
+          "templateMimeType": {
+            "type": "string",
+            "description": "MIME type of the rendered template"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the notification publisher"
+          }
+        },
+        "required": [
+          "defaultPublisher",
           "extensionName",
           "name",
           "templateMimeType",
@@ -16763,11 +17656,23 @@
             "minLength": 0,
             "pattern": "[\\P{Cc}]+"
           },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          },
           "subjectIdentifier": {
             "type": "string",
             "maxLength": 255,
             "minLength": 1,
             "pattern": "[\\P{Cc}]+"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
           },
           "username": {
             "type": "string",
@@ -17017,6 +17922,75 @@
           "value"
         ]
       },
+      "PolicyConditionResponse": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "description": "Operator used to compare the subject to the value",
+            "enum": [
+              "IS",
+              "IS_NOT",
+              "MATCHES",
+              "NO_MATCH",
+              "NUMERIC_GREATER_THAN",
+              "NUMERIC_LESS_THAN",
+              "NUMERIC_EQUAL",
+              "NUMERIC_NOT_EQUAL",
+              "NUMERIC_GREATER_THAN_OR_EQUAL",
+              "NUMERIC_LESSER_THAN_OR_EQUAL",
+              "CONTAINS_ALL",
+              "CONTAINS_ANY"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject the condition evaluates",
+            "enum": [
+              "AGE",
+              "COORDINATES",
+              "CPE",
+              "EXPRESSION",
+              "LICENSE",
+              "LICENSE_GROUP",
+              "PACKAGE_URL",
+              "SEVERITY",
+              "SWID_TAGID",
+              "VERSION",
+              "COMPONENT_HASH",
+              "IS_INTERNAL",
+              "CWE",
+              "VULNERABILITY_ID",
+              "VERSION_DISTANCE",
+              "EPSS"
+            ]
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the policy condition"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value the subject is compared to"
+          },
+          "violationType": {
+            "type": "string",
+            "description": "Violation type produced when the condition matches",
+            "enum": [
+              "LICENSE",
+              "SECURITY",
+              "OPERATIONAL"
+            ]
+          }
+        },
+        "required": [
+          "operator",
+          "subject",
+          "uuid",
+          "value"
+        ]
+      },
       "PolicyViolation": {
         "type": "object",
         "properties": {
@@ -17096,6 +18070,10 @@
           "inheritedRiskScore": {
             "type": "number",
             "format": "double"
+          },
+          "kev": {
+            "type": "integer",
+            "format": "int32"
           },
           "lastOccurrence": {
             "type": "integer",
@@ -17470,6 +18448,10 @@
             "type": "number",
             "format": "double"
           },
+          "kev": {
+            "type": "integer",
+            "format": "int32"
+          },
           "lastOccurrence": {
             "type": "integer",
             "format": "int64",
@@ -17565,29 +18547,24 @@
           "lastOccurrence"
         ]
       },
-      "ProjectProperty": {
+      "ProjectPropertyResponse": {
         "type": "object",
         "properties": {
           "description": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 0,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Description of the property"
           },
           "groupName": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Group the property belongs to"
           },
           "propertyName": {
             "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Name of the property"
           },
           "propertyType": {
             "type": "string",
+            "description": "Type of the property",
             "enum": [
               "BOOLEAN",
               "INTEGER",
@@ -17600,9 +18577,7 @@
           },
           "propertyValue": {
             "type": "string",
-            "maxLength": 1024,
-            "minLength": 0,
-            "pattern": "[\\P{Cc}]+"
+            "description": "Value of the property"
           }
         },
         "required": [
@@ -17638,71 +18613,6 @@
           }
         },
         "required": [
-          "uuid"
-        ]
-      },
-      "Repository": {
-        "type": "object",
-        "properties": {
-          "authenticationRequired": {
-            "type": "boolean"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "identifier": {
-            "type": "string",
-            "minLength": 1
-          },
-          "internal": {
-            "type": "boolean"
-          },
-          "password": {
-            "type": "string"
-          },
-          "resolutionOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "MAVEN",
-              "NPM",
-              "GEM",
-              "PYPI",
-              "NUGET",
-              "HEX",
-              "COMPOSER",
-              "CARGO",
-              "GO_MODULES",
-              "CPAN",
-              "GITHUB",
-              "HACKAGE",
-              "NIXPKGS",
-              "UNSUPPORTED"
-            ]
-          },
-          "url": {
-            "type": "string",
-            "minLength": 1
-          },
-          "username": {
-            "type": "string"
-          },
-          "uuid": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "required": [
-          "authenticationRequired",
-          "enabled",
-          "identifier",
-          "internal",
-          "resolutionOrder",
-          "type",
-          "url",
           "uuid"
         ]
       },
@@ -17748,6 +18658,78 @@
             ]
           }
         }
+      },
+      "RepositoryResponse": {
+        "type": "object",
+        "properties": {
+          "authenticationRequired": {
+            "type": "boolean",
+            "description": "Whether the repository requires authentication"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the repository is enabled"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Unique identifier of the repository within its type"
+          },
+          "internal": {
+            "type": "boolean",
+            "description": "Whether the repository is internal to the organization"
+          },
+          "password": {
+            "type": "string",
+            "description": "Name of the secret holding the password or token"
+          },
+          "resolutionOrder": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Order in which the repository is queried during version resolution"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the repository",
+            "enum": [
+              "MAVEN",
+              "NPM",
+              "GEM",
+              "PYPI",
+              "NUGET",
+              "HEX",
+              "COMPOSER",
+              "CARGO",
+              "GO_MODULES",
+              "CPAN",
+              "GITHUB",
+              "HACKAGE",
+              "NIXPKGS",
+              "UNSUPPORTED"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the repository"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username to authenticate with"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the repository"
+          }
+        },
+        "required": [
+          "authenticationRequired",
+          "enabled",
+          "identifier",
+          "resolutionOrder",
+          "type",
+          "url",
+          "uuid"
+        ]
       },
       "Score": {
         "type": "object",
@@ -18278,6 +19260,55 @@
           }
         }
       },
+      "UpdateConfigPropertyRequest": {
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyValue": {
+            "type": "string",
+            "description": "Value of the property",
+            "pattern": "\\P{Cc}+"
+          }
+        },
+        "required": [
+          "groupName",
+          "propertyName"
+        ]
+      },
+      "UpdateLicenseGroupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "New name of the license group",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]*$"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the license group to update"
+          }
+        },
+        "required": [
+          "name",
+          "uuid"
+        ]
+      },
       "UpdateNotificationPublisherRequest": {
         "type": "object",
         "properties": {
@@ -18401,6 +19432,147 @@
           "level",
           "name",
           "scope",
+          "uuid"
+        ]
+      },
+      "UpdatePolicyConditionRequest": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "description": "Operator used to compare the subject to the value",
+            "enum": [
+              "IS",
+              "IS_NOT",
+              "MATCHES",
+              "NO_MATCH",
+              "NUMERIC_GREATER_THAN",
+              "NUMERIC_LESS_THAN",
+              "NUMERIC_EQUAL",
+              "NUMERIC_NOT_EQUAL",
+              "NUMERIC_GREATER_THAN_OR_EQUAL",
+              "NUMERIC_LESSER_THAN_OR_EQUAL",
+              "CONTAINS_ALL",
+              "CONTAINS_ANY"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject the condition evaluates",
+            "enum": [
+              "AGE",
+              "COORDINATES",
+              "CPE",
+              "EXPRESSION",
+              "LICENSE",
+              "LICENSE_GROUP",
+              "PACKAGE_URL",
+              "SEVERITY",
+              "SWID_TAGID",
+              "VERSION",
+              "COMPONENT_HASH",
+              "IS_INTERNAL",
+              "CWE",
+              "VULNERABILITY_ID",
+              "VERSION_DISTANCE",
+              "EPSS"
+            ]
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the policy condition to update"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value the subject is compared to",
+            "minLength": 1
+          },
+          "violationType": {
+            "type": "string",
+            "description": "Violation type produced when the condition matches. Required for `EXPRESSION` subjects",
+            "enum": [
+              "LICENSE",
+              "SECURITY",
+              "OPERATIONAL"
+            ]
+          }
+        },
+        "required": [
+          "operator",
+          "subject",
+          "uuid",
+          "value"
+        ]
+      },
+      "UpdateProjectPropertyRequest": {
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "type": "string",
+            "description": "Group the property belongs to",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "Name of the property",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "\\P{Cc}+"
+          },
+          "propertyValue": {
+            "type": "string",
+            "description": "Value of the property",
+            "maxLength": 1024,
+            "minLength": 0,
+            "pattern": "\\P{Cc}+"
+          }
+        },
+        "required": [
+          "groupName",
+          "propertyName"
+        ]
+      },
+      "UpdateRepositoryRequest": {
+        "type": "object",
+        "properties": {
+          "authenticationRequired": {
+            "type": "boolean",
+            "description": "Whether the repository requires authentication"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the repository is enabled"
+          },
+          "internal": {
+            "type": "boolean",
+            "description": "Whether the repository is internal to the organization"
+          },
+          "password": {
+            "type": "string",
+            "description": "Name of the secret holding the password or token"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the repository",
+            "minLength": 1
+          },
+          "username": {
+            "type": "string",
+            "description": "Username to authenticate with"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the repository to update"
+          }
+        },
+        "required": [
+          "authenticationRequired",
+          "enabled",
+          "url",
           "uuid"
         ]
       },
@@ -18620,6 +19792,36 @@
           "policyViolation"
         ]
       },
+      "ViolationAnalysisResponse": {
+        "type": "object",
+        "properties": {
+          "analysisComments": {
+            "type": "array",
+            "description": "Audit trail of analysis comments",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "analysisState": {
+            "type": "string",
+            "description": "The state of the analysis decision",
+            "enum": [
+              "APPROVED",
+              "REJECTED",
+              "NOT_SET"
+            ]
+          },
+          "isSuppressed": {
+            "type": "boolean",
+            "description": "Whether the policy violation is suppressed"
+          }
+        },
+        "required": [
+          "analysisComments",
+          "analysisState",
+          "isSuppressed"
+        ]
+      },
       "VisibleTeams": {
         "type": "object",
         "properties": {
@@ -18735,6 +19937,9 @@
             "minLength": 1,
             "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]*$"
           },
+          "isKev": {
+            "type": "boolean"
+          },
           "owaspRRBusinessImpactScore": {
             "type": "number"
           },
@@ -18827,7 +20032,6 @@
           }
         },
         "required": [
-          "friendlyVulnId",
           "source",
           "uuid",
           "vulnId"
@@ -18837,6 +20041,10 @@
         "type": "object",
         "properties": {
           "cveId": {
+            "type": "string",
+            "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}\\n\\r\\t]*$"
+          },
+          "cxId": {
             "type": "string",
             "pattern": "^[\\p{IsWhite_Space}\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}\\n\\r\\t]*$"
           },

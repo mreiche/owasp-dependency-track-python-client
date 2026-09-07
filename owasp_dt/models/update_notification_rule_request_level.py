@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class UpdateNotificationRuleRequestLevel(str, Enum):
+class UpdateNotificationRuleRequestLevel(StrEnum):
     ERROR = "ERROR"
     INFORMATIONAL = "INFORMATIONAL"
     WARNING = "WARNING"

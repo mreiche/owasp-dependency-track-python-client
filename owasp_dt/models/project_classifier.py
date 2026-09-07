@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ProjectClassifier(str, Enum):
+class ProjectClassifier(StrEnum):
     APPLICATION = "APPLICATION"
     CONTAINER = "CONTAINER"
     CRYPTOGRAPHIC_ASSET = "CRYPTOGRAPHIC_ASSET"

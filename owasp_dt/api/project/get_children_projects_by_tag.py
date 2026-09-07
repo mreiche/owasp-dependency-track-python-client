@@ -27,6 +27,7 @@ def _get_kwargs(
     sort_order: GetChildrenProjectsByTagSortOrder | Unset = UNSET,
     exclude_inactive: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

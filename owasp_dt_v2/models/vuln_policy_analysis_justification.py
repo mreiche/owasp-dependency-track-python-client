@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyAnalysisJustification(str, Enum):
+class VulnPolicyAnalysisJustification(StrEnum):
     CODE_NOT_PRESENT = "CODE_NOT_PRESENT"
     CODE_NOT_REACHABLE = "CODE_NOT_REACHABLE"
     PROTECTED_AT_PERIMETER = "PROTECTED_AT_PERIMETER"

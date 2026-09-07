@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class UserPermissionsSetRequestPermissionsItem(str, Enum):
+class UserPermissionsSetRequestPermissionsItem(StrEnum):
     ACCESS_MANAGEMENT = "ACCESS_MANAGEMENT"
     ACCESS_MANAGEMENT_CREATE = "ACCESS_MANAGEMENT_CREATE"
     ACCESS_MANAGEMENT_DELETE = "ACCESS_MANAGEMENT_DELETE"

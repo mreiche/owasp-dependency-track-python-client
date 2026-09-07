@@ -1,9 +1,11 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AffectedVersionAttributionSource(str, Enum):
+class AffectedVersionAttributionSource(StrEnum):
+    CX = "CX"
     GITHUB = "GITHUB"
     INTERNAL = "INTERNAL"
+    JVN = "JVN"
     NVD = "NVD"
     OSSINDEX = "OSSINDEX"
     OSV = "OSV"

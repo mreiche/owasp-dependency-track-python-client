@@ -13,6 +13,7 @@ def _get_kwargs(
     *,
     vector: str,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["vector"] = vector

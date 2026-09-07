@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class CloneProjectInclude(str, Enum):
+class CloneProjectInclude(StrEnum):
     ACL = "ACL"
     COMPONENTS = "COMPONENTS"
     FINDINGS = "FINDINGS"

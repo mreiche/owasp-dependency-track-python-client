@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class NotificationRuleTriggerType(str, Enum):
+class NotificationRuleTriggerType(StrEnum):
     EVENT = "EVENT"
     SCHEDULE = "SCHEDULE"
 

@@ -5,11 +5,12 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.config_property import ConfigProperty
+from ...models.config_property_response import ConfigPropertyResponse
 from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/configProperty",
@@ -20,12 +21,12 @@ def _get_kwargs() -> dict[str, Any]:
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[ConfigProperty] | None:
+) -> Any | list[ConfigPropertyResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ConfigProperty.from_dict(response_200_item_data)
+            response_200_item = ConfigPropertyResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -43,7 +44,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[ConfigProperty]]:
+) -> Response[Any | list[ConfigPropertyResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -55,7 +56,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[ConfigProperty]]:
+) -> Response[Any | list[ConfigPropertyResponse]]:
     """Returns a list of all ConfigProperties for the specified groupName
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -66,7 +67,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[ConfigProperty]]
+        Response[Any | list[ConfigPropertyResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -81,7 +82,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Any | list[ConfigProperty] | None:
+) -> Any | list[ConfigPropertyResponse] | None:
     """Returns a list of all ConfigProperties for the specified groupName
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -92,7 +93,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[ConfigProperty]
+        Any | list[ConfigPropertyResponse]
     """
 
     return sync_detailed(
@@ -103,7 +104,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[ConfigProperty]]:
+) -> Response[Any | list[ConfigPropertyResponse]]:
     """Returns a list of all ConfigProperties for the specified groupName
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -114,7 +115,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[ConfigProperty]]
+        Response[Any | list[ConfigPropertyResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -127,7 +128,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Any | list[ConfigProperty] | None:
+) -> Any | list[ConfigPropertyResponse] | None:
     """Returns a list of all ConfigProperties for the specified groupName
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -138,7 +139,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[ConfigProperty]
+        Any | list[ConfigPropertyResponse]
     """
 
     return (

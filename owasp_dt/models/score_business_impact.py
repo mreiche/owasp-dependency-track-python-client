@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ScoreBusinessImpact(str, Enum):
+class ScoreBusinessImpact(StrEnum):
     HIGH = "HIGH"
     LOW = "LOW"
     MEDIUM = "MEDIUM"

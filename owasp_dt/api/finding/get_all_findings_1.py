@@ -7,6 +7,8 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.finding import Finding
 from ...models.get_all_findings_1_sort_order import GetAllFindings1SortOrder
+from ...models.get_all_findings_1_total_count import GetAllFindings1TotalCount
+from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
 
@@ -39,7 +41,10 @@ def _get_kwargs(
     epss_to: str | Unset = UNSET,
     epss_percentile_from: str | Unset = UNSET,
     epss_percentile_to: str | Unset = UNSET,
+    is_kev: bool | Unset = UNSET,
+    total_count: GetAllFindings1TotalCount | Unset = GetAllFindings1TotalCount.EXACT,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -100,6 +105,14 @@ def _get_kwargs(
 
     params["epssPercentileTo"] = epss_percentile_to
 
+    params["isKev"] = is_kev
+
+    json_total_count: str | Unset = UNSET
+    if not isinstance(total_count, Unset):
+        json_total_count = total_count.value
+
+    params["totalCount"] = json_total_count
+
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
@@ -113,7 +126,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[Finding] | None:
+) -> Any | ProblemDetails | list[Finding] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -123,6 +136,11 @@ def _parse_response(
             response_200.append(response_200_item)
 
         return response_200
+
+    if response.status_code == 400:
+        response_400 = ProblemDetails.from_dict(response.json())
+
+        return response_400
 
     if response.status_code == 401:
         response_401 = cast(Any, None)
@@ -136,7 +154,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[Finding]]:
+) -> Response[Any | ProblemDetails | list[Finding]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -175,7 +193,9 @@ def sync_detailed(
     epss_to: str | Unset = UNSET,
     epss_percentile_from: str | Unset = UNSET,
     epss_percentile_to: str | Unset = UNSET,
-) -> Response[Any | list[Finding]]:
+    is_kev: bool | Unset = UNSET,
+    total_count: GetAllFindings1TotalCount | Unset = GetAllFindings1TotalCount.EXACT,
+) -> Response[Any | ProblemDetails | list[Finding]]:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
@@ -208,13 +228,16 @@ def sync_detailed(
         epss_to (str | Unset):
         epss_percentile_from (str | Unset):
         epss_percentile_to (str | Unset):
+        is_kev (bool | Unset):
+        total_count (GetAllFindings1TotalCount | Unset): The counting mode for the `X-Total-Count`
+            response header. Default: GetAllFindings1TotalCount.EXACT.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Finding]]
+        Response[Any | ProblemDetails | list[Finding]]
     """
 
     kwargs = _get_kwargs(
@@ -245,6 +268,8 @@ def sync_detailed(
         epss_to=epss_to,
         epss_percentile_from=epss_percentile_from,
         epss_percentile_to=epss_percentile_to,
+        is_kev=is_kev,
+        total_count=total_count,
     )
 
     response = client.get_httpx_client().request(
@@ -284,7 +309,9 @@ def sync(
     epss_to: str | Unset = UNSET,
     epss_percentile_from: str | Unset = UNSET,
     epss_percentile_to: str | Unset = UNSET,
-) -> Any | list[Finding] | None:
+    is_kev: bool | Unset = UNSET,
+    total_count: GetAllFindings1TotalCount | Unset = GetAllFindings1TotalCount.EXACT,
+) -> Any | ProblemDetails | list[Finding] | None:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
@@ -317,13 +344,16 @@ def sync(
         epss_to (str | Unset):
         epss_percentile_from (str | Unset):
         epss_percentile_to (str | Unset):
+        is_kev (bool | Unset):
+        total_count (GetAllFindings1TotalCount | Unset): The counting mode for the `X-Total-Count`
+            response header. Default: GetAllFindings1TotalCount.EXACT.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Finding]
+        Any | ProblemDetails | list[Finding]
     """
 
     return sync_detailed(
@@ -355,6 +385,8 @@ def sync(
         epss_to=epss_to,
         epss_percentile_from=epss_percentile_from,
         epss_percentile_to=epss_percentile_to,
+        is_kev=is_kev,
+        total_count=total_count,
     ).parsed
 
 
@@ -388,7 +420,9 @@ async def asyncio_detailed(
     epss_to: str | Unset = UNSET,
     epss_percentile_from: str | Unset = UNSET,
     epss_percentile_to: str | Unset = UNSET,
-) -> Response[Any | list[Finding]]:
+    is_kev: bool | Unset = UNSET,
+    total_count: GetAllFindings1TotalCount | Unset = GetAllFindings1TotalCount.EXACT,
+) -> Response[Any | ProblemDetails | list[Finding]]:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
@@ -421,13 +455,16 @@ async def asyncio_detailed(
         epss_to (str | Unset):
         epss_percentile_from (str | Unset):
         epss_percentile_to (str | Unset):
+        is_kev (bool | Unset):
+        total_count (GetAllFindings1TotalCount | Unset): The counting mode for the `X-Total-Count`
+            response header. Default: GetAllFindings1TotalCount.EXACT.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Finding]]
+        Response[Any | ProblemDetails | list[Finding]]
     """
 
     kwargs = _get_kwargs(
@@ -458,6 +495,8 @@ async def asyncio_detailed(
         epss_to=epss_to,
         epss_percentile_from=epss_percentile_from,
         epss_percentile_to=epss_percentile_to,
+        is_kev=is_kev,
+        total_count=total_count,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -495,7 +534,9 @@ async def asyncio(
     epss_to: str | Unset = UNSET,
     epss_percentile_from: str | Unset = UNSET,
     epss_percentile_to: str | Unset = UNSET,
-) -> Any | list[Finding] | None:
+    is_kev: bool | Unset = UNSET,
+    total_count: GetAllFindings1TotalCount | Unset = GetAllFindings1TotalCount.EXACT,
+) -> Any | ProblemDetails | list[Finding] | None:
     """Returns a list of all findings
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
@@ -528,13 +569,16 @@ async def asyncio(
         epss_to (str | Unset):
         epss_percentile_from (str | Unset):
         epss_percentile_to (str | Unset):
+        is_kev (bool | Unset):
+        total_count (GetAllFindings1TotalCount | Unset): The counting mode for the `X-Total-Count`
+            response header. Default: GetAllFindings1TotalCount.EXACT.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Finding]
+        Any | ProblemDetails | list[Finding]
     """
 
     return (
@@ -567,5 +611,7 @@ async def asyncio(
             epss_to=epss_to,
             epss_percentile_from=epss_percentile_from,
             epss_percentile_to=epss_percentile_to,
+            is_kev=is_kev,
+            total_count=total_count,
         )
     ).parsed

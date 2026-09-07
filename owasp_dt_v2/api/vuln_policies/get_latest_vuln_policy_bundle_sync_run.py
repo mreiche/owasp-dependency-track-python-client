@@ -14,6 +14,7 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/vuln-policy-bundles/{uuid}/sync-runs/latest".format(

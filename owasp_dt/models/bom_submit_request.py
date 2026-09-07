@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -26,6 +26,7 @@ class BomSubmitRequest:
         project_name (str):  Example: Example Application.
         project_version (str):  Example: 1.0.0.
         auto_create (bool | Unset):
+        is_active (bool | Unset):
         is_latest (bool | Unset):
         parent_name (str | Unset):  Example: Example Application Parent.
         parent_uuid (str | Unset):  Example: 5341f53c-611b-4388-9d9c-731026dc5eec.
@@ -38,6 +39,7 @@ class BomSubmitRequest:
     project_name: str
     project_version: str
     auto_create: bool | Unset = UNSET
+    is_active: bool | Unset = UNSET
     is_latest: bool | Unset = UNSET
     parent_name: str | Unset = UNSET
     parent_uuid: str | Unset = UNSET
@@ -55,6 +57,8 @@ class BomSubmitRequest:
         project_version = self.project_version
 
         auto_create = self.auto_create
+
+        is_active = self.is_active
 
         is_latest = self.is_latest
 
@@ -83,6 +87,8 @@ class BomSubmitRequest:
         )
         if auto_create is not UNSET:
             field_dict["autoCreate"] = auto_create
+        if is_active is not UNSET:
+            field_dict["isActive"] = is_active
         if is_latest is not UNSET:
             field_dict["isLatest"] = is_latest
         if parent_name is not UNSET:
@@ -97,7 +103,7 @@ class BomSubmitRequest:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.tag import Tag
 
         d = dict(src_dict)
@@ -110,6 +116,8 @@ class BomSubmitRequest:
         project_version = d.pop("projectVersion")
 
         auto_create = d.pop("autoCreate", UNSET)
+
+        is_active = d.pop("isActive", UNSET)
 
         is_latest = d.pop("isLatest", UNSET)
 
@@ -134,6 +142,7 @@ class BomSubmitRequest:
             project_name=project_name,
             project_version=project_version,
             auto_create=auto_create,
+            is_active=is_active,
             is_latest=is_latest,
             parent_name=parent_name,
             parent_uuid=parent_uuid,

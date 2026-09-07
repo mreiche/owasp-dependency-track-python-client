@@ -20,6 +20,7 @@ def _get_kwargs(
     sort_name: str | Unset = UNSET,
     sort_order: GetCwesSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["searchText"] = search_text

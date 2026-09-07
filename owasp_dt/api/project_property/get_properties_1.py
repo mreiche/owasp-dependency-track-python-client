@@ -8,13 +8,14 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.problem_details import ProblemDetails
-from ...models.project_property import ProjectProperty
+from ...models.project_property_response import ProjectPropertyResponse
 from ...types import Response
 
 
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/project/{uuid}/property".format(
@@ -27,12 +28,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | ProblemDetails | list[ProjectProperty] | None:
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ProjectProperty.from_dict(response_200_item_data)
+            response_200_item = ProjectPropertyResponse.from_dict(
+                response_200_item_data
+            )
 
             response_200.append(response_200_item)
 
@@ -59,7 +62,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | ProblemDetails | list[ProjectProperty]]:
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,7 +75,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | ProblemDetails | list[ProjectProperty]]:
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     """Returns a list of all ProjectProperties for the specified project
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -86,7 +89,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ProblemDetails | list[ProjectProperty]]
+        Response[Any | ProblemDetails | list[ProjectPropertyResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -104,7 +107,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | ProblemDetails | list[ProjectProperty] | None:
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     """Returns a list of all ProjectProperties for the specified project
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -118,7 +121,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ProblemDetails | list[ProjectProperty]
+        Any | ProblemDetails | list[ProjectPropertyResponse]
     """
 
     return sync_detailed(
@@ -131,7 +134,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | ProblemDetails | list[ProjectProperty]]:
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     """Returns a list of all ProjectProperties for the specified project
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -145,7 +148,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ProblemDetails | list[ProjectProperty]]
+        Response[Any | ProblemDetails | list[ProjectPropertyResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -161,7 +164,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | ProblemDetails | list[ProjectProperty] | None:
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     """Returns a list of all ProjectProperties for the specified project
 
      <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
@@ -175,7 +178,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ProblemDetails | list[ProjectProperty]
+        Any | ProblemDetails | list[ProjectPropertyResponse]
     """
 
     return (

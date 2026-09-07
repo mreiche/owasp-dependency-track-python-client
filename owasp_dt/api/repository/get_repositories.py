@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.get_repositories_sort_order import GetRepositoriesSortOrder
-from ...models.repository import Repository
+from ...models.repository_response import RepositoryResponse
 from ...types import UNSET, Response, Unset
 
 
@@ -19,6 +19,7 @@ def _get_kwargs(
     sort_name: str | Unset = UNSET,
     sort_order: GetRepositoriesSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -50,12 +51,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[Repository] | None:
+) -> Any | list[RepositoryResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = Repository.from_dict(response_200_item_data)
+            response_200_item = RepositoryResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -73,7 +74,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[Repository]]:
+) -> Response[Any | list[RepositoryResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -91,7 +92,7 @@ def sync_detailed(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetRepositoriesSortOrder | Unset = UNSET,
-) -> Response[Any | list[Repository]]:
+) -> Response[Any | list[RepositoryResponse]]:
     """Returns a list of all repositories
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -110,7 +111,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Repository]]
+        Response[Any | list[RepositoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -138,7 +139,7 @@ def sync(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetRepositoriesSortOrder | Unset = UNSET,
-) -> Any | list[Repository] | None:
+) -> Any | list[RepositoryResponse] | None:
     """Returns a list of all repositories
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -157,7 +158,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Repository]
+        Any | list[RepositoryResponse]
     """
 
     return sync_detailed(
@@ -180,7 +181,7 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetRepositoriesSortOrder | Unset = UNSET,
-) -> Response[Any | list[Repository]]:
+) -> Response[Any | list[RepositoryResponse]]:
     """Returns a list of all repositories
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -199,7 +200,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Repository]]
+        Response[Any | list[RepositoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -225,7 +226,7 @@ async def asyncio(
     limit: str | Unset = UNSET,
     sort_name: str | Unset = UNSET,
     sort_order: GetRepositoriesSortOrder | Unset = UNSET,
-) -> Any | list[Repository] | None:
+) -> Any | list[RepositoryResponse] | None:
     """Returns a list of all repositories
 
      <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
@@ -244,7 +245,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Repository]
+        Any | list[RepositoryResponse]
     """
 
     return (

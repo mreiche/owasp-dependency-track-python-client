@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ComponentClassifier(str, Enum):
+class ComponentClassifier(StrEnum):
     APPLICATION = "APPLICATION"
     CONTAINER = "CONTAINER"
     CRYPTOGRAPHIC_ASSET = "CRYPTOGRAPHIC_ASSET"

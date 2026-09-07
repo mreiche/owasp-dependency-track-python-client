@@ -12,6 +12,7 @@ from ...types import Response
 def _get_kwargs(
     name: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/vuln-data-sources/{name}/mirror-runs".format(

@@ -24,6 +24,7 @@ def _get_kwargs(
     sort_direction: SortDirection | Unset = UNSET,
     sort_by: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["only_outdated"] = only_outdated

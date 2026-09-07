@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class TotalCountType(str, Enum):
+class TotalCountType(StrEnum):
     AT_LEAST = "AT_LEAST"
     EXACT = "EXACT"
 

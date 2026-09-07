@@ -95,6 +95,14 @@ def sync_detailed(
       the response's content type will be <code>application/problem+json</code>.
     </p>
     <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
       When uploading large BOMs, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
@@ -146,6 +154,14 @@ def sync(
       the response's content type will be <code>application/problem+json</code>.
     </p>
     <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
       When uploading large BOMs, the <code>POST</code> endpoint is preferred,
       as it does not have this limit.
@@ -190,6 +206,14 @@ async def asyncio_detailed(
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
@@ -239,6 +263,14 @@ async def asyncio(
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.

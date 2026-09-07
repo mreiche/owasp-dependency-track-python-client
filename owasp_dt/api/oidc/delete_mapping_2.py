@@ -14,6 +14,7 @@ def _get_kwargs(
     group_uuid: UUID,
     team_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/oidc/group/{group_uuid}/team/{team_uuid}/mapping".format(

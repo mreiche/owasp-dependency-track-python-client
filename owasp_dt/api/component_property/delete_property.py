@@ -15,6 +15,7 @@ def _get_kwargs(
     uuid: UUID,
     property_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/component/{uuid}/property/{property_uuid}".format(

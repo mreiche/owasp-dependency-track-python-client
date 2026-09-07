@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Self, TypeVar, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -30,10 +30,7 @@ T = TypeVar("T", bound="Component")
 class Component:
     """
     Attributes:
-        classifier (ComponentClassifier):
         name (str):
-        project (Project):
-        uuid (UUID):
         author (str | Unset):
         authors (list[OrganizationalContact] | Unset):
         blake2b_256 (str | Unset):
@@ -41,6 +38,7 @@ class Component:
         blake2b_512 (str | Unset):
         blake3 (str | Unset):
         children (list[Component] | Unset):
+        classifier (ComponentClassifier | Unset):
         copyright_ (str | Unset):
         cpe (str | Unset):
         dependency_graph (list[str] | Unset):
@@ -61,6 +59,7 @@ class Component:
         notes (str | Unset):
         occurrence_count (int | Unset):
         parent (Component | Unset):
+        project (Project | Unset):
         properties (list[ComponentProperty] | Unset):
         publisher (str | Unset):
         purl (str | Unset):
@@ -75,16 +74,16 @@ class Component:
         sha3_384 (str | Unset):
         sha3_512 (str | Unset):
         sha512 (str | Unset):
+        streebog_256 (str | Unset):
+        streebog_512 (str | Unset):
         supplier (OrganizationalEntity | Unset):
         swid_tag_id (str | Unset):
+        uuid (UUID | Unset):
         version (str | Unset):
         vulnerabilities (list[Vulnerability] | Unset):
     """
 
-    classifier: ComponentClassifier
     name: str
-    project: Project
-    uuid: UUID
     author: str | Unset = UNSET
     authors: list[OrganizationalContact] | Unset = UNSET
     blake2b_256: str | Unset = UNSET
@@ -92,6 +91,7 @@ class Component:
     blake2b_512: str | Unset = UNSET
     blake3: str | Unset = UNSET
     children: list[Component] | Unset = UNSET
+    classifier: ComponentClassifier | Unset = UNSET
     copyright_: str | Unset = UNSET
     cpe: str | Unset = UNSET
     dependency_graph: list[str] | Unset = UNSET
@@ -112,6 +112,7 @@ class Component:
     notes: str | Unset = UNSET
     occurrence_count: int | Unset = UNSET
     parent: Component | Unset = UNSET
+    project: Project | Unset = UNSET
     properties: list[ComponentProperty] | Unset = UNSET
     publisher: str | Unset = UNSET
     purl: str | Unset = UNSET
@@ -126,20 +127,17 @@ class Component:
     sha3_384: str | Unset = UNSET
     sha3_512: str | Unset = UNSET
     sha512: str | Unset = UNSET
+    streebog_256: str | Unset = UNSET
+    streebog_512: str | Unset = UNSET
     supplier: OrganizationalEntity | Unset = UNSET
     swid_tag_id: str | Unset = UNSET
+    uuid: UUID | Unset = UNSET
     version: str | Unset = UNSET
     vulnerabilities: list[Vulnerability] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        classifier = self.classifier.value
-
         name = self.name
-
-        project = self.project.to_dict()
-
-        uuid = str(self.uuid)
 
         author = self.author
 
@@ -164,6 +162,10 @@ class Component:
             for children_item_data in self.children:
                 children_item = children_item_data.to_dict()
                 children.append(children_item)
+
+        classifier: str | Unset = UNSET
+        if not isinstance(self.classifier, Unset):
+            classifier = self.classifier.value
 
         copyright_ = self.copyright_
 
@@ -216,6 +218,10 @@ class Component:
         if not isinstance(self.parent, Unset):
             parent = self.parent.to_dict()
 
+        project: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.project, Unset):
+            project = self.project.to_dict()
+
         properties: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.properties, Unset):
             properties = []
@@ -255,11 +261,19 @@ class Component:
 
         sha512 = self.sha512
 
+        streebog_256 = self.streebog_256
+
+        streebog_512 = self.streebog_512
+
         supplier: dict[str, Any] | Unset = UNSET
         if not isinstance(self.supplier, Unset):
             supplier = self.supplier.to_dict()
 
         swid_tag_id = self.swid_tag_id
+
+        uuid: str | Unset = UNSET
+        if not isinstance(self.uuid, Unset):
+            uuid = str(self.uuid)
 
         version = self.version
 
@@ -274,10 +288,7 @@ class Component:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "classifier": classifier,
                 "name": name,
-                "project": project,
-                "uuid": uuid,
             }
         )
         if author is not UNSET:
@@ -294,6 +305,8 @@ class Component:
             field_dict["blake3"] = blake3
         if children is not UNSET:
             field_dict["children"] = children
+        if classifier is not UNSET:
+            field_dict["classifier"] = classifier
         if copyright_ is not UNSET:
             field_dict["copyright"] = copyright_
         if cpe is not UNSET:
@@ -334,6 +347,8 @@ class Component:
             field_dict["occurrenceCount"] = occurrence_count
         if parent is not UNSET:
             field_dict["parent"] = parent
+        if project is not UNSET:
+            field_dict["project"] = project
         if properties is not UNSET:
             field_dict["properties"] = properties
         if publisher is not UNSET:
@@ -362,10 +377,16 @@ class Component:
             field_dict["sha3_512"] = sha3_512
         if sha512 is not UNSET:
             field_dict["sha512"] = sha512
+        if streebog_256 is not UNSET:
+            field_dict["streebog_256"] = streebog_256
+        if streebog_512 is not UNSET:
+            field_dict["streebog_512"] = streebog_512
         if supplier is not UNSET:
             field_dict["supplier"] = supplier
         if swid_tag_id is not UNSET:
             field_dict["swidTagId"] = swid_tag_id
+        if uuid is not UNSET:
+            field_dict["uuid"] = uuid
         if version is not UNSET:
             field_dict["version"] = version
         if vulnerabilities is not UNSET:
@@ -374,25 +395,23 @@ class Component:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.component_property import ComponentProperty
         from ..models.dependency_metrics import DependencyMetrics
         from ..models.external_reference import ExternalReference
         from ..models.license_ import License
-        from ..models.organizational_contact import OrganizationalContact
+        from ..models.organizational_contact import (
+            OrganizationalContact,
+        )
         from ..models.organizational_entity import OrganizationalEntity
         from ..models.project import Project
-        from ..models.repository_meta_component import RepositoryMetaComponent
+        from ..models.repository_meta_component import (
+            RepositoryMetaComponent,
+        )
         from ..models.vulnerability import Vulnerability
 
         d = dict(src_dict)
-        classifier = ComponentClassifier(d.pop("classifier"))
-
         name = d.pop("name")
-
-        project = Project.from_dict(d.pop("project"))
-
-        uuid = UUID(d.pop("uuid"))
 
         author = d.pop("author", UNSET)
 
@@ -421,6 +440,13 @@ class Component:
                 children_item = Component.from_dict(children_item_data)
 
                 children.append(children_item)
+
+        _classifier = d.pop("classifier", UNSET)
+        classifier: ComponentClassifier | Unset
+        if isinstance(_classifier, Unset):
+            classifier = UNSET
+        else:
+            classifier = ComponentClassifier(_classifier)
 
         copyright_ = d.pop("copyright", UNSET)
 
@@ -481,6 +507,13 @@ class Component:
         else:
             parent = Component.from_dict(_parent)
 
+        _project = d.pop("project", UNSET)
+        project: Project | Unset
+        if isinstance(_project, Unset):
+            project = UNSET
+        else:
+            project = Project.from_dict(_project)
+
         _properties = d.pop("properties", UNSET)
         properties: list[ComponentProperty] | Unset = UNSET
         if _properties is not UNSET:
@@ -531,6 +564,10 @@ class Component:
 
         sha512 = d.pop("sha512", UNSET)
 
+        streebog_256 = d.pop("streebog_256", UNSET)
+
+        streebog_512 = d.pop("streebog_512", UNSET)
+
         _supplier = d.pop("supplier", UNSET)
         supplier: OrganizationalEntity | Unset
         if isinstance(_supplier, Unset):
@@ -539,6 +576,13 @@ class Component:
             supplier = OrganizationalEntity.from_dict(_supplier)
 
         swid_tag_id = d.pop("swidTagId", UNSET)
+
+        _uuid = d.pop("uuid", UNSET)
+        uuid: UUID | Unset
+        if isinstance(_uuid, Unset):
+            uuid = UNSET
+        else:
+            uuid = UUID(_uuid)
 
         version = d.pop("version", UNSET)
 
@@ -554,10 +598,7 @@ class Component:
                 vulnerabilities.append(vulnerabilities_item)
 
         component = cls(
-            classifier=classifier,
             name=name,
-            project=project,
-            uuid=uuid,
             author=author,
             authors=authors,
             blake2b_256=blake2b_256,
@@ -565,6 +606,7 @@ class Component:
             blake2b_512=blake2b_512,
             blake3=blake3,
             children=children,
+            classifier=classifier,
             copyright_=copyright_,
             cpe=cpe,
             dependency_graph=dependency_graph,
@@ -585,6 +627,7 @@ class Component:
             notes=notes,
             occurrence_count=occurrence_count,
             parent=parent,
+            project=project,
             properties=properties,
             publisher=publisher,
             purl=purl,
@@ -599,8 +642,11 @@ class Component:
             sha3_384=sha3_384,
             sha3_512=sha3_512,
             sha512=sha512,
+            streebog_256=streebog_256,
+            streebog_512=streebog_512,
             supplier=supplier,
             swid_tag_id=swid_tag_id,
+            uuid=uuid,
             version=version,
             vulnerabilities=vulnerabilities,
         )

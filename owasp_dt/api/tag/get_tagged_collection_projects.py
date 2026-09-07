@@ -25,6 +25,7 @@ def _get_kwargs(
     sort_name: str | Unset = UNSET,
     sort_order: GetTaggedCollectionProjectsSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

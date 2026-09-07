@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class TaskQueueType(str, Enum):
+class TaskQueueType(StrEnum):
     ACTIVITY = "ACTIVITY"
     WORKFLOW = "WORKFLOW"
 

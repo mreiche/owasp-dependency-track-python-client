@@ -19,6 +19,7 @@ def _get_kwargs(
     download: bool | Unset = UNSET,
     version: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["format"] = format_

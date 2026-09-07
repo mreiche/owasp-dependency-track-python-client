@@ -15,6 +15,7 @@ def _get_kwargs(
     rule_uuid: UUID,
     team_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/notification/rule/{rule_uuid}/team/{team_uuid}".format(

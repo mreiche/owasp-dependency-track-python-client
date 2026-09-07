@@ -13,6 +13,7 @@ from ...types import Response
 def _get_kwargs(
     cwe_id: int,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/cwe/{cwe_id}".format(

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class DataClassificationDirection(str, Enum):
+class DataClassificationDirection(StrEnum):
     BI_DIRECTIONAL = "BI_DIRECTIONAL"
     INBOUND = "INBOUND"
     OUTBOUND = "OUTBOUND"

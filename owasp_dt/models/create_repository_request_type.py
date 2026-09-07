@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class RepositoryType(str, Enum):
+class CreateRepositoryRequestType(StrEnum):
     CARGO = "CARGO"
     COMPOSER = "COMPOSER"
     CPAN = "CPAN"

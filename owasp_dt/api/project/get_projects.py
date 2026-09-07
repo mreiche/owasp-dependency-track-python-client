@@ -24,6 +24,7 @@ def _get_kwargs(
     only_root: bool | Unset = UNSET,
     not_assigned_to_team_with_uuid: UUID | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

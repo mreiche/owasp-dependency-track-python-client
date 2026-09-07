@@ -32,6 +32,7 @@ def _get_kwargs(
     exclude_inactive_projects: bool | Unset = UNSET,
     only_latest_project_versions: bool | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number

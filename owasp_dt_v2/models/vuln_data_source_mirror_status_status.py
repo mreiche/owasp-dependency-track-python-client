@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnDataSourceMirrorStatusStatus(str, Enum):
+class VulnDataSourceMirrorStatusStatus(StrEnum):
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
     PENDING = "PENDING"

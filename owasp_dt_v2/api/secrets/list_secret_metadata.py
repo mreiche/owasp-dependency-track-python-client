@@ -15,6 +15,7 @@ def _get_kwargs(
     page_token: str | Unset = UNSET,
     limit: int | Unset = 100,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["q"] = q

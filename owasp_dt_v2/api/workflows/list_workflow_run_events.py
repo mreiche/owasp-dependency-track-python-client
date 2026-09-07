@@ -20,6 +20,7 @@ def _get_kwargs(
     page_token: str | Unset = UNSET,
     sort_direction: SortDirection | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["from_sequence_number"] = from_sequence_number

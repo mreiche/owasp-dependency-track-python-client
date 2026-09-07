@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class VulnPolicyBundleSyncStatusStatus(str, Enum):
+class VulnPolicyBundleSyncStatusStatus(StrEnum):
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
     PENDING = "PENDING"

@@ -6,7 +6,7 @@ from owasp_dt.api.license_ import get_license
 from owasp_dt.api.policy import create_policy
 from owasp_dt.api.policy_condition import create_policy_condition
 from owasp_dt.api.violation import get_violations_by_project, get_violations
-from owasp_dt.models import Policy, PolicyViolationState, PolicyCondition, PolicyConditionSubject, PolicyConditionOperator, License, PolicyOperator
+from owasp_dt.models import Policy, PolicyViolationState, PolicyCondition, PolicyConditionSubject, PolicyConditionOperator, License, PolicyOperator, LicenseResponse
 from owasp_dt.types import UNSET
 
 
@@ -15,7 +15,7 @@ def test_mit_license(client: owasp_dt.Client):
         resp = get_license.sync_detailed(client=client, license_id="MIT")
         assert resp.status_code == 200
         license = resp.parsed
-        assert isinstance(license, License)
+        assert isinstance(license, LicenseResponse)
         test.mit_license_uuid = str(license.uuid)
 
     test.retry(_test_mit_license, 600)
