@@ -15205,7 +15205,6 @@
           }
         },
         "required": [
-          "projectUuid",
           "token"
         ]
       },
@@ -17275,7 +17274,6 @@
         },
         "required": [
           "hasChildren",
-          "lastBomImport",
           "name",
           "uuid"
         ]

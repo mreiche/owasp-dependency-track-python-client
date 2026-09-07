@@ -5,7 +5,6 @@ from typing import Callable
 
 from dotenv import load_dotenv
 
-from test import config
 
 base_dir = Path(__file__).parent
 
