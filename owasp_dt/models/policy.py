@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -29,26 +26,26 @@ class Policy:
     Attributes:
         name (str):
         operator (PolicyOperator):
-        violation_state (PolicyViolationState):
         uuid (UUID):
-        policy_conditions (Union[Unset, list['PolicyCondition']]):
-        projects (Union[Unset, list['Project']]):
-        tags (Union[Unset, list['Tag']]):
-        include_children (Union[Unset, bool]):
-        only_latest_project_version (Union[Unset, bool]):
-        global_ (Union[Unset, bool]):
+        violation_state (PolicyViolationState):
+        global_ (bool | Unset):
+        include_children (bool | Unset):
+        only_latest_project_version (bool | Unset):
+        policy_conditions (list[PolicyCondition] | Unset):
+        projects (list[Project] | Unset):
+        tags (list[Tag] | Unset):
     """
 
     name: str
     operator: PolicyOperator
-    violation_state: PolicyViolationState
     uuid: UUID
-    policy_conditions: Union[Unset, list["PolicyCondition"]] = UNSET
-    projects: Union[Unset, list["Project"]] = UNSET
-    tags: Union[Unset, list["Tag"]] = UNSET
-    include_children: Union[Unset, bool] = UNSET
-    only_latest_project_version: Union[Unset, bool] = UNSET
-    global_: Union[Unset, bool] = UNSET
+    violation_state: PolicyViolationState
+    global_: bool | Unset = UNSET
+    include_children: bool | Unset = UNSET
+    only_latest_project_version: bool | Unset = UNSET
+    policy_conditions: list[PolicyCondition] | Unset = UNSET
+    projects: list[Project] | Unset = UNSET
+    tags: list[Tag] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -56,36 +53,36 @@ class Policy:
 
         operator = self.operator.value
 
-        violation_state = self.violation_state.value
-
         uuid = str(self.uuid)
 
-        policy_conditions: Union[Unset, list[dict[str, Any]]] = UNSET
+        violation_state = self.violation_state.value
+
+        global_ = self.global_
+
+        include_children = self.include_children
+
+        only_latest_project_version = self.only_latest_project_version
+
+        policy_conditions: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.policy_conditions, Unset):
             policy_conditions = []
             for policy_conditions_item_data in self.policy_conditions:
                 policy_conditions_item = policy_conditions_item_data.to_dict()
                 policy_conditions.append(policy_conditions_item)
 
-        projects: Union[Unset, list[dict[str, Any]]] = UNSET
+        projects: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.projects, Unset):
             projects = []
             for projects_item_data in self.projects:
                 projects_item = projects_item_data.to_dict()
                 projects.append(projects_item)
 
-        tags: Union[Unset, list[dict[str, Any]]] = UNSET
+        tags: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.tags, Unset):
             tags = []
             for tags_item_data in self.tags:
                 tags_item = tags_item_data.to_dict()
                 tags.append(tags_item)
-
-        include_children = self.include_children
-
-        only_latest_project_version = self.only_latest_project_version
-
-        global_ = self.global_
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -93,27 +90,27 @@ class Policy:
             {
                 "name": name,
                 "operator": operator,
-                "violationState": violation_state,
                 "uuid": uuid,
+                "violationState": violation_state,
             }
         )
+        if global_ is not UNSET:
+            field_dict["global"] = global_
+        if include_children is not UNSET:
+            field_dict["includeChildren"] = include_children
+        if only_latest_project_version is not UNSET:
+            field_dict["onlyLatestProjectVersion"] = only_latest_project_version
         if policy_conditions is not UNSET:
             field_dict["policyConditions"] = policy_conditions
         if projects is not UNSET:
             field_dict["projects"] = projects
         if tags is not UNSET:
             field_dict["tags"] = tags
-        if include_children is not UNSET:
-            field_dict["includeChildren"] = include_children
-        if only_latest_project_version is not UNSET:
-            field_dict["onlyLatestProjectVersion"] = only_latest_project_version
-        if global_ is not UNSET:
-            field_dict["global"] = global_
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.policy_condition import PolicyCondition
         from ..models.project import Project
         from ..models.tag import Tag
@@ -123,50 +120,56 @@ class Policy:
 
         operator = PolicyOperator(d.pop("operator"))
 
-        violation_state = PolicyViolationState(d.pop("violationState"))
-
         uuid = UUID(d.pop("uuid"))
 
-        policy_conditions = []
-        _policy_conditions = d.pop("policyConditions", UNSET)
-        for policy_conditions_item_data in _policy_conditions or []:
-            policy_conditions_item = PolicyCondition.from_dict(
-                policy_conditions_item_data
-            )
+        violation_state = PolicyViolationState(d.pop("violationState"))
 
-            policy_conditions.append(policy_conditions_item)
-
-        projects = []
-        _projects = d.pop("projects", UNSET)
-        for projects_item_data in _projects or []:
-            projects_item = Project.from_dict(projects_item_data)
-
-            projects.append(projects_item)
-
-        tags = []
-        _tags = d.pop("tags", UNSET)
-        for tags_item_data in _tags or []:
-            tags_item = Tag.from_dict(tags_item_data)
-
-            tags.append(tags_item)
+        global_ = d.pop("global", UNSET)
 
         include_children = d.pop("includeChildren", UNSET)
 
         only_latest_project_version = d.pop("onlyLatestProjectVersion", UNSET)
 
-        global_ = d.pop("global", UNSET)
+        _policy_conditions = d.pop("policyConditions", UNSET)
+        policy_conditions: list[PolicyCondition] | Unset = UNSET
+        if _policy_conditions is not UNSET:
+            policy_conditions = []
+            for policy_conditions_item_data in _policy_conditions:
+                policy_conditions_item = PolicyCondition.from_dict(
+                    policy_conditions_item_data
+                )
+
+                policy_conditions.append(policy_conditions_item)
+
+        _projects = d.pop("projects", UNSET)
+        projects: list[Project] | Unset = UNSET
+        if _projects is not UNSET:
+            projects = []
+            for projects_item_data in _projects:
+                projects_item = Project.from_dict(projects_item_data)
+
+                projects.append(projects_item)
+
+        _tags = d.pop("tags", UNSET)
+        tags: list[Tag] | Unset = UNSET
+        if _tags is not UNSET:
+            tags = []
+            for tags_item_data in _tags:
+                tags_item = Tag.from_dict(tags_item_data)
+
+                tags.append(tags_item)
 
         policy = cls(
             name=name,
             operator=operator,
-            violation_state=violation_state,
             uuid=uuid,
+            violation_state=violation_state,
+            global_=global_,
+            include_children=include_children,
+            only_latest_project_version=only_latest_project_version,
             policy_conditions=policy_conditions,
             projects=projects,
             tags=tags,
-            include_children=include_children,
-            only_latest_project_version=only_latest_project_version,
-            global_=global_,
         )
 
         policy.additional_properties = d

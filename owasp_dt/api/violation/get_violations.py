@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -12,23 +12,24 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetViolationsSortOrder] = UNSET,
-    suppressed: Union[Unset, bool] = UNSET,
-    show_inactive: Union[Unset, bool] = UNSET,
-    violation_state: Union[Unset, str] = UNSET,
-    risk_type: Union[Unset, str] = UNSET,
-    policy: Union[Unset, str] = UNSET,
-    analysis_state: Union[Unset, str] = UNSET,
-    occurred_on_date_from: Union[Unset, str] = UNSET,
-    occurred_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetViolationsSortOrder | Unset = UNSET,
+    suppressed: bool | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    violation_state: str | Unset = UNSET,
+    risk_type: str | Unset = UNSET,
+    policy: str | Unset = UNSET,
+    analysis_state: str | Unset = UNSET,
+    occurred_on_date_from: str | Unset = UNSET,
+    occurred_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -41,7 +42,7 @@ def _get_kwargs(
 
     params["sortName"] = sort_name
 
-    json_sort_order: Union[Unset, str] = UNSET
+    json_sort_order: str | Unset = UNSET
     if not isinstance(sort_order, Unset):
         json_sort_order = sort_order.value
 
@@ -79,8 +80,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["PolicyViolation"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[PolicyViolation] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -102,8 +103,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["PolicyViolation"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[PolicyViolation]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,51 +116,51 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetViolationsSortOrder] = UNSET,
-    suppressed: Union[Unset, bool] = UNSET,
-    show_inactive: Union[Unset, bool] = UNSET,
-    violation_state: Union[Unset, str] = UNSET,
-    risk_type: Union[Unset, str] = UNSET,
-    policy: Union[Unset, str] = UNSET,
-    analysis_state: Union[Unset, str] = UNSET,
-    occurred_on_date_from: Union[Unset, str] = UNSET,
-    occurred_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-) -> Response[Union[Any, list["PolicyViolation"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetViolationsSortOrder | Unset = UNSET,
+    suppressed: bool | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    violation_state: str | Unset = UNSET,
+    risk_type: str | Unset = UNSET,
+    policy: str | Unset = UNSET,
+    analysis_state: str | Unset = UNSET,
+    occurred_on_date_from: str | Unset = UNSET,
+    occurred_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+) -> Response[Any | list[PolicyViolation]]:
     """Returns a list of all policy violations for the entire portfolio
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetViolationsSortOrder]):
-        suppressed (Union[Unset, bool]):
-        show_inactive (Union[Unset, bool]):
-        violation_state (Union[Unset, str]):
-        risk_type (Union[Unset, str]):
-        policy (Union[Unset, str]):
-        analysis_state (Union[Unset, str]):
-        occurred_on_date_from (Union[Unset, str]):
-        occurred_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetViolationsSortOrder | Unset):
+        suppressed (bool | Unset):
+        show_inactive (bool | Unset):
+        violation_state (str | Unset):
+        risk_type (str | Unset):
+        policy (str | Unset):
+        analysis_state (str | Unset):
+        occurred_on_date_from (str | Unset):
+        occurred_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['PolicyViolation']]]
+        Response[Any | list[PolicyViolation]]
     """
 
     kwargs = _get_kwargs(
@@ -191,51 +192,51 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetViolationsSortOrder] = UNSET,
-    suppressed: Union[Unset, bool] = UNSET,
-    show_inactive: Union[Unset, bool] = UNSET,
-    violation_state: Union[Unset, str] = UNSET,
-    risk_type: Union[Unset, str] = UNSET,
-    policy: Union[Unset, str] = UNSET,
-    analysis_state: Union[Unset, str] = UNSET,
-    occurred_on_date_from: Union[Unset, str] = UNSET,
-    occurred_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-) -> Optional[Union[Any, list["PolicyViolation"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetViolationsSortOrder | Unset = UNSET,
+    suppressed: bool | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    violation_state: str | Unset = UNSET,
+    risk_type: str | Unset = UNSET,
+    policy: str | Unset = UNSET,
+    analysis_state: str | Unset = UNSET,
+    occurred_on_date_from: str | Unset = UNSET,
+    occurred_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+) -> Any | list[PolicyViolation] | None:
     """Returns a list of all policy violations for the entire portfolio
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetViolationsSortOrder]):
-        suppressed (Union[Unset, bool]):
-        show_inactive (Union[Unset, bool]):
-        violation_state (Union[Unset, str]):
-        risk_type (Union[Unset, str]):
-        policy (Union[Unset, str]):
-        analysis_state (Union[Unset, str]):
-        occurred_on_date_from (Union[Unset, str]):
-        occurred_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetViolationsSortOrder | Unset):
+        suppressed (bool | Unset):
+        show_inactive (bool | Unset):
+        violation_state (str | Unset):
+        risk_type (str | Unset):
+        policy (str | Unset):
+        analysis_state (str | Unset):
+        occurred_on_date_from (str | Unset):
+        occurred_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['PolicyViolation']]
+        Any | list[PolicyViolation]
     """
 
     return sync_detailed(
@@ -262,51 +263,51 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetViolationsSortOrder] = UNSET,
-    suppressed: Union[Unset, bool] = UNSET,
-    show_inactive: Union[Unset, bool] = UNSET,
-    violation_state: Union[Unset, str] = UNSET,
-    risk_type: Union[Unset, str] = UNSET,
-    policy: Union[Unset, str] = UNSET,
-    analysis_state: Union[Unset, str] = UNSET,
-    occurred_on_date_from: Union[Unset, str] = UNSET,
-    occurred_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-) -> Response[Union[Any, list["PolicyViolation"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetViolationsSortOrder | Unset = UNSET,
+    suppressed: bool | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    violation_state: str | Unset = UNSET,
+    risk_type: str | Unset = UNSET,
+    policy: str | Unset = UNSET,
+    analysis_state: str | Unset = UNSET,
+    occurred_on_date_from: str | Unset = UNSET,
+    occurred_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+) -> Response[Any | list[PolicyViolation]]:
     """Returns a list of all policy violations for the entire portfolio
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetViolationsSortOrder]):
-        suppressed (Union[Unset, bool]):
-        show_inactive (Union[Unset, bool]):
-        violation_state (Union[Unset, str]):
-        risk_type (Union[Unset, str]):
-        policy (Union[Unset, str]):
-        analysis_state (Union[Unset, str]):
-        occurred_on_date_from (Union[Unset, str]):
-        occurred_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetViolationsSortOrder | Unset):
+        suppressed (bool | Unset):
+        show_inactive (bool | Unset):
+        violation_state (str | Unset):
+        risk_type (str | Unset):
+        policy (str | Unset):
+        analysis_state (str | Unset):
+        occurred_on_date_from (str | Unset):
+        occurred_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['PolicyViolation']]]
+        Response[Any | list[PolicyViolation]]
     """
 
     kwargs = _get_kwargs(
@@ -336,51 +337,51 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetViolationsSortOrder] = UNSET,
-    suppressed: Union[Unset, bool] = UNSET,
-    show_inactive: Union[Unset, bool] = UNSET,
-    violation_state: Union[Unset, str] = UNSET,
-    risk_type: Union[Unset, str] = UNSET,
-    policy: Union[Unset, str] = UNSET,
-    analysis_state: Union[Unset, str] = UNSET,
-    occurred_on_date_from: Union[Unset, str] = UNSET,
-    occurred_on_date_to: Union[Unset, str] = UNSET,
-    text_search_field: Union[Unset, str] = UNSET,
-    text_search_input: Union[Unset, str] = UNSET,
-) -> Optional[Union[Any, list["PolicyViolation"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetViolationsSortOrder | Unset = UNSET,
+    suppressed: bool | Unset = UNSET,
+    show_inactive: bool | Unset = UNSET,
+    violation_state: str | Unset = UNSET,
+    risk_type: str | Unset = UNSET,
+    policy: str | Unset = UNSET,
+    analysis_state: str | Unset = UNSET,
+    occurred_on_date_from: str | Unset = UNSET,
+    occurred_on_date_to: str | Unset = UNSET,
+    text_search_field: str | Unset = UNSET,
+    text_search_input: str | Unset = UNSET,
+) -> Any | list[PolicyViolation] | None:
     """Returns a list of all policy violations for the entire portfolio
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
 
     Args:
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetViolationsSortOrder]):
-        suppressed (Union[Unset, bool]):
-        show_inactive (Union[Unset, bool]):
-        violation_state (Union[Unset, str]):
-        risk_type (Union[Unset, str]):
-        policy (Union[Unset, str]):
-        analysis_state (Union[Unset, str]):
-        occurred_on_date_from (Union[Unset, str]):
-        occurred_on_date_to (Union[Unset, str]):
-        text_search_field (Union[Unset, str]):
-        text_search_input (Union[Unset, str]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetViolationsSortOrder | Unset):
+        suppressed (bool | Unset):
+        show_inactive (bool | Unset):
+        violation_state (str | Unset):
+        risk_type (str | Unset):
+        policy (str | Unset):
+        analysis_state (str | Unset):
+        occurred_on_date_from (str | Unset):
+        occurred_on_date_to (str | Unset):
+        text_search_field (str | Unset):
+        text_search_input (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['PolicyViolation']]
+        Any | list[PolicyViolation]
     """
 
     return (

@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -29,22 +26,22 @@ class PolicyViolation:
     Attributes:
         timestamp (int): UNIX epoch timestamp in milliseconds
         uuid (UUID):
-        type_ (Union[Unset, PolicyViolationType]):
-        project (Union[Unset, Project]):
-        component (Union[Unset, Component]):
-        policy_condition (Union[Unset, PolicyCondition]):
-        text (Union[Unset, str]):
-        analysis (Union[Unset, ViolationAnalysis]):
+        analysis (ViolationAnalysis | Unset):
+        component (Component | Unset):
+        policy_condition (PolicyCondition | Unset):
+        project (Project | Unset):
+        text (str | Unset):
+        type_ (PolicyViolationType | Unset):
     """
 
     timestamp: int
     uuid: UUID
-    type_: Union[Unset, PolicyViolationType] = UNSET
-    project: Union[Unset, "Project"] = UNSET
-    component: Union[Unset, "Component"] = UNSET
-    policy_condition: Union[Unset, "PolicyCondition"] = UNSET
-    text: Union[Unset, str] = UNSET
-    analysis: Union[Unset, "ViolationAnalysis"] = UNSET
+    analysis: ViolationAnalysis | Unset = UNSET
+    component: Component | Unset = UNSET
+    policy_condition: PolicyCondition | Unset = UNSET
+    project: Project | Unset = UNSET
+    text: str | Unset = UNSET
+    type_: PolicyViolationType | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -52,27 +49,27 @@ class PolicyViolation:
 
         uuid = str(self.uuid)
 
-        type_: Union[Unset, str] = UNSET
-        if not isinstance(self.type_, Unset):
-            type_ = self.type_.value
+        analysis: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.analysis, Unset):
+            analysis = self.analysis.to_dict()
 
-        project: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.project, Unset):
-            project = self.project.to_dict()
-
-        component: Union[Unset, dict[str, Any]] = UNSET
+        component: dict[str, Any] | Unset = UNSET
         if not isinstance(self.component, Unset):
             component = self.component.to_dict()
 
-        policy_condition: Union[Unset, dict[str, Any]] = UNSET
+        policy_condition: dict[str, Any] | Unset = UNSET
         if not isinstance(self.policy_condition, Unset):
             policy_condition = self.policy_condition.to_dict()
 
+        project: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.project, Unset):
+            project = self.project.to_dict()
+
         text = self.text
 
-        analysis: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.analysis, Unset):
-            analysis = self.analysis.to_dict()
+        type_: str | Unset = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -82,23 +79,23 @@ class PolicyViolation:
                 "uuid": uuid,
             }
         )
-        if type_ is not UNSET:
-            field_dict["type"] = type_
-        if project is not UNSET:
-            field_dict["project"] = project
+        if analysis is not UNSET:
+            field_dict["analysis"] = analysis
         if component is not UNSET:
             field_dict["component"] = component
         if policy_condition is not UNSET:
             field_dict["policyCondition"] = policy_condition
+        if project is not UNSET:
+            field_dict["project"] = project
         if text is not UNSET:
             field_dict["text"] = text
-        if analysis is not UNSET:
-            field_dict["analysis"] = analysis
+        if type_ is not UNSET:
+            field_dict["type"] = type_
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.component import Component
         from ..models.policy_condition import PolicyCondition
         from ..models.project import Project
@@ -109,52 +106,52 @@ class PolicyViolation:
 
         uuid = UUID(d.pop("uuid"))
 
-        _type_ = d.pop("type", UNSET)
-        type_: Union[Unset, PolicyViolationType]
-        if isinstance(_type_, Unset):
-            type_ = UNSET
+        _analysis = d.pop("analysis", UNSET)
+        analysis: ViolationAnalysis | Unset
+        if isinstance(_analysis, Unset):
+            analysis = UNSET
         else:
-            type_ = PolicyViolationType(_type_)
-
-        _project = d.pop("project", UNSET)
-        project: Union[Unset, Project]
-        if isinstance(_project, Unset):
-            project = UNSET
-        else:
-            project = Project.from_dict(_project)
+            analysis = ViolationAnalysis.from_dict(_analysis)
 
         _component = d.pop("component", UNSET)
-        component: Union[Unset, Component]
+        component: Component | Unset
         if isinstance(_component, Unset):
             component = UNSET
         else:
             component = Component.from_dict(_component)
 
         _policy_condition = d.pop("policyCondition", UNSET)
-        policy_condition: Union[Unset, PolicyCondition]
+        policy_condition: PolicyCondition | Unset
         if isinstance(_policy_condition, Unset):
             policy_condition = UNSET
         else:
             policy_condition = PolicyCondition.from_dict(_policy_condition)
 
+        _project = d.pop("project", UNSET)
+        project: Project | Unset
+        if isinstance(_project, Unset):
+            project = UNSET
+        else:
+            project = Project.from_dict(_project)
+
         text = d.pop("text", UNSET)
 
-        _analysis = d.pop("analysis", UNSET)
-        analysis: Union[Unset, ViolationAnalysis]
-        if isinstance(_analysis, Unset):
-            analysis = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: PolicyViolationType | Unset
+        if isinstance(_type_, Unset):
+            type_ = UNSET
         else:
-            analysis = ViolationAnalysis.from_dict(_analysis)
+            type_ = PolicyViolationType(_type_)
 
         policy_violation = cls(
             timestamp=timestamp,
             uuid=uuid,
-            type_=type_,
-            project=project,
+            analysis=analysis,
             component=component,
             policy_condition=policy_condition,
+            project=project,
             text=text,
-            analysis=analysis,
+            type_=type_,
         )
 
         policy_violation.additional_properties = d

@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -12,11 +13,12 @@ def _get_kwargs(
     name: str,
     version: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/badge/violations/project/{name}/{version}".format(
-            name=name,
-            version=version,
+            name=quote(str(name), safe=""),
+            version=quote(str(version), safe=""),
         ),
     }
 
@@ -24,11 +26,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
-    if response.status_code == 401:
-        return None
-
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 403:
         return None
 
@@ -42,7 +41,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -56,11 +55,9 @@ def sync_detailed(
     name: str,
     version: str,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any]:
     """Returns a policy violations badge for a specific project
-
-     <p>Requires permission <strong>VIEW_BADGES</strong></p>
 
     Args:
         name (str):
@@ -90,11 +87,9 @@ async def asyncio_detailed(
     name: str,
     version: str,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any]:
     """Returns a policy violations badge for a specific project
-
-     <p>Requires permission <strong>VIEW_BADGES</strong></p>
 
     Args:
         name (str):

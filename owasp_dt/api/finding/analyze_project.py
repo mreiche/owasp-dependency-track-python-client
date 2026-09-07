@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -7,16 +8,18 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.bom_upload_response import BomUploadResponse
+from ...models.problem_details import ProblemDetails
 from ...types import Response
 
 
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/v1/finding/project/{uuid}/analyze".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +27,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, BomUploadResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | BomUploadResponse | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = BomUploadResponse.from_dict(response.json())
 
@@ -36,7 +39,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -50,8 +54,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, BomUploadResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,10 +68,10 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, BomUploadResponse]]:
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Triggers Vulnerability Analysis on a specific project
 
-     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+     <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
 
     Args:
         uuid (UUID):
@@ -77,7 +81,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -95,10 +99,10 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, BomUploadResponse]]:
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Triggers Vulnerability Analysis on a specific project
 
-     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+     <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
 
     Args:
         uuid (UUID):
@@ -108,7 +112,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return sync_detailed(
@@ -121,10 +125,10 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, BomUploadResponse]]:
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Triggers Vulnerability Analysis on a specific project
 
-     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+     <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
 
     Args:
         uuid (UUID):
@@ -134,7 +138,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -150,10 +154,10 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, BomUploadResponse]]:
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Triggers Vulnerability Analysis on a specific project
 
-     <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
+     <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></p>
 
     Args:
         uuid (UUID):
@@ -163,7 +167,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return (

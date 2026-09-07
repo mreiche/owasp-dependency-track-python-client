@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -25,14 +22,14 @@ class LicenseGroup:
     Attributes:
         name (str):
         uuid (UUID):
-        licenses (Union[Unset, list['License']]):
-        risk_weight (Union[Unset, int]):
+        licenses (list[License] | Unset):
+        risk_weight (int | Unset):
     """
 
     name: str
     uuid: UUID
-    licenses: Union[Unset, list["License"]] = UNSET
-    risk_weight: Union[Unset, int] = UNSET
+    licenses: list[License] | Unset = UNSET
+    risk_weight: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -40,7 +37,7 @@ class LicenseGroup:
 
         uuid = str(self.uuid)
 
-        licenses: Union[Unset, list[dict[str, Any]]] = UNSET
+        licenses: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.licenses, Unset):
             licenses = []
             for licenses_item_data in self.licenses:
@@ -65,7 +62,7 @@ class LicenseGroup:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.license_ import License
 
         d = dict(src_dict)
@@ -73,12 +70,14 @@ class LicenseGroup:
 
         uuid = UUID(d.pop("uuid"))
 
-        licenses = []
         _licenses = d.pop("licenses", UNSET)
-        for licenses_item_data in _licenses or []:
-            licenses_item = License.from_dict(licenses_item_data)
+        licenses: list[License] | Unset = UNSET
+        if _licenses is not UNSET:
+            licenses = []
+            for licenses_item_data in _licenses:
+                licenses_item = License.from_dict(licenses_item_data)
 
-            licenses.append(licenses_item)
+                licenses.append(licenses_item)
 
         risk_weight = d.pop("riskWeight", UNSET)
 

@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -10,6 +10,7 @@ from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/permission",
@@ -19,8 +20,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, GetAllPermissionsResponse200]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | GetAllPermissionsResponse200 | None:
     if response.status_code == 200:
         response_200 = GetAllPermissionsResponse200(response.json())
 
@@ -37,8 +38,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, GetAllPermissionsResponse200]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | GetAllPermissionsResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -50,17 +51,18 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, GetAllPermissionsResponse200]]:
+) -> Response[Any | GetAllPermissionsResponse200]:
     """Returns a list of all permissions
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, GetAllPermissionsResponse200]]
+        Response[Any | GetAllPermissionsResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -75,17 +77,18 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, GetAllPermissionsResponse200]]:
+) -> Any | GetAllPermissionsResponse200 | None:
     """Returns a list of all permissions
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, GetAllPermissionsResponse200]
+        Any | GetAllPermissionsResponse200
     """
 
     return sync_detailed(
@@ -96,17 +99,18 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, GetAllPermissionsResponse200]]:
+) -> Response[Any | GetAllPermissionsResponse200]:
     """Returns a list of all permissions
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, GetAllPermissionsResponse200]]
+        Response[Any | GetAllPermissionsResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -119,17 +123,18 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, GetAllPermissionsResponse200]]:
+) -> Any | GetAllPermissionsResponse200 | None:
     """Returns a list of all permissions
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, GetAllPermissionsResponse200]
+        Any | GetAllPermissionsResponse200
     """
 
     return (

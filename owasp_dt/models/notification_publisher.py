@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -18,83 +16,83 @@ T = TypeVar("T", bound="NotificationPublisher")
 class NotificationPublisher:
     """
     Attributes:
+        extension_name (str):
         name (str):
-        publisher_class (str):
         template_mime_type (str):
         uuid (UUID):
-        description (Union[Unset, str]):
-        template (Union[Unset, str]):
-        default_publisher (Union[Unset, bool]):
+        default_publisher (bool | Unset):
+        description (str | Unset):
+        template (str | Unset):
     """
 
+    extension_name: str
     name: str
-    publisher_class: str
     template_mime_type: str
     uuid: UUID
-    description: Union[Unset, str] = UNSET
-    template: Union[Unset, str] = UNSET
-    default_publisher: Union[Unset, bool] = UNSET
+    default_publisher: bool | Unset = UNSET
+    description: str | Unset = UNSET
+    template: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name = self.name
+        extension_name = self.extension_name
 
-        publisher_class = self.publisher_class
+        name = self.name
 
         template_mime_type = self.template_mime_type
 
         uuid = str(self.uuid)
 
+        default_publisher = self.default_publisher
+
         description = self.description
 
         template = self.template
-
-        default_publisher = self.default_publisher
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "extensionName": extension_name,
                 "name": name,
-                "publisherClass": publisher_class,
                 "templateMimeType": template_mime_type,
                 "uuid": uuid,
             }
         )
+        if default_publisher is not UNSET:
+            field_dict["defaultPublisher"] = default_publisher
         if description is not UNSET:
             field_dict["description"] = description
         if template is not UNSET:
             field_dict["template"] = template
-        if default_publisher is not UNSET:
-            field_dict["defaultPublisher"] = default_publisher
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        name = d.pop("name")
+        extension_name = d.pop("extensionName")
 
-        publisher_class = d.pop("publisherClass")
+        name = d.pop("name")
 
         template_mime_type = d.pop("templateMimeType")
 
         uuid = UUID(d.pop("uuid"))
 
+        default_publisher = d.pop("defaultPublisher", UNSET)
+
         description = d.pop("description", UNSET)
 
         template = d.pop("template", UNSET)
 
-        default_publisher = d.pop("defaultPublisher", UNSET)
-
         notification_publisher = cls(
+            extension_name=extension_name,
             name=name,
-            publisher_class=publisher_class,
             template_mime_type=template_mime_type,
             uuid=uuid,
+            default_publisher=default_publisher,
             description=description,
             template=template,
-            default_publisher=default_publisher,
         )
 
         notification_publisher.additional_properties = d

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetProjectsSortOrder(str, Enum):
+class GetProjectsSortOrder(StrEnum):
     ASC_DESC = "asc, desc"
 
     def __str__(self) -> str:

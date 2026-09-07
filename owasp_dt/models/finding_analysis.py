@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,16 +16,16 @@ T = TypeVar("T", bound="FindingAnalysis")
 class FindingAnalysis:
     """
     Attributes:
-        state (Union[Unset, FindingAnalysisState]):
-        is_suppressed (Union[Unset, bool]):
+        state (FindingAnalysisState | Unset):
+        is_suppressed (bool | Unset):
     """
 
-    state: Union[Unset, FindingAnalysisState] = UNSET
-    is_suppressed: Union[Unset, bool] = UNSET
+    state: FindingAnalysisState | Unset = UNSET
+    is_suppressed: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        state: Union[Unset, str] = UNSET
+        state: str | Unset = UNSET
         if not isinstance(self.state, Unset):
             state = self.state.value
 
@@ -44,10 +42,10 @@ class FindingAnalysis:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         _state = d.pop("state", UNSET)
-        state: Union[Unset, FindingAnalysisState]
+        state: FindingAnalysisState | Unset
         if isinstance(_state, Unset):
             state = UNSET
         else:

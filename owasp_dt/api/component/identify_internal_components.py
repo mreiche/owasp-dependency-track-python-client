@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
@@ -9,6 +9,7 @@ from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/component/internal/identify",
@@ -18,8 +19,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 204:
         return None
 
@@ -33,7 +34,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -49,7 +50,8 @@ def sync_detailed(
 ) -> Response[Any]:
     """Requests the identification of internal components in the portfolio
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -74,7 +76,8 @@ async def asyncio_detailed(
 ) -> Response[Any]:
     """Requests the identification of internal components in the portfolio
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_READ</strong></p>
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

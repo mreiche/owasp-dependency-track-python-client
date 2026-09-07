@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PolicyConditionOperator(str, Enum):
+class PolicyConditionOperator(StrEnum):
     CONTAINS_ALL = "CONTAINS_ALL"
     CONTAINS_ANY = "CONTAINS_ANY"
     IS = "IS"

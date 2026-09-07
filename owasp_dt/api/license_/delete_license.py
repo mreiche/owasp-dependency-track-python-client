@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -11,10 +12,11 @@ from ...types import Response
 def _get_kwargs(
     license_id: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/license/{license_id}".format(
-            license_id=license_id,
+            license_id=quote(str(license_id), safe=""),
         ),
     }
 
@@ -22,8 +24,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 204:
         return None
 
@@ -43,7 +45,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -60,7 +62,8 @@ def sync_detailed(
 ) -> Response[Any]:
     """Deletes a custom license
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         license_id (str):
@@ -91,7 +94,8 @@ async def asyncio_detailed(
 ) -> Response[Any]:
     """Deletes a custom license
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         license_id (str):

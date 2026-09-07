@@ -1,9 +1,8 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ComponentPropertyPropertyType(str, Enum):
+class ComponentPropertyPropertyType(StrEnum):
     BOOLEAN = "BOOLEAN"
-    ENCRYPTEDSTRING = "ENCRYPTEDSTRING"
     INTEGER = "INTEGER"
     NUMBER = "NUMBER"
     STRING = "STRING"

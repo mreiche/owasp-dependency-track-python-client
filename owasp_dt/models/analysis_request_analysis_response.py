@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AnalysisRequestAnalysisResponse(str, Enum):
+class AnalysisRequestAnalysisResponse(StrEnum):
     CAN_NOT_FIX = "CAN_NOT_FIX"
     NOT_SET = "NOT_SET"
     ROLLBACK = "ROLLBACK"

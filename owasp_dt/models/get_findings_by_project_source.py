@@ -1,16 +1,15 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetFindingsByProjectSource(str, Enum):
+class GetFindingsByProjectSource(StrEnum):
+    CX = "CX"
     GITHUB = "GITHUB"
     INTERNAL = "INTERNAL"
-    NPM = "NPM"
+    JVN = "JVN"
     NVD = "NVD"
     OSSINDEX = "OSSINDEX"
     OSV = "OSV"
-    RETIREJS = "RETIREJS"
     SNYK = "SNYK"
-    TRIVY = "TRIVY"
     UNKNOWN = "UNKNOWN"
     VULNDB = "VULNDB"
 

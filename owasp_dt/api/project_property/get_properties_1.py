@@ -1,22 +1,25 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.project_property import ProjectProperty
+from ...models.problem_details import ProblemDetails
+from ...models.project_property_response import ProjectPropertyResponse
 from ...types import Response
 
 
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/project/{uuid}/property".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,13 +27,15 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["ProjectProperty"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ProjectProperty.from_dict(response_200_item_data)
+            response_200_item = ProjectPropertyResponse.from_dict(
+                response_200_item_data
+            )
 
             response_200.append(response_200_item)
 
@@ -41,7 +46,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -55,8 +61,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["ProjectProperty"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,10 +75,11 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["ProjectProperty"]]]:
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     """Returns a list of all ProjectProperties for the specified project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -82,7 +89,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ProjectProperty']]]
+        Response[Any | ProblemDetails | list[ProjectPropertyResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -100,10 +107,11 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["ProjectProperty"]]]:
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     """Returns a list of all ProjectProperties for the specified project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -113,7 +121,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ProjectProperty']]
+        Any | ProblemDetails | list[ProjectPropertyResponse]
     """
 
     return sync_detailed(
@@ -126,10 +134,11 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["ProjectProperty"]]]:
+) -> Response[Any | ProblemDetails | list[ProjectPropertyResponse]]:
     """Returns a list of all ProjectProperties for the specified project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -139,7 +148,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['ProjectProperty']]]
+        Response[Any | ProblemDetails | list[ProjectPropertyResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -155,10 +164,11 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["ProjectProperty"]]]:
+) -> Any | ProblemDetails | list[ProjectPropertyResponse] | None:
     """Returns a list of all ProjectProperties for the specified project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -168,7 +178,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['ProjectProperty']]
+        Any | ProblemDetails | list[ProjectPropertyResponse]
     """
 
     return (

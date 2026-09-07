@@ -1,13 +1,15 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PolicyConditionSubject(str, Enum):
+class PolicyConditionSubject(StrEnum):
     AGE = "AGE"
     COMPONENT_HASH = "COMPONENT_HASH"
     COORDINATES = "COORDINATES"
     CPE = "CPE"
     CWE = "CWE"
     EPSS = "EPSS"
+    EXPRESSION = "EXPRESSION"
+    IS_INTERNAL = "IS_INTERNAL"
     LICENSE = "LICENSE"
     LICENSE_GROUP = "LICENSE_GROUP"
     PACKAGE_URL = "PACKAGE_URL"

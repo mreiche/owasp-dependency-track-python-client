@@ -1,12 +1,13 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.violation_analysis import ViolationAnalysis
+from ...models.problem_details import ProblemDetails
+from ...models.violation_analysis_response import ViolationAnalysisResponse
 from ...types import UNSET, Response
 
 
@@ -15,6 +16,7 @@ def _get_kwargs(
     component: UUID,
     policy_violation: UUID,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     json_component = str(component)
@@ -35,16 +37,21 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ViolationAnalysis]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     if response.status_code == 200:
-        response_200 = ViolationAnalysis.from_dict(response.json())
+        response_200 = ViolationAnalysisResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
+
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
 
     if response.status_code == 404:
         response_404 = cast(Any, None)
@@ -57,8 +64,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ViolationAnalysis]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,7 +79,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     component: UUID,
     policy_violation: UUID,
-) -> Response[Union[Any, ViolationAnalysis]]:
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     """Retrieves a violation analysis trail
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
@@ -86,7 +93,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ViolationAnalysis]]
+        Response[Any | ProblemDetails | ViolationAnalysisResponse]
     """
 
     kwargs = _get_kwargs(
@@ -106,7 +113,7 @@ def sync(
     client: AuthenticatedClient,
     component: UUID,
     policy_violation: UUID,
-) -> Optional[Union[Any, ViolationAnalysis]]:
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     """Retrieves a violation analysis trail
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
@@ -120,7 +127,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ViolationAnalysis]
+        Any | ProblemDetails | ViolationAnalysisResponse
     """
 
     return sync_detailed(
@@ -135,7 +142,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     component: UUID,
     policy_violation: UUID,
-) -> Response[Union[Any, ViolationAnalysis]]:
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     """Retrieves a violation analysis trail
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
@@ -149,7 +156,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ViolationAnalysis]]
+        Response[Any | ProblemDetails | ViolationAnalysisResponse]
     """
 
     kwargs = _get_kwargs(
@@ -167,7 +174,7 @@ async def asyncio(
     client: AuthenticatedClient,
     component: UUID,
     policy_violation: UUID,
-) -> Optional[Union[Any, ViolationAnalysis]]:
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     """Retrieves a violation analysis trail
 
      <p>Requires permission <strong>VIEW_POLICY_VIOLATION</strong></p>
@@ -181,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ViolationAnalysis]
+        Any | ProblemDetails | ViolationAnalysisResponse
     """
 
     return (

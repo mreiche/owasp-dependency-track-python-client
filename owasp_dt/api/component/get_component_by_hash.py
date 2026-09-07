@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
@@ -13,13 +14,14 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     hash_: str,
     *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByHashSortOrder] = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByHashSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -32,7 +34,7 @@ def _get_kwargs(
 
     params["sortName"] = sort_name
 
-    json_sort_order: Union[Unset, str] = UNSET
+    json_sort_order: str | Unset = UNSET
     if not isinstance(sort_order, Unset):
         json_sort_order = sort_order.value
 
@@ -43,7 +45,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/component/hash/{hash_}".format(
-            hash_=hash_,
+            hash_=quote(str(hash_), safe=""),
         ),
         "params": params,
     }
@@ -52,8 +54,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["Component"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[Component] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -75,8 +77,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["Component"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[Component]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -89,32 +91,33 @@ def sync_detailed(
     hash_: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByHashSortOrder] = UNSET,
-) -> Response[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByHashSortOrder | Unset = UNSET,
+) -> Response[Any | list[Component]]:
     """Returns a list of components that have the specified hash value
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
         hash_ (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByHashSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByHashSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Component']]]
+        Response[Any | list[Component]]
     """
 
     kwargs = _get_kwargs(
@@ -138,32 +141,33 @@ def sync(
     hash_: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByHashSortOrder] = UNSET,
-) -> Optional[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByHashSortOrder | Unset = UNSET,
+) -> Any | list[Component] | None:
     """Returns a list of components that have the specified hash value
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
         hash_ (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByHashSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByHashSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Component']]
+        Any | list[Component]
     """
 
     return sync_detailed(
@@ -182,32 +186,33 @@ async def asyncio_detailed(
     hash_: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByHashSortOrder] = UNSET,
-) -> Response[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByHashSortOrder | Unset = UNSET,
+) -> Response[Any | list[Component]]:
     """Returns a list of components that have the specified hash value
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
         hash_ (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByHashSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByHashSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Component']]]
+        Response[Any | list[Component]]
     """
 
     kwargs = _get_kwargs(
@@ -229,32 +234,33 @@ async def asyncio(
     hash_: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetComponentByHashSortOrder] = UNSET,
-) -> Optional[Union[Any, list["Component"]]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetComponentByHashSortOrder | Unset = UNSET,
+) -> Any | list[Component] | None:
     """Returns a list of components that have the specified hash value
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
+    <p><strong>Deprecated</strong>! Use <code>/api/v2/components</code> instead.</p>
 
     Args:
         hash_ (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetComponentByHashSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetComponentByHashSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Component']]
+        Any | list[Component]
     """
 
     return (

@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -13,10 +14,11 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/v1/team/{uuid}/key".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +26,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ApiKey]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ApiKey | None:
     if response.status_code == 201:
         response_201 = ApiKey.from_dict(response.json())
 
@@ -46,8 +48,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ApiKey]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ApiKey]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -60,10 +62,11 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ApiKey]]:
+) -> Response[Any | ApiKey]:
     """Generates an API key and returns its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -73,7 +76,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ApiKey]]
+        Response[Any | ApiKey]
     """
 
     kwargs = _get_kwargs(
@@ -91,10 +94,11 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ApiKey]]:
+) -> Any | ApiKey | None:
     """Generates an API key and returns its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -104,7 +108,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ApiKey]
+        Any | ApiKey
     """
 
     return sync_detailed(
@@ -117,10 +121,11 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ApiKey]]:
+) -> Response[Any | ApiKey]:
     """Generates an API key and returns its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -130,7 +135,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ApiKey]]
+        Response[Any | ApiKey]
     """
 
     kwargs = _get_kwargs(
@@ -146,10 +151,11 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ApiKey]]:
+) -> Any | ApiKey | None:
     """Generates an API key and returns its value
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
@@ -159,7 +165,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ApiKey]
+        Any | ApiKey
     """
 
     return (

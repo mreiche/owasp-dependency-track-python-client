@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GetVulnerabilitiesByComponentSortOrder(str, Enum):
+class GetVulnerabilitiesByComponentSortOrder(StrEnum):
     ASC_DESC = "asc, desc"
 
     def __str__(self) -> str:

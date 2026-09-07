@@ -1,10 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,7 +10,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.finding_analysis import FindingAnalysis
-    from ..models.finding_attrib import FindingAttrib
+    from ..models.finding_attribution import FindingAttribution
     from ..models.finding_component import FindingComponent
     from ..models.finding_vulnerability import FindingVulnerability
 
@@ -25,99 +22,99 @@ T = TypeVar("T", bound="Finding")
 class Finding:
     """
     Attributes:
-        component (Union[Unset, FindingComponent]):
-        vulnerability (Union[Unset, FindingVulnerability]):
-        analysis (Union[Unset, FindingAnalysis]):
-        attribution (Union[Unset, FindingAttrib]):
-        matrix (Union[Unset, str]):
+        analysis (FindingAnalysis | Unset):
+        attribution (FindingAttribution | Unset):
+        component (FindingComponent | Unset):
+        matrix (str | Unset):
+        vulnerability (FindingVulnerability | Unset):
     """
 
-    component: Union[Unset, "FindingComponent"] = UNSET
-    vulnerability: Union[Unset, "FindingVulnerability"] = UNSET
-    analysis: Union[Unset, "FindingAnalysis"] = UNSET
-    attribution: Union[Unset, "FindingAttrib"] = UNSET
-    matrix: Union[Unset, str] = UNSET
+    analysis: FindingAnalysis | Unset = UNSET
+    attribution: FindingAttribution | Unset = UNSET
+    component: FindingComponent | Unset = UNSET
+    matrix: str | Unset = UNSET
+    vulnerability: FindingVulnerability | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        component: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.component, Unset):
-            component = self.component.to_dict()
-
-        vulnerability: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.vulnerability, Unset):
-            vulnerability = self.vulnerability.to_dict()
-
-        analysis: Union[Unset, dict[str, Any]] = UNSET
+        analysis: dict[str, Any] | Unset = UNSET
         if not isinstance(self.analysis, Unset):
             analysis = self.analysis.to_dict()
 
-        attribution: Union[Unset, dict[str, Any]] = UNSET
+        attribution: dict[str, Any] | Unset = UNSET
         if not isinstance(self.attribution, Unset):
             attribution = self.attribution.to_dict()
 
+        component: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.component, Unset):
+            component = self.component.to_dict()
+
         matrix = self.matrix
+
+        vulnerability: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.vulnerability, Unset):
+            vulnerability = self.vulnerability.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if component is not UNSET:
-            field_dict["component"] = component
-        if vulnerability is not UNSET:
-            field_dict["vulnerability"] = vulnerability
         if analysis is not UNSET:
             field_dict["analysis"] = analysis
         if attribution is not UNSET:
             field_dict["attribution"] = attribution
+        if component is not UNSET:
+            field_dict["component"] = component
         if matrix is not UNSET:
             field_dict["matrix"] = matrix
+        if vulnerability is not UNSET:
+            field_dict["vulnerability"] = vulnerability
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.finding_analysis import FindingAnalysis
-        from ..models.finding_attrib import FindingAttrib
+        from ..models.finding_attribution import FindingAttribution
         from ..models.finding_component import FindingComponent
         from ..models.finding_vulnerability import FindingVulnerability
 
         d = dict(src_dict)
-        _component = d.pop("component", UNSET)
-        component: Union[Unset, FindingComponent]
-        if isinstance(_component, Unset):
-            component = UNSET
-        else:
-            component = FindingComponent.from_dict(_component)
-
-        _vulnerability = d.pop("vulnerability", UNSET)
-        vulnerability: Union[Unset, FindingVulnerability]
-        if isinstance(_vulnerability, Unset):
-            vulnerability = UNSET
-        else:
-            vulnerability = FindingVulnerability.from_dict(_vulnerability)
-
         _analysis = d.pop("analysis", UNSET)
-        analysis: Union[Unset, FindingAnalysis]
+        analysis: FindingAnalysis | Unset
         if isinstance(_analysis, Unset):
             analysis = UNSET
         else:
             analysis = FindingAnalysis.from_dict(_analysis)
 
         _attribution = d.pop("attribution", UNSET)
-        attribution: Union[Unset, FindingAttrib]
+        attribution: FindingAttribution | Unset
         if isinstance(_attribution, Unset):
             attribution = UNSET
         else:
-            attribution = FindingAttrib.from_dict(_attribution)
+            attribution = FindingAttribution.from_dict(_attribution)
+
+        _component = d.pop("component", UNSET)
+        component: FindingComponent | Unset
+        if isinstance(_component, Unset):
+            component = UNSET
+        else:
+            component = FindingComponent.from_dict(_component)
 
         matrix = d.pop("matrix", UNSET)
 
+        _vulnerability = d.pop("vulnerability", UNSET)
+        vulnerability: FindingVulnerability | Unset
+        if isinstance(_vulnerability, Unset):
+            vulnerability = UNSET
+        else:
+            vulnerability = FindingVulnerability.from_dict(_vulnerability)
+
         finding = cls(
-            component=component,
-            vulnerability=vulnerability,
             analysis=analysis,
             attribution=attribution,
+            component=component,
             matrix=matrix,
+            vulnerability=vulnerability,
         )
 
         finding.additional_properties = d

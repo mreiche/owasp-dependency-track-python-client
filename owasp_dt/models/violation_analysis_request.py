@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -22,18 +20,18 @@ class ViolationAnalysisRequest:
     Attributes:
         component (str):
         policy_violation (str):
-        analysis_state (Union[Unset, ViolationAnalysisRequestAnalysisState]):
-        comment (Union[Unset, str]):
-        is_suppressed (Union[Unset, bool]):
-        suppressed (Union[Unset, bool]):
+        analysis_state (ViolationAnalysisRequestAnalysisState | Unset):
+        comment (str | Unset):
+        is_suppressed (bool | Unset):
+        suppressed (bool | Unset):
     """
 
     component: str
     policy_violation: str
-    analysis_state: Union[Unset, ViolationAnalysisRequestAnalysisState] = UNSET
-    comment: Union[Unset, str] = UNSET
-    is_suppressed: Union[Unset, bool] = UNSET
-    suppressed: Union[Unset, bool] = UNSET
+    analysis_state: ViolationAnalysisRequestAnalysisState | Unset = UNSET
+    comment: str | Unset = UNSET
+    is_suppressed: bool | Unset = UNSET
+    suppressed: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -41,7 +39,7 @@ class ViolationAnalysisRequest:
 
         policy_violation = self.policy_violation
 
-        analysis_state: Union[Unset, str] = UNSET
+        analysis_state: str | Unset = UNSET
         if not isinstance(self.analysis_state, Unset):
             analysis_state = self.analysis_state.value
 
@@ -71,14 +69,14 @@ class ViolationAnalysisRequest:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         component = d.pop("component")
 
         policy_violation = d.pop("policyViolation")
 
         _analysis_state = d.pop("analysisState", UNSET)
-        analysis_state: Union[Unset, ViolationAnalysisRequestAnalysisState]
+        analysis_state: ViolationAnalysisRequestAnalysisState | Unset
         if isinstance(_analysis_state, Unset):
             analysis_state = UNSET
         else:

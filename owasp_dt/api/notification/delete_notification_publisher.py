@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -12,10 +13,13 @@ from ...types import Response
 def _get_kwargs(
     notification_publisher_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/notification/publisher/{notification_publisher_uuid}".format(
-            notification_publisher_uuid=notification_publisher_uuid,
+            notification_publisher_uuid=quote(
+                str(notification_publisher_uuid), safe=""
+            ),
         ),
     }
 
@@ -23,8 +27,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 204:
         return None
 
@@ -44,7 +48,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -61,7 +65,8 @@ def sync_detailed(
 ) -> Response[Any]:
     """Deletes a notification publisher and all related notification rules
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         notification_publisher_uuid (UUID):
@@ -92,7 +97,8 @@ async def asyncio_detailed(
 ) -> Response[Any]:
     """Deletes a notification publisher and all related notification rules
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         notification_publisher_uuid (UUID):

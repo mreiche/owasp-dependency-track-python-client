@@ -1,17 +1,18 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.component import Component
-from ...types import Response
+from ...models.problem_details import ProblemDetails
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: Component,
+    body: Component | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +21,8 @@ def _get_kwargs(
         "url": "/v1/component",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,8 +31,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Component]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Component | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = Component.from_dict(response.json())
 
@@ -41,7 +43,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -55,8 +58,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Component]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Component | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -68,21 +71,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: Component,
-) -> Response[Union[Any, Component]]:
+    body: Component | Unset = UNSET,
+) -> Response[Any | Component | ProblemDetails]:
     """Updates a component
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Component):
+        body (Component | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Component]]
+        Response[Any | Component | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -99,21 +103,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: Component,
-) -> Optional[Union[Any, Component]]:
+    body: Component | Unset = UNSET,
+) -> Any | Component | ProblemDetails | None:
     """Updates a component
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Component):
+        body (Component | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Component]
+        Any | Component | ProblemDetails
     """
 
     return sync_detailed(
@@ -125,21 +130,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: Component,
-) -> Response[Union[Any, Component]]:
+    body: Component | Unset = UNSET,
+) -> Response[Any | Component | ProblemDetails]:
     """Updates a component
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Component):
+        body (Component | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Component]]
+        Response[Any | Component | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -154,21 +160,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: Component,
-) -> Optional[Union[Any, Component]]:
+    body: Component | Unset = UNSET,
+) -> Any | Component | ProblemDetails | None:
     """Updates a component
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Component):
+        body (Component | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Component]
+        Any | Component | ProblemDetails
     """
 
     return (

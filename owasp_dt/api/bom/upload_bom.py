@@ -1,19 +1,19 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.bom_upload_response import BomUploadResponse
-from ...models.invalid_bom_problem_details import InvalidBomProblemDetails
+from ...models.problem_details import ProblemDetails
 from ...models.upload_bom_body import UploadBomBody
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: UploadBomBody,
+    body: UploadBomBody | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -22,23 +22,25 @@ def _get_kwargs(
         "url": "/v1/bom",
     }
 
-    _kwargs["files"] = body.to_multipart()
+    if not isinstance(body, Unset):
+        _kwargs["files"] = body.to_multipart()
+
+    headers["Content-Type"] = "multipart/form-data; boundary=+++"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | BomUploadResponse | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = BomUploadResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = InvalidBomProblemDetails.from_dict(response.json())
-
+        response_400 = cast(Any, None)
         return response_400
 
     if response.status_code == 401:
@@ -46,7 +48,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -60,8 +63,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,35 +76,48 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: UploadBomBody,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: UploadBomBody | Unset = UNSET,
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Upload a supported bill of material format document
 
      <p>
-       Expects CycloneDX and a valid project UUID. If a UUID is not specified,
-       then the <code>projectName</code> and <code>projectVersion</code> must be specified.
-       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does
-    not exist,
-       the project will be created. In this scenario, the principal making the request will
-       additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-       <strong>PROJECT_CREATION_UPLOAD</strong> permission.
-     </p>
-     <p>
-       The BOM will be validated against the CycloneDX schema. If schema validation fails,
-       a response with problem details in RFC 9457 format will be returned. In this case,
-       the response's content type will be <code>application/problem+json</code>.
-     </p>
-     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
+      Expects CycloneDX and a valid project UUID. If a UUID is not specified,
+      then the <code>projectName</code> and <code>projectVersion</code> must be specified.
+      Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
+    exist,
+      the project will be created. In this scenario, the principal making the request will
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+    </p>
+    <p>
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
+      The BOM will be validated against the CycloneDX schema. If schema validation fails,
+      a response with problem details in RFC 9457 format will be returned. In this case,
+      the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
     Args:
-        body (UploadBomBody):
+        body (UploadBomBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -118,35 +134,48 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: UploadBomBody,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: UploadBomBody | Unset = UNSET,
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Upload a supported bill of material format document
 
      <p>
-       Expects CycloneDX and a valid project UUID. If a UUID is not specified,
-       then the <code>projectName</code> and <code>projectVersion</code> must be specified.
-       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does
-    not exist,
-       the project will be created. In this scenario, the principal making the request will
-       additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-       <strong>PROJECT_CREATION_UPLOAD</strong> permission.
-     </p>
-     <p>
-       The BOM will be validated against the CycloneDX schema. If schema validation fails,
-       a response with problem details in RFC 9457 format will be returned. In this case,
-       the response's content type will be <code>application/problem+json</code>.
-     </p>
-     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
+      Expects CycloneDX and a valid project UUID. If a UUID is not specified,
+      then the <code>projectName</code> and <code>projectVersion</code> must be specified.
+      Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
+    exist,
+      the project will be created. In this scenario, the principal making the request will
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+    </p>
+    <p>
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
+      The BOM will be validated against the CycloneDX schema. If schema validation fails,
+      a response with problem details in RFC 9457 format will be returned. In this case,
+      the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
     Args:
-        body (UploadBomBody):
+        body (UploadBomBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return sync_detailed(
@@ -158,35 +187,48 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: UploadBomBody,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: UploadBomBody | Unset = UNSET,
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Upload a supported bill of material format document
 
      <p>
-       Expects CycloneDX and a valid project UUID. If a UUID is not specified,
-       then the <code>projectName</code> and <code>projectVersion</code> must be specified.
-       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does
-    not exist,
-       the project will be created. In this scenario, the principal making the request will
-       additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-       <strong>PROJECT_CREATION_UPLOAD</strong> permission.
-     </p>
-     <p>
-       The BOM will be validated against the CycloneDX schema. If schema validation fails,
-       a response with problem details in RFC 9457 format will be returned. In this case,
-       the response's content type will be <code>application/problem+json</code>.
-     </p>
-     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
+      Expects CycloneDX and a valid project UUID. If a UUID is not specified,
+      then the <code>projectName</code> and <code>projectVersion</code> must be specified.
+      Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
+    exist,
+      the project will be created. In this scenario, the principal making the request will
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+    </p>
+    <p>
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
+      The BOM will be validated against the CycloneDX schema. If schema validation fails,
+      a response with problem details in RFC 9457 format will be returned. In this case,
+      the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
     Args:
-        body (UploadBomBody):
+        body (UploadBomBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -201,35 +243,48 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: UploadBomBody,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    body: UploadBomBody | Unset = UNSET,
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Upload a supported bill of material format document
 
      <p>
-       Expects CycloneDX and a valid project UUID. If a UUID is not specified,
-       then the <code>projectName</code> and <code>projectVersion</code> must be specified.
-       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does
-    not exist,
-       the project will be created. In this scenario, the principal making the request will
-       additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-       <strong>PROJECT_CREATION_UPLOAD</strong> permission.
-     </p>
-     <p>
-       The BOM will be validated against the CycloneDX schema. If schema validation fails,
-       a response with problem details in RFC 9457 format will be returned. In this case,
-       the response's content type will be <code>application/problem+json</code>.
-     </p>
-     <p>Requires permission <strong>BOM_UPLOAD</strong></p>
+      Expects CycloneDX and a valid project UUID. If a UUID is not specified,
+      then the <code>projectName</code> and <code>projectVersion</code> must be specified.
+      Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
+    exist,
+      the project will be created. In this scenario, the principal making the request will
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+    </p>
+    <p>
+      The BOM artifact may be supplied uncompressed or compressed. If the BOM is uncompressed,
+      the supported MediaType is 'application/xml' or 'application/json'. If the BOM is compressed,
+      the supported MediaType is 'application/gzip' or 'application/zstd' and must match the actual
+      compression of the data.
+      The BOM will be validated against the CycloneDX schema. If schema validation fails,
+      a response with problem details in RFC 9457 format will be returned. In this case,
+      the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
+    </p>
+    <p>Requires permission <strong>BOM_UPLOAD</strong></p>
 
     Args:
-        body (UploadBomBody):
+        body (UploadBomBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return (

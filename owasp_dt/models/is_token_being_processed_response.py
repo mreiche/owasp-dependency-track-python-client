@@ -1,8 +1,15 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..models.is_token_being_processed_response_status import (
+    IsTokenBeingProcessedResponseStatus,
+)
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="IsTokenBeingProcessedResponse")
 
@@ -12,13 +19,20 @@ class IsTokenBeingProcessedResponse:
     """
     Attributes:
         processing (bool):
+        status (IsTokenBeingProcessedResponseStatus | Unset): The processing status associated with the token. Null when
+            no processing is associated with the token.
     """
 
     processing: bool
+    status: IsTokenBeingProcessedResponseStatus | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         processing = self.processing
+
+        status: str | Unset = UNSET
+        if not isinstance(self.status, Unset):
+            status = self.status.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -27,16 +41,26 @@ class IsTokenBeingProcessedResponse:
                 "processing": processing,
             }
         )
+        if status is not UNSET:
+            field_dict["status"] = status
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         processing = d.pop("processing")
 
+        _status = d.pop("status", UNSET)
+        status: IsTokenBeingProcessedResponseStatus | Unset
+        if isinstance(_status, Unset):
+            status = UNSET
+        else:
+            status = IsTokenBeingProcessedResponseStatus(_status)
+
         is_token_being_processed_response = cls(
             processing=processing,
+            status=status,
         )
 
         is_token_being_processed_response.additional_properties = d

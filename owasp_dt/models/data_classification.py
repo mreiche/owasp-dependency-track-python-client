@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,16 +16,16 @@ T = TypeVar("T", bound="DataClassification")
 class DataClassification:
     """
     Attributes:
-        direction (Union[Unset, DataClassificationDirection]):
-        name (Union[Unset, str]):
+        direction (DataClassificationDirection | Unset):
+        name (str | Unset):
     """
 
-    direction: Union[Unset, DataClassificationDirection] = UNSET
-    name: Union[Unset, str] = UNSET
+    direction: DataClassificationDirection | Unset = UNSET
+    name: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        direction: Union[Unset, str] = UNSET
+        direction: str | Unset = UNSET
         if not isinstance(self.direction, Unset):
             direction = self.direction.value
 
@@ -44,10 +42,10 @@ class DataClassification:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         _direction = d.pop("direction", UNSET)
-        direction: Union[Unset, DataClassificationDirection]
+        direction: DataClassificationDirection | Unset
         if isinstance(_direction, Unset):
             direction = UNSET
         else:

@@ -1,18 +1,19 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.violation_analysis import ViolationAnalysis
+from ...models.problem_details import ProblemDetails
 from ...models.violation_analysis_request import ViolationAnalysisRequest
-from ...types import Response
+from ...models.violation_analysis_response import ViolationAnalysisResponse
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ViolationAnalysisRequest,
+    body: ViolationAnalysisRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -21,7 +22,8 @@ def _get_kwargs(
         "url": "/v1/violation/analysis",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -30,16 +32,21 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ViolationAnalysis]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     if response.status_code == 200:
-        response_200 = ViolationAnalysis.from_dict(response.json())
+        response_200 = ViolationAnalysisResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
+
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
 
     if response.status_code == 404:
         response_404 = cast(Any, None)
@@ -52,8 +59,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ViolationAnalysis]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -65,21 +72,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ViolationAnalysisRequest,
-) -> Response[Union[Any, ViolationAnalysis]]:
+    body: ViolationAnalysisRequest | Unset = UNSET,
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     """Records a violation analysis decision
 
      <p>Requires permission <strong>POLICY_VIOLATION_ANALYSIS</strong></p>
 
     Args:
-        body (ViolationAnalysisRequest):
+        body (ViolationAnalysisRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ViolationAnalysis]]
+        Response[Any | ProblemDetails | ViolationAnalysisResponse]
     """
 
     kwargs = _get_kwargs(
@@ -96,21 +103,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ViolationAnalysisRequest,
-) -> Optional[Union[Any, ViolationAnalysis]]:
+    body: ViolationAnalysisRequest | Unset = UNSET,
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     """Records a violation analysis decision
 
      <p>Requires permission <strong>POLICY_VIOLATION_ANALYSIS</strong></p>
 
     Args:
-        body (ViolationAnalysisRequest):
+        body (ViolationAnalysisRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ViolationAnalysis]
+        Any | ProblemDetails | ViolationAnalysisResponse
     """
 
     return sync_detailed(
@@ -122,21 +129,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ViolationAnalysisRequest,
-) -> Response[Union[Any, ViolationAnalysis]]:
+    body: ViolationAnalysisRequest | Unset = UNSET,
+) -> Response[Any | ProblemDetails | ViolationAnalysisResponse]:
     """Records a violation analysis decision
 
      <p>Requires permission <strong>POLICY_VIOLATION_ANALYSIS</strong></p>
 
     Args:
-        body (ViolationAnalysisRequest):
+        body (ViolationAnalysisRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ViolationAnalysis]]
+        Response[Any | ProblemDetails | ViolationAnalysisResponse]
     """
 
     kwargs = _get_kwargs(
@@ -151,21 +158,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ViolationAnalysisRequest,
-) -> Optional[Union[Any, ViolationAnalysis]]:
+    body: ViolationAnalysisRequest | Unset = UNSET,
+) -> Any | ProblemDetails | ViolationAnalysisResponse | None:
     """Records a violation analysis decision
 
      <p>Requires permission <strong>POLICY_VIOLATION_ANALYSIS</strong></p>
 
     Args:
-        body (ViolationAnalysisRequest):
+        body (ViolationAnalysisRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ViolationAnalysis]
+        Any | ProblemDetails | ViolationAnalysisResponse
     """
 
     return (

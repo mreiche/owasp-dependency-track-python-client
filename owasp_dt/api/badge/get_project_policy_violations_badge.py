@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -12,10 +13,11 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/badge/violations/project/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -23,11 +25,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
-    if response.status_code == 401:
-        return None
-
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 403:
         return None
 
@@ -41,7 +40,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -54,11 +53,9 @@ def _build_response(
 def sync_detailed(
     uuid: UUID,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any]:
     """Returns a policy violations badge for a specific project
-
-     <p>Requires permission <strong>VIEW_BADGES</strong></p>
 
     Args:
         uuid (UUID):
@@ -85,11 +82,9 @@ def sync_detailed(
 async def asyncio_detailed(
     uuid: UUID,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any]:
     """Returns a policy violations badge for a specific project
-
-     <p>Requires permission <strong>VIEW_BADGES</strong></p>
 
     Args:
         uuid (UUID):

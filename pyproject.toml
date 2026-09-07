@@ -7,11 +7,11 @@ name = "owasp-dependency-track-client"
 dynamic = ["version"]
 description = "Inofficial OWASP Dependency Track API Python client"
 readme = "README.md"
-#requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
-    "attrs>=22.1.0",
-    "httpx>=0.23.0",
-    "python-dateutil>=2.8.2",
+    "attrs>=26.1.0",
+    "httpx>=0.28.1",
+    "python-dateutil>=2.9.0.post0",
 ]
 
 [project.optional-dependencies]
@@ -21,11 +21,16 @@ build = [
 ]
 
 test = [
-    "pytest>=7",
-    "pytest-depends",
-    "pytest-cov",
-    "dotenv== 0.9.9",
-    "openapi-python-client",
+    "pytest==9.1.1",
+    "pytest-depends==1.0.1",
+    "pytest-cov==7.1.0",
+    "dotenv==0.9.9",
+    "openapi-python-client==0.29.1",
     "tinystream==0.1.18",
     "is_empty==1.0.1",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["owasp_dt*", "owasp_dt_v2*"]
+exclude = ["test*", "tmp*"]

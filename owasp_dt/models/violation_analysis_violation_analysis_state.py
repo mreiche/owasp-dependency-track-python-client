@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ViolationAnalysisViolationAnalysisState(str, Enum):
+class ViolationAnalysisViolationAnalysisState(StrEnum):
     APPROVED = "APPROVED"
     NOT_SET = "NOT_SET"
     REJECTED = "REJECTED"

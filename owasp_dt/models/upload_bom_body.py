@@ -1,15 +1,14 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from io import BytesIO
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from .. import types
-from ..types import UNSET, Unset
+from ..types import UNSET, File, FileTypes, Unset
 
 T = TypeVar("T", bound="UploadBomBody")
 
@@ -18,109 +17,114 @@ T = TypeVar("T", bound="UploadBomBody")
 class UploadBomBody:
     """
     Attributes:
-        project (Union[Unset, str]):
-        auto_create (Union[Unset, bool]):  Default: False.
-        project_name (Union[Unset, str]):
-        project_version (Union[Unset, str]):
-        project_tags (Union[Unset, str]):
-        parent_name (Union[Unset, str]):
-        parent_version (Union[Unset, str]):
-        parent_uuid (Union[Unset, str]):
-        is_latest (Union[Unset, bool]):  Default: False.
-        bom (Union[Unset, str]):
+        auto_create (bool | Unset):  Default: False.
+        bom (File | Unset):
+        is_active (bool | Unset):
+        is_latest (bool | Unset):  Default: False.
+        parent_name (str | Unset):
+        parent_uuid (str | Unset):
+        parent_version (str | Unset):
+        project (str | Unset):
+        project_name (str | Unset):
+        project_tags (str | Unset):
+        project_version (str | Unset):
     """
 
-    project: Union[Unset, str] = UNSET
-    auto_create: Union[Unset, bool] = False
-    project_name: Union[Unset, str] = UNSET
-    project_version: Union[Unset, str] = UNSET
-    project_tags: Union[Unset, str] = UNSET
-    parent_name: Union[Unset, str] = UNSET
-    parent_version: Union[Unset, str] = UNSET
-    parent_uuid: Union[Unset, str] = UNSET
-    is_latest: Union[Unset, bool] = False
-    bom: Union[Unset, str] = UNSET
+    auto_create: bool | Unset = False
+    bom: File | Unset = UNSET
+    is_active: bool | Unset = UNSET
+    is_latest: bool | Unset = False
+    parent_name: str | Unset = UNSET
+    parent_uuid: str | Unset = UNSET
+    parent_version: str | Unset = UNSET
+    project: str | Unset = UNSET
+    project_name: str | Unset = UNSET
+    project_tags: str | Unset = UNSET
+    project_version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        project = self.project
-
         auto_create = self.auto_create
 
-        project_name = self.project_name
+        bom: FileTypes | Unset = UNSET
+        if not isinstance(self.bom, Unset):
+            bom = self.bom.to_tuple()
 
-        project_version = self.project_version
-
-        project_tags = self.project_tags
-
-        parent_name = self.parent_name
-
-        parent_version = self.parent_version
-
-        parent_uuid = self.parent_uuid
+        is_active = self.is_active
 
         is_latest = self.is_latest
 
-        bom = self.bom
+        parent_name = self.parent_name
+
+        parent_uuid = self.parent_uuid
+
+        parent_version = self.parent_version
+
+        project = self.project
+
+        project_name = self.project_name
+
+        project_tags = self.project_tags
+
+        project_version = self.project_version
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if project is not UNSET:
-            field_dict["project"] = project
         if auto_create is not UNSET:
             field_dict["autoCreate"] = auto_create
-        if project_name is not UNSET:
-            field_dict["projectName"] = project_name
-        if project_version is not UNSET:
-            field_dict["projectVersion"] = project_version
-        if project_tags is not UNSET:
-            field_dict["projectTags"] = project_tags
-        if parent_name is not UNSET:
-            field_dict["parentName"] = parent_name
-        if parent_version is not UNSET:
-            field_dict["parentVersion"] = parent_version
-        if parent_uuid is not UNSET:
-            field_dict["parentUUID"] = parent_uuid
-        if is_latest is not UNSET:
-            field_dict["isLatest"] = is_latest
         if bom is not UNSET:
             field_dict["bom"] = bom
+        if is_active is not UNSET:
+            field_dict["isActive"] = is_active
+        if is_latest is not UNSET:
+            field_dict["isLatest"] = is_latest
+        if parent_name is not UNSET:
+            field_dict["parentName"] = parent_name
+        if parent_uuid is not UNSET:
+            field_dict["parentUUID"] = parent_uuid
+        if parent_version is not UNSET:
+            field_dict["parentVersion"] = parent_version
+        if project is not UNSET:
+            field_dict["project"] = project
+        if project_name is not UNSET:
+            field_dict["projectName"] = project_name
+        if project_tags is not UNSET:
+            field_dict["projectTags"] = project_tags
+        if project_version is not UNSET:
+            field_dict["projectVersion"] = project_version
 
         return field_dict
 
     def to_multipart(self) -> types.RequestFiles:
         files: types.RequestFiles = []
 
-        if not isinstance(self.project, Unset):
-            files.append(("project", (None, str(self.project).encode(), "text/plain")))
-
         if not isinstance(self.auto_create, Unset):
             files.append(
                 ("autoCreate", (None, str(self.auto_create).encode(), "text/plain"))
             )
 
-        if not isinstance(self.project_name, Unset):
+        if not isinstance(self.bom, Unset):
+            files.append(("bom", self.bom.to_tuple()))
+
+        if not isinstance(self.is_active, Unset):
             files.append(
-                ("projectName", (None, str(self.project_name).encode(), "text/plain"))
+                ("isActive", (None, str(self.is_active).encode(), "text/plain"))
             )
 
-        if not isinstance(self.project_version, Unset):
+        if not isinstance(self.is_latest, Unset):
             files.append(
-                (
-                    "projectVersion",
-                    (None, str(self.project_version).encode(), "text/plain"),
-                )
-            )
-
-        if not isinstance(self.project_tags, Unset):
-            files.append(
-                ("projectTags", (None, str(self.project_tags).encode(), "text/plain"))
+                ("isLatest", (None, str(self.is_latest).encode(), "text/plain"))
             )
 
         if not isinstance(self.parent_name, Unset):
             files.append(
                 ("parentName", (None, str(self.parent_name).encode(), "text/plain"))
+            )
+
+        if not isinstance(self.parent_uuid, Unset):
+            files.append(
+                ("parentUUID", (None, str(self.parent_uuid).encode(), "text/plain"))
             )
 
         if not isinstance(self.parent_version, Unset):
@@ -131,18 +135,26 @@ class UploadBomBody:
                 )
             )
 
-        if not isinstance(self.parent_uuid, Unset):
+        if not isinstance(self.project, Unset):
+            files.append(("project", (None, str(self.project).encode(), "text/plain")))
+
+        if not isinstance(self.project_name, Unset):
             files.append(
-                ("parentUUID", (None, str(self.parent_uuid).encode(), "text/plain"))
+                ("projectName", (None, str(self.project_name).encode(), "text/plain"))
             )
 
-        if not isinstance(self.is_latest, Unset):
+        if not isinstance(self.project_tags, Unset):
             files.append(
-                ("isLatest", (None, str(self.is_latest).encode(), "text/plain"))
+                ("projectTags", (None, str(self.project_tags).encode(), "text/plain"))
             )
 
-        if not isinstance(self.bom, Unset):
-            files.append(("bom", (None, str(self.bom).encode(), "text/plain")))
+        if not isinstance(self.project_version, Unset):
+            files.append(
+                (
+                    "projectVersion",
+                    (None, str(self.project_version).encode(), "text/plain"),
+                )
+            )
 
         for prop_name, prop in self.additional_properties.items():
             files.append((prop_name, (None, str(prop).encode(), "text/plain")))
@@ -150,39 +162,47 @@ class UploadBomBody:
         return files
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        project = d.pop("project", UNSET)
-
         auto_create = d.pop("autoCreate", UNSET)
 
-        project_name = d.pop("projectName", UNSET)
+        _bom = d.pop("bom", UNSET)
+        bom: File | Unset
+        if isinstance(_bom, Unset):
+            bom = UNSET
+        else:
+            bom = File(payload=BytesIO(_bom))
 
-        project_version = d.pop("projectVersion", UNSET)
-
-        project_tags = d.pop("projectTags", UNSET)
-
-        parent_name = d.pop("parentName", UNSET)
-
-        parent_version = d.pop("parentVersion", UNSET)
-
-        parent_uuid = d.pop("parentUUID", UNSET)
+        is_active = d.pop("isActive", UNSET)
 
         is_latest = d.pop("isLatest", UNSET)
 
-        bom = d.pop("bom", UNSET)
+        parent_name = d.pop("parentName", UNSET)
+
+        parent_uuid = d.pop("parentUUID", UNSET)
+
+        parent_version = d.pop("parentVersion", UNSET)
+
+        project = d.pop("project", UNSET)
+
+        project_name = d.pop("projectName", UNSET)
+
+        project_tags = d.pop("projectTags", UNSET)
+
+        project_version = d.pop("projectVersion", UNSET)
 
         upload_bom_body = cls(
-            project=project,
             auto_create=auto_create,
-            project_name=project_name,
-            project_version=project_version,
-            project_tags=project_tags,
-            parent_name=parent_name,
-            parent_version=parent_version,
-            parent_uuid=parent_uuid,
-            is_latest=is_latest,
             bom=bom,
+            is_active=is_active,
+            is_latest=is_latest,
+            parent_name=parent_name,
+            parent_uuid=parent_uuid,
+            parent_version=parent_version,
+            project=project,
+            project_name=project_name,
+            project_tags=project_tags,
+            project_version=project_version,
         )
 
         upload_bom_body.additional_properties = d

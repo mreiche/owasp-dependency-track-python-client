@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -10,6 +10,7 @@ from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/metrics/portfolio/current",
@@ -19,8 +20,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, PortfolioMetrics]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | PortfolioMetrics | None:
     if response.status_code == 200:
         response_200 = PortfolioMetrics.from_dict(response.json())
 
@@ -37,8 +38,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, PortfolioMetrics]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | PortfolioMetrics]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -50,7 +51,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, PortfolioMetrics]]:
+) -> Response[Any | PortfolioMetrics]:
     """Returns current metrics for the entire portfolio
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -60,7 +61,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, PortfolioMetrics]]
+        Response[Any | PortfolioMetrics]
     """
 
     kwargs = _get_kwargs()
@@ -75,7 +76,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, PortfolioMetrics]]:
+) -> Any | PortfolioMetrics | None:
     """Returns current metrics for the entire portfolio
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -85,7 +86,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, PortfolioMetrics]
+        Any | PortfolioMetrics
     """
 
     return sync_detailed(
@@ -96,7 +97,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, PortfolioMetrics]]:
+) -> Response[Any | PortfolioMetrics]:
     """Returns current metrics for the entire portfolio
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -106,7 +107,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, PortfolioMetrics]]
+        Response[Any | PortfolioMetrics]
     """
 
     kwargs = _get_kwargs()
@@ -119,7 +120,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, PortfolioMetrics]]:
+) -> Any | PortfolioMetrics | None:
     """Returns current metrics for the entire portfolio
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -129,7 +130,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, PortfolioMetrics]
+        Any | PortfolioMetrics
     """
 
     return (

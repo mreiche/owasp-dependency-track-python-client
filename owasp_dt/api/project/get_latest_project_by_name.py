@@ -1,10 +1,12 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.problem_details import ProblemDetails
 from ...models.project import Project
 from ...types import Response
 
@@ -12,10 +14,11 @@ from ...types import Response
 def _get_kwargs(
     name: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/project/latest/{name}".format(
-            name=name,
+            name=quote(str(name), safe=""),
         ),
     }
 
@@ -23,8 +26,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Project]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | Project | None:
     if response.status_code == 200:
         response_200 = Project.from_dict(response.json())
 
@@ -35,7 +38,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -49,8 +53,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Project]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | Project]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,7 +67,7 @@ def sync_detailed(
     name: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Project]]:
+) -> Response[Any | ProblemDetails | Project]:
     """Returns the latest version of a project by its name
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -76,7 +80,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Project]]
+        Response[Any | ProblemDetails | Project]
     """
 
     kwargs = _get_kwargs(
@@ -94,7 +98,7 @@ def sync(
     name: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Project]]:
+) -> Any | ProblemDetails | Project | None:
     """Returns the latest version of a project by its name
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -107,7 +111,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Project]
+        Any | ProblemDetails | Project
     """
 
     return sync_detailed(
@@ -120,7 +124,7 @@ async def asyncio_detailed(
     name: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, Project]]:
+) -> Response[Any | ProblemDetails | Project]:
     """Returns the latest version of a project by its name
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -133,7 +137,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Project]]
+        Response[Any | ProblemDetails | Project]
     """
 
     kwargs = _get_kwargs(
@@ -149,7 +153,7 @@ async def asyncio(
     name: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, Project]]:
+) -> Any | ProblemDetails | Project | None:
     """Returns the latest version of a project by its name
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -162,7 +166,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Project]
+        Any | ProblemDetails | Project
     """
 
     return (

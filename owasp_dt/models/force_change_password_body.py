@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,57 +15,57 @@ T = TypeVar("T", bound="ForceChangePasswordBody")
 class ForceChangePasswordBody:
     """
     Attributes:
-        username (Union[Unset, str]):
-        password (Union[Unset, str]):
-        new_password (Union[Unset, str]):
-        confirm_password (Union[Unset, str]):
+        confirm_password (str | Unset):
+        new_password (str | Unset):
+        password (str | Unset):
+        username (str | Unset):
     """
 
-    username: Union[Unset, str] = UNSET
-    password: Union[Unset, str] = UNSET
-    new_password: Union[Unset, str] = UNSET
-    confirm_password: Union[Unset, str] = UNSET
+    confirm_password: str | Unset = UNSET
+    new_password: str | Unset = UNSET
+    password: str | Unset = UNSET
+    username: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        username = self.username
-
-        password = self.password
+        confirm_password = self.confirm_password
 
         new_password = self.new_password
 
-        confirm_password = self.confirm_password
+        password = self.password
+
+        username = self.username
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if username is not UNSET:
-            field_dict["username"] = username
-        if password is not UNSET:
-            field_dict["password"] = password
-        if new_password is not UNSET:
-            field_dict["newPassword"] = new_password
         if confirm_password is not UNSET:
             field_dict["confirmPassword"] = confirm_password
+        if new_password is not UNSET:
+            field_dict["newPassword"] = new_password
+        if password is not UNSET:
+            field_dict["password"] = password
+        if username is not UNSET:
+            field_dict["username"] = username
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        username = d.pop("username", UNSET)
-
-        password = d.pop("password", UNSET)
+        confirm_password = d.pop("confirmPassword", UNSET)
 
         new_password = d.pop("newPassword", UNSET)
 
-        confirm_password = d.pop("confirmPassword", UNSET)
+        password = d.pop("password", UNSET)
+
+        username = d.pop("username", UNSET)
 
         force_change_password_body = cls(
-            username=username,
-            password=password,
-            new_password=new_password,
             confirm_password=confirm_password,
+            new_password=new_password,
+            password=password,
+            username=username,
         )
 
         force_change_password_body.additional_properties = d

@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,26 +15,26 @@ T = TypeVar("T", bound="FindingComponent")
 class FindingComponent:
     """
     Attributes:
-        uuid (Union[Unset, str]):
-        group (Union[Unset, str]):
-        name (Union[Unset, str]):
-        version (Union[Unset, str]):
-        purl (Union[Unset, str]):
-        project (Union[Unset, str]):
-        project_name (Union[Unset, str]):
-        project_version (Union[Unset, str]):
-        latest_version (Union[Unset, str]):
+        uuid (str | Unset):
+        group (str | Unset):
+        name (str | Unset):
+        version (str | Unset):
+        purl (str | Unset):
+        project (str | Unset):
+        project_name (str | Unset):
+        project_version (str | Unset):
+        latest_version (str | Unset):
     """
 
-    uuid: Union[Unset, str] = UNSET
-    group: Union[Unset, str] = UNSET
-    name: Union[Unset, str] = UNSET
-    version: Union[Unset, str] = UNSET
-    purl: Union[Unset, str] = UNSET
-    project: Union[Unset, str] = UNSET
-    project_name: Union[Unset, str] = UNSET
-    project_version: Union[Unset, str] = UNSET
-    latest_version: Union[Unset, str] = UNSET
+    uuid: str | Unset = UNSET
+    group: str | Unset = UNSET
+    name: str | Unset = UNSET
+    version: str | Unset = UNSET
+    purl: str | Unset = UNSET
+    project: str | Unset = UNSET
+    project_name: str | Unset = UNSET
+    project_version: str | Unset = UNSET
+    latest_version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -83,7 +81,7 @@ class FindingComponent:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         uuid = d.pop("uuid", UNSET)
 

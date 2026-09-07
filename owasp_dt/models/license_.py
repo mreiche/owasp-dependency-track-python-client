@@ -1,11 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeVar,
-    Union,
-    cast,
-)
+from typing import TYPE_CHECKING, Any, Self, TypeVar, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -24,44 +20,54 @@ T = TypeVar("T", bound="License")
 class License:
     """
     Attributes:
-        uuid (UUID):
-        name (str):
         license_id (str):
-        license_groups (Union[Unset, list['LicenseGroup']]):
-        license_text (Union[Unset, str]):
-        standard_license_template (Union[Unset, str]):
-        standard_license_header (Union[Unset, str]):
-        license_comments (Union[Unset, str]):
-        is_osi_approved (Union[Unset, bool]):
-        is_fsf_libre (Union[Unset, bool]):
-        is_deprecated_license_id (Union[Unset, bool]):
-        is_custom_license (Union[Unset, bool]):
-        see_also (Union[Unset, list[str]]):
+        name (str):
+        uuid (UUID):
+        is_custom_license (bool | Unset):
+        is_deprecated_license_id (bool | Unset):
+        is_fsf_libre (bool | Unset):
+        is_osi_approved (bool | Unset):
+        license_comments (str | Unset):
+        license_groups (list[LicenseGroup] | Unset):
+        license_text (str | Unset):
+        see_also (list[str] | Unset):
+        standard_license_header (str | Unset):
+        standard_license_template (str | Unset):
     """
 
-    uuid: UUID
-    name: str
     license_id: str
-    license_groups: Union[Unset, list["LicenseGroup"]] = UNSET
-    license_text: Union[Unset, str] = UNSET
-    standard_license_template: Union[Unset, str] = UNSET
-    standard_license_header: Union[Unset, str] = UNSET
-    license_comments: Union[Unset, str] = UNSET
-    is_osi_approved: Union[Unset, bool] = UNSET
-    is_fsf_libre: Union[Unset, bool] = UNSET
-    is_deprecated_license_id: Union[Unset, bool] = UNSET
-    is_custom_license: Union[Unset, bool] = UNSET
-    see_also: Union[Unset, list[str]] = UNSET
+    name: str
+    uuid: UUID
+    is_custom_license: bool | Unset = UNSET
+    is_deprecated_license_id: bool | Unset = UNSET
+    is_fsf_libre: bool | Unset = UNSET
+    is_osi_approved: bool | Unset = UNSET
+    license_comments: str | Unset = UNSET
+    license_groups: list[LicenseGroup] | Unset = UNSET
+    license_text: str | Unset = UNSET
+    see_also: list[str] | Unset = UNSET
+    standard_license_header: str | Unset = UNSET
+    standard_license_template: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        uuid = str(self.uuid)
+        license_id = self.license_id
 
         name = self.name
 
-        license_id = self.license_id
+        uuid = str(self.uuid)
 
-        license_groups: Union[Unset, list[dict[str, Any]]] = UNSET
+        is_custom_license = self.is_custom_license
+
+        is_deprecated_license_id = self.is_deprecated_license_id
+
+        is_fsf_libre = self.is_fsf_libre
+
+        is_osi_approved = self.is_osi_approved
+
+        license_comments = self.license_comments
+
+        license_groups: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.license_groups, Unset):
             license_groups = []
             for license_groups_item_data in self.license_groups:
@@ -70,106 +76,98 @@ class License:
 
         license_text = self.license_text
 
-        standard_license_template = self.standard_license_template
+        see_also: list[str] | Unset = UNSET
+        if not isinstance(self.see_also, Unset):
+            see_also = self.see_also
 
         standard_license_header = self.standard_license_header
 
-        license_comments = self.license_comments
-
-        is_osi_approved = self.is_osi_approved
-
-        is_fsf_libre = self.is_fsf_libre
-
-        is_deprecated_license_id = self.is_deprecated_license_id
-
-        is_custom_license = self.is_custom_license
-
-        see_also: Union[Unset, list[str]] = UNSET
-        if not isinstance(self.see_also, Unset):
-            see_also = self.see_also
+        standard_license_template = self.standard_license_template
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "uuid": uuid,
-                "name": name,
                 "licenseId": license_id,
+                "name": name,
+                "uuid": uuid,
             }
         )
+        if is_custom_license is not UNSET:
+            field_dict["isCustomLicense"] = is_custom_license
+        if is_deprecated_license_id is not UNSET:
+            field_dict["isDeprecatedLicenseId"] = is_deprecated_license_id
+        if is_fsf_libre is not UNSET:
+            field_dict["isFsfLibre"] = is_fsf_libre
+        if is_osi_approved is not UNSET:
+            field_dict["isOsiApproved"] = is_osi_approved
+        if license_comments is not UNSET:
+            field_dict["licenseComments"] = license_comments
         if license_groups is not UNSET:
             field_dict["licenseGroups"] = license_groups
         if license_text is not UNSET:
             field_dict["licenseText"] = license_text
-        if standard_license_template is not UNSET:
-            field_dict["standardLicenseTemplate"] = standard_license_template
-        if standard_license_header is not UNSET:
-            field_dict["standardLicenseHeader"] = standard_license_header
-        if license_comments is not UNSET:
-            field_dict["licenseComments"] = license_comments
-        if is_osi_approved is not UNSET:
-            field_dict["isOsiApproved"] = is_osi_approved
-        if is_fsf_libre is not UNSET:
-            field_dict["isFsfLibre"] = is_fsf_libre
-        if is_deprecated_license_id is not UNSET:
-            field_dict["isDeprecatedLicenseId"] = is_deprecated_license_id
-        if is_custom_license is not UNSET:
-            field_dict["isCustomLicense"] = is_custom_license
         if see_also is not UNSET:
             field_dict["seeAlso"] = see_also
+        if standard_license_header is not UNSET:
+            field_dict["standardLicenseHeader"] = standard_license_header
+        if standard_license_template is not UNSET:
+            field_dict["standardLicenseTemplate"] = standard_license_template
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.license_group import LicenseGroup
 
         d = dict(src_dict)
-        uuid = UUID(d.pop("uuid"))
+        license_id = d.pop("licenseId")
 
         name = d.pop("name")
 
-        license_id = d.pop("licenseId")
-
-        license_groups = []
-        _license_groups = d.pop("licenseGroups", UNSET)
-        for license_groups_item_data in _license_groups or []:
-            license_groups_item = LicenseGroup.from_dict(license_groups_item_data)
-
-            license_groups.append(license_groups_item)
-
-        license_text = d.pop("licenseText", UNSET)
-
-        standard_license_template = d.pop("standardLicenseTemplate", UNSET)
-
-        standard_license_header = d.pop("standardLicenseHeader", UNSET)
-
-        license_comments = d.pop("licenseComments", UNSET)
-
-        is_osi_approved = d.pop("isOsiApproved", UNSET)
-
-        is_fsf_libre = d.pop("isFsfLibre", UNSET)
-
-        is_deprecated_license_id = d.pop("isDeprecatedLicenseId", UNSET)
+        uuid = UUID(d.pop("uuid"))
 
         is_custom_license = d.pop("isCustomLicense", UNSET)
 
+        is_deprecated_license_id = d.pop("isDeprecatedLicenseId", UNSET)
+
+        is_fsf_libre = d.pop("isFsfLibre", UNSET)
+
+        is_osi_approved = d.pop("isOsiApproved", UNSET)
+
+        license_comments = d.pop("licenseComments", UNSET)
+
+        _license_groups = d.pop("licenseGroups", UNSET)
+        license_groups: list[LicenseGroup] | Unset = UNSET
+        if _license_groups is not UNSET:
+            license_groups = []
+            for license_groups_item_data in _license_groups:
+                license_groups_item = LicenseGroup.from_dict(license_groups_item_data)
+
+                license_groups.append(license_groups_item)
+
+        license_text = d.pop("licenseText", UNSET)
+
         see_also = cast(list[str], d.pop("seeAlso", UNSET))
 
+        standard_license_header = d.pop("standardLicenseHeader", UNSET)
+
+        standard_license_template = d.pop("standardLicenseTemplate", UNSET)
+
         license_ = cls(
-            uuid=uuid,
-            name=name,
             license_id=license_id,
+            name=name,
+            uuid=uuid,
+            is_custom_license=is_custom_license,
+            is_deprecated_license_id=is_deprecated_license_id,
+            is_fsf_libre=is_fsf_libre,
+            is_osi_approved=is_osi_approved,
+            license_comments=license_comments,
             license_groups=license_groups,
             license_text=license_text,
-            standard_license_template=standard_license_template,
-            standard_license_header=standard_license_header,
-            license_comments=license_comments,
-            is_osi_approved=is_osi_approved,
-            is_fsf_libre=is_fsf_libre,
-            is_deprecated_license_id=is_deprecated_license_id,
-            is_custom_license=is_custom_license,
             see_also=see_also,
+            standard_license_header=standard_license_header,
+            standard_license_template=standard_license_template,
         )
 
         license_.additional_properties = d

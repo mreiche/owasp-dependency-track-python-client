@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -11,64 +13,72 @@ T = TypeVar("T", bound="TagListResponseItem")
 class TagListResponseItem:
     """
     Attributes:
-        name (str): Name of the tag
-        project_count (int): Number of projects assigned to this tag
         collection_project_count (int): Number of collection projects assigned to this tag
-        policy_count (int): Number of policies assigned to this tag
+        name (str): Name of the tag
         notification_rule_count (int): Number of notification rules assigned to this tag
+        policy_count (int): Number of policies assigned to this tag
+        project_count (int): Number of projects assigned to this tag
+        vulnerability_count (int): Number of vulnerabilities assigned to this tag
     """
 
-    name: str
-    project_count: int
     collection_project_count: int
-    policy_count: int
+    name: str
     notification_rule_count: int
+    policy_count: int
+    project_count: int
+    vulnerability_count: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        collection_project_count = self.collection_project_count
+
         name = self.name
 
-        project_count = self.project_count
-
-        collection_project_count = self.collection_project_count
+        notification_rule_count = self.notification_rule_count
 
         policy_count = self.policy_count
 
-        notification_rule_count = self.notification_rule_count
+        project_count = self.project_count
+
+        vulnerability_count = self.vulnerability_count
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "name": name,
-                "projectCount": project_count,
                 "collectionProjectCount": collection_project_count,
-                "policyCount": policy_count,
+                "name": name,
                 "notificationRuleCount": notification_rule_count,
+                "policyCount": policy_count,
+                "projectCount": project_count,
+                "vulnerabilityCount": vulnerability_count,
             }
         )
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        name = d.pop("name")
-
-        project_count = d.pop("projectCount")
-
         collection_project_count = d.pop("collectionProjectCount")
 
-        policy_count = d.pop("policyCount")
+        name = d.pop("name")
 
         notification_rule_count = d.pop("notificationRuleCount")
 
+        policy_count = d.pop("policyCount")
+
+        project_count = d.pop("projectCount")
+
+        vulnerability_count = d.pop("vulnerabilityCount")
+
         tag_list_response_item = cls(
-            name=name,
-            project_count=project_count,
             collection_project_count=collection_project_count,
-            policy_count=policy_count,
+            name=name,
             notification_rule_count=notification_rule_count,
+            policy_count=policy_count,
+            project_count=project_count,
+            vulnerability_count=vulnerability_count,
         )
 
         tag_list_response_item.additional_properties = d

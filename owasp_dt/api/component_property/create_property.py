@@ -1,30 +1,34 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.component_property import ComponentProperty
-from ...types import Response
+from ...models.component_property_response import ComponentPropertyResponse
+from ...models.create_component_property_request import CreateComponentPropertyRequest
+from ...models.problem_details import ProblemDetails
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     uuid: UUID,
     *,
-    body: ComponentProperty,
+    body: CreateComponentPropertyRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/v1/component/{uuid}/property".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -33,10 +37,10 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ComponentProperty]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ComponentPropertyResponse | ProblemDetails | None:
     if response.status_code == 201:
-        response_201 = ComponentProperty.from_dict(response.json())
+        response_201 = ComponentPropertyResponse.from_dict(response.json())
 
         return response_201
 
@@ -45,7 +49,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -63,8 +68,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ComponentProperty]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ComponentPropertyResponse | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -77,22 +82,23 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ComponentProperty,
-) -> Response[Union[Any, ComponentProperty]]:
+    body: CreateComponentPropertyRequest | Unset = UNSET,
+) -> Response[Any | ComponentPropertyResponse | ProblemDetails]:
     """Creates a new component property
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
-        body (ComponentProperty):
+        body (CreateComponentPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ComponentProperty]]
+        Response[Any | ComponentPropertyResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -111,22 +117,23 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ComponentProperty,
-) -> Optional[Union[Any, ComponentProperty]]:
+    body: CreateComponentPropertyRequest | Unset = UNSET,
+) -> Any | ComponentPropertyResponse | ProblemDetails | None:
     """Creates a new component property
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
-        body (ComponentProperty):
+        body (CreateComponentPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ComponentProperty]
+        Any | ComponentPropertyResponse | ProblemDetails
     """
 
     return sync_detailed(
@@ -140,22 +147,23 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ComponentProperty,
-) -> Response[Union[Any, ComponentProperty]]:
+    body: CreateComponentPropertyRequest | Unset = UNSET,
+) -> Response[Any | ComponentPropertyResponse | ProblemDetails]:
     """Creates a new component property
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
-        body (ComponentProperty):
+        body (CreateComponentPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ComponentProperty]]
+        Response[Any | ComponentPropertyResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -172,22 +180,23 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    body: ComponentProperty,
-) -> Optional[Union[Any, ComponentProperty]]:
+    body: CreateComponentPropertyRequest | Unset = UNSET,
+) -> Any | ComponentPropertyResponse | ProblemDetails | None:
     """Creates a new component property
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong></p>
 
     Args:
         uuid (UUID):
-        body (ComponentProperty):
+        body (CreateComponentPropertyRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ComponentProperty]
+        Any | ComponentPropertyResponse | ProblemDetails
     """
 
     return (

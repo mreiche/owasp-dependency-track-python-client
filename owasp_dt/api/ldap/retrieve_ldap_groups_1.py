@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -13,10 +14,11 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/ldap/team/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -24,8 +26,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["MappedLdapGroup"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[MappedLdapGroup] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -51,8 +53,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["MappedLdapGroup"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[MappedLdapGroup]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -65,10 +67,11 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["MappedLdapGroup"]]]:
+) -> Response[Any | list[MappedLdapGroup]]:
     """Returns the DNs of all groups mapped to the specified team
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -78,7 +81,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['MappedLdapGroup']]]
+        Response[Any | list[MappedLdapGroup]]
     """
 
     kwargs = _get_kwargs(
@@ -96,10 +99,11 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["MappedLdapGroup"]]]:
+) -> Any | list[MappedLdapGroup] | None:
     """Returns the DNs of all groups mapped to the specified team
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -109,7 +113,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['MappedLdapGroup']]
+        Any | list[MappedLdapGroup]
     """
 
     return sync_detailed(
@@ -122,10 +126,11 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["MappedLdapGroup"]]]:
+) -> Response[Any | list[MappedLdapGroup]]:
     """Returns the DNs of all groups mapped to the specified team
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -135,7 +140,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['MappedLdapGroup']]]
+        Response[Any | list[MappedLdapGroup]]
     """
 
     kwargs = _get_kwargs(
@@ -151,10 +156,11 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["MappedLdapGroup"]]]:
+) -> Any | list[MappedLdapGroup] | None:
     """Returns the DNs of all groups mapped to the specified team
 
-     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong></p>
+     <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
+    <strong>ACCESS_MANAGEMENT_READ</strong></p>
 
     Args:
         uuid (UUID):
@@ -164,7 +170,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['MappedLdapGroup']]
+        Any | list[MappedLdapGroup]
     """
 
     return (

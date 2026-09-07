@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.bom_submit_request import BomSubmitRequest
 from ...models.bom_upload_response import BomUploadResponse
-from ...models.invalid_bom_problem_details import InvalidBomProblemDetails
+from ...models.problem_details import ProblemDetails
 from ...types import Response
 
 
@@ -31,16 +31,15 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | BomUploadResponse | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = BomUploadResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = InvalidBomProblemDetails.from_dict(response.json())
-
+        response_400 = cast(Any, None)
         return response_400
 
     if response.status_code == 401:
@@ -48,7 +47,8 @@ def _parse_response(
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -62,8 +62,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -76,7 +76,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: BomSubmitRequest,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Upload a supported bill of material format document
 
      <p>
@@ -85,13 +85,22 @@ def sync_detailed(
       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
     exist,
       the project will be created. In this scenario, the principal making the request will
-      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-      <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
@@ -108,7 +117,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +135,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: BomSubmitRequest,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Upload a supported bill of material format document
 
      <p>
@@ -135,13 +144,22 @@ def sync(
       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
     exist,
       the project will be created. In this scenario, the principal making the request will
-      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-      <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
@@ -158,7 +176,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return sync_detailed(
@@ -171,7 +189,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: BomSubmitRequest,
-) -> Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+) -> Response[Any | BomUploadResponse | ProblemDetails]:
     """Upload a supported bill of material format document
 
      <p>
@@ -180,13 +198,22 @@ async def asyncio_detailed(
       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
     exist,
       the project will be created. In this scenario, the principal making the request will
-      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-      <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
@@ -203,7 +230,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]
+        Response[Any | BomUploadResponse | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -219,7 +246,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: BomSubmitRequest,
-) -> Optional[Union[Any, BomUploadResponse, InvalidBomProblemDetails]]:
+) -> Any | BomUploadResponse | ProblemDetails | None:
     """Upload a supported bill of material format document
 
      <p>
@@ -228,13 +255,22 @@ async def asyncio(
       Optionally, if <code>autoCreate</code> is specified and <code>true</code> and the project does not
     exist,
       the project will be created. In this scenario, the principal making the request will
-      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong> or
-      <strong>PROJECT_CREATION_UPLOAD</strong> permission.
+      additionally need the <strong>PORTFOLIO_MANAGEMENT</strong>,
+    <strong>PORTFOLIO_MANAGEMENT_CREATE</strong>,
+      or <strong>PROJECT_CREATION_UPLOAD</strong> permission.
     </p>
     <p>
       The BOM will be validated against the CycloneDX schema. If schema validation fails,
       a response with problem details in RFC 9457 format will be returned. In this case,
       the response's content type will be <code>application/problem+json</code>.
+    </p>
+    <p>
+      When creating projects, <code>parentUUID</code> or <code>parentName</code> and
+      <code>parentVersion</code> can place the new project under a parent,
+      <code>projectTags</code> can apply tags, and <code>isLatest</code> can mark it as
+      the latest version. The <code>isActive</code> parameter sets the project's active
+      state whenever it is provided, including when the target project already exists, so
+      clients should send it only when they intend to change that state.
     </p>
     <p>
       The maximum allowed length of the <code>bom</code> value is 20'000'000 characters.
@@ -251,7 +287,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, BomUploadResponse, InvalidBomProblemDetails]
+        Any | BomUploadResponse | ProblemDetails
     """
 
     return (

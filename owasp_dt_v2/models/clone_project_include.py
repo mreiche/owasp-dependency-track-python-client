@@ -1,0 +1,16 @@
+from enum import StrEnum
+
+
+class CloneProjectInclude(StrEnum):
+    ACL = "ACL"
+    COMPONENTS = "COMPONENTS"
+    FINDINGS = "FINDINGS"
+    FINDINGS_AUDIT_HISTORY = "FINDINGS_AUDIT_HISTORY"
+    POLICY_VIOLATIONS = "POLICY_VIOLATIONS"
+    POLICY_VIOLATIONS_AUDIT_HISTORY = "POLICY_VIOLATIONS_AUDIT_HISTORY"
+    PROPERTIES = "PROPERTIES"
+    SERVICES = "SERVICES"
+    TAGS = "TAGS"
+
+    def __str__(self) -> str:
+        return str(self.value)

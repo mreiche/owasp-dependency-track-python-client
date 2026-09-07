@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
@@ -12,10 +13,11 @@ from ...types import Response
 def _get_kwargs(
     date: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/metrics/portfolio/since/{date}".format(
-            date=date,
+            date=quote(str(date), safe=""),
         ),
     }
 
@@ -23,8 +25,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["PortfolioMetrics"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[PortfolioMetrics] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -46,8 +48,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["PortfolioMetrics"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[PortfolioMetrics]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -60,10 +62,12 @@ def sync_detailed(
     date: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["PortfolioMetrics"]]]:
+) -> Response[Any | list[PortfolioMetrics]]:
     """Returns historical metrics for the entire portfolio from a specific date
 
-     <p>Date format must be <code>YYYYMMDD</code></p>
+     <p>Date format must be <code>YYYYMMDD</code>. The number of days returned is computed against the
+    current UTC date.
+    </p>
     <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
@@ -74,7 +78,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['PortfolioMetrics']]]
+        Response[Any | list[PortfolioMetrics]]
     """
 
     kwargs = _get_kwargs(
@@ -92,10 +96,12 @@ def sync(
     date: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["PortfolioMetrics"]]]:
+) -> Any | list[PortfolioMetrics] | None:
     """Returns historical metrics for the entire portfolio from a specific date
 
-     <p>Date format must be <code>YYYYMMDD</code></p>
+     <p>Date format must be <code>YYYYMMDD</code>. The number of days returned is computed against the
+    current UTC date.
+    </p>
     <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
@@ -106,7 +112,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['PortfolioMetrics']]
+        Any | list[PortfolioMetrics]
     """
 
     return sync_detailed(
@@ -119,10 +125,12 @@ async def asyncio_detailed(
     date: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["PortfolioMetrics"]]]:
+) -> Response[Any | list[PortfolioMetrics]]:
     """Returns historical metrics for the entire portfolio from a specific date
 
-     <p>Date format must be <code>YYYYMMDD</code></p>
+     <p>Date format must be <code>YYYYMMDD</code>. The number of days returned is computed against the
+    current UTC date.
+    </p>
     <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
@@ -133,7 +141,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['PortfolioMetrics']]]
+        Response[Any | list[PortfolioMetrics]]
     """
 
     kwargs = _get_kwargs(
@@ -149,10 +157,12 @@ async def asyncio(
     date: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["PortfolioMetrics"]]]:
+) -> Any | list[PortfolioMetrics] | None:
     """Returns historical metrics for the entire portfolio from a specific date
 
-     <p>Date format must be <code>YYYYMMDD</code></p>
+     <p>Date format must be <code>YYYYMMDD</code>. The number of days returned is computed against the
+    current UTC date.
+    </p>
     <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
@@ -163,7 +173,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['PortfolioMetrics']]
+        Any | list[PortfolioMetrics]
     """
 
     return (

@@ -1,17 +1,18 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.policy_condition import PolicyCondition
-from ...types import Response
+from ...models.policy_condition_response import PolicyConditionResponse
+from ...models.update_policy_condition_request import UpdatePolicyConditionRequest
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: PolicyCondition,
+    body: UpdatePolicyConditionRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +21,8 @@ def _get_kwargs(
         "url": "/v1/policy/condition",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,10 +31,10 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, PolicyCondition]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | PolicyConditionResponse | None:
     if response.status_code == 200:
-        response_200 = PolicyCondition.from_dict(response.json())
+        response_200 = PolicyConditionResponse.from_dict(response.json())
 
         return response_200
 
@@ -51,8 +53,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, PolicyCondition]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | PolicyConditionResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,21 +66,24 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: PolicyCondition,
-) -> Response[Union[Any, PolicyCondition]]:
+    body: UpdatePolicyConditionRequest | Unset = UNSET,
+) -> Response[Any | PolicyConditionResponse]:
     """Updates a policy condition
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
-        body (PolicyCondition):
+        body (UpdatePolicyConditionRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, PolicyCondition]]
+        Response[Any | PolicyConditionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -95,21 +100,24 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: PolicyCondition,
-) -> Optional[Union[Any, PolicyCondition]]:
+    body: UpdatePolicyConditionRequest | Unset = UNSET,
+) -> Any | PolicyConditionResponse | None:
     """Updates a policy condition
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
-        body (PolicyCondition):
+        body (UpdatePolicyConditionRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, PolicyCondition]
+        Any | PolicyConditionResponse
     """
 
     return sync_detailed(
@@ -121,21 +129,24 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: PolicyCondition,
-) -> Response[Union[Any, PolicyCondition]]:
+    body: UpdatePolicyConditionRequest | Unset = UNSET,
+) -> Response[Any | PolicyConditionResponse]:
     """Updates a policy condition
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
-        body (PolicyCondition):
+        body (UpdatePolicyConditionRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, PolicyCondition]]
+        Response[Any | PolicyConditionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -150,21 +161,24 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: PolicyCondition,
-) -> Optional[Union[Any, PolicyCondition]]:
+    body: UpdatePolicyConditionRequest | Unset = UNSET,
+) -> Any | PolicyConditionResponse | None:
     """Updates a policy condition
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
-        body (PolicyCondition):
+        body (UpdatePolicyConditionRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, PolicyCondition]
+        Any | PolicyConditionResponse
     """
 
     return (

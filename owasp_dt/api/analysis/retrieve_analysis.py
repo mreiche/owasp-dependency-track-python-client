@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 from uuid import UUID
 
 import httpx
@@ -7,18 +7,20 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.analysis import Analysis
+from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    project: Union[Unset, UUID] = UNSET,
+    project: UUID | Unset = UNSET,
     component: UUID,
     vulnerability: UUID,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
-    json_project: Union[Unset, str] = UNSET
+    json_project: str | Unset = UNSET
     if not isinstance(project, Unset):
         json_project = str(project)
     params["project"] = json_project
@@ -41,8 +43,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Analysis, Any]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Analysis | Any | ProblemDetails | None:
     if response.status_code == 200:
         response_200 = Analysis.from_dict(response.json())
 
@@ -51,6 +53,11 @@ def _parse_response(
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
+
+    if response.status_code == 403:
+        response_403 = ProblemDetails.from_dict(response.json())
+
+        return response_403
 
     if response.status_code == 404:
         response_404 = cast(Any, None)
@@ -63,8 +70,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Analysis, Any]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Analysis | Any | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -76,16 +83,16 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    project: Union[Unset, UUID] = UNSET,
+    project: UUID | Unset = UNSET,
     component: UUID,
     vulnerability: UUID,
-) -> Response[Union[Analysis, Any]]:
+) -> Response[Analysis | Any | ProblemDetails]:
     """Retrieves an analysis trail
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        project (Union[Unset, UUID]):
+        project (UUID | Unset):
         component (UUID):
         vulnerability (UUID):
 
@@ -94,7 +101,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Analysis, Any]]
+        Response[Analysis | Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -113,16 +120,16 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    project: Union[Unset, UUID] = UNSET,
+    project: UUID | Unset = UNSET,
     component: UUID,
     vulnerability: UUID,
-) -> Optional[Union[Analysis, Any]]:
+) -> Analysis | Any | ProblemDetails | None:
     """Retrieves an analysis trail
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        project (Union[Unset, UUID]):
+        project (UUID | Unset):
         component (UUID):
         vulnerability (UUID):
 
@@ -131,7 +138,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Analysis, Any]
+        Analysis | Any | ProblemDetails
     """
 
     return sync_detailed(
@@ -145,16 +152,16 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    project: Union[Unset, UUID] = UNSET,
+    project: UUID | Unset = UNSET,
     component: UUID,
     vulnerability: UUID,
-) -> Response[Union[Analysis, Any]]:
+) -> Response[Analysis | Any | ProblemDetails]:
     """Retrieves an analysis trail
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        project (Union[Unset, UUID]):
+        project (UUID | Unset):
         component (UUID):
         vulnerability (UUID):
 
@@ -163,7 +170,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Analysis, Any]]
+        Response[Analysis | Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -180,16 +187,16 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    project: Union[Unset, UUID] = UNSET,
+    project: UUID | Unset = UNSET,
     component: UUID,
     vulnerability: UUID,
-) -> Optional[Union[Analysis, Any]]:
+) -> Analysis | Any | ProblemDetails | None:
     """Retrieves an analysis trail
 
      <p>Requires permission <strong>VIEW_VULNERABILITY</strong></p>
 
     Args:
-        project (Union[Unset, UUID]):
+        project (UUID | Unset):
         component (UUID):
         vulnerability (UUID):
 
@@ -198,7 +205,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Analysis, Any]
+        Analysis | Any | ProblemDetails
     """
 
     return (

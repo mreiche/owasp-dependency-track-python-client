@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class NotificationRuleNotifyOnItem(str, Enum):
+class NotificationRuleNotifyOnItem(StrEnum):
     ANALYZER = "ANALYZER"
     BOM_CONSUMED = "BOM_CONSUMED"
     BOM_PROCESSED = "BOM_PROCESSED"
@@ -10,7 +10,6 @@ class NotificationRuleNotifyOnItem(str, Enum):
     CONFIGURATION = "CONFIGURATION"
     DATASOURCE_MIRRORING = "DATASOURCE_MIRRORING"
     FILE_SYSTEM = "FILE_SYSTEM"
-    INDEXING_SERVICE = "INDEXING_SERVICE"
     INTEGRATION = "INTEGRATION"
     NEW_POLICY_VIOLATIONS_SUMMARY = "NEW_POLICY_VIOLATIONS_SUMMARY"
     NEW_VULNERABILITIES_SUMMARY = "NEW_VULNERABILITIES_SUMMARY"
@@ -24,6 +23,7 @@ class NotificationRuleNotifyOnItem(str, Enum):
     USER_DELETED = "USER_DELETED"
     VEX_CONSUMED = "VEX_CONSUMED"
     VEX_PROCESSED = "VEX_PROCESSED"
+    VULNERABILITY_RETRACTED = "VULNERABILITY_RETRACTED"
 
     def __str__(self) -> str:
         return str(self.value)

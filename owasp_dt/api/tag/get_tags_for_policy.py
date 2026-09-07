@@ -1,60 +1,33 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.get_tags_for_policy_sort_order import GetTagsForPolicySortOrder
 from ...models.tag import Tag
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     uuid: UUID,
-    *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTagsForPolicySortOrder] = UNSET,
 ) -> dict[str, Any]:
-    params: dict[str, Any] = {}
-
-    params["pageNumber"] = page_number
-
-    params["pageSize"] = page_size
-
-    params["offset"] = offset
-
-    params["limit"] = limit
-
-    params["sortName"] = sort_name
-
-    json_sort_order: Union[Unset, str] = UNSET
-    if not isinstance(sort_order, Unset):
-        json_sort_order = sort_order.value
-
-    params["sortOrder"] = json_sort_order
-
-    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/tag/policy/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
-        "params": params,
     }
 
     return _kwargs
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["Tag"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[Tag] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -76,8 +49,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["Tag"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[Tag]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -90,42 +63,24 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTagsForPolicySortOrder] = UNSET,
-) -> Response[Union[Any, list["Tag"]]]:
+) -> Response[Any | list[Tag]]:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTagsForPolicySortOrder]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Tag']]]
+        Response[Any | list[Tag]]
     """
 
     kwargs = _get_kwargs(
         uuid=uuid,
-        page_number=page_number,
-        page_size=page_size,
-        offset=offset,
-        limit=limit,
-        sort_name=sort_name,
-        sort_order=sort_order,
     )
 
     response = client.get_httpx_client().request(
@@ -139,43 +94,25 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTagsForPolicySortOrder] = UNSET,
-) -> Optional[Union[Any, list["Tag"]]]:
+) -> Any | list[Tag] | None:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTagsForPolicySortOrder]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Tag']]
+        Any | list[Tag]
     """
 
     return sync_detailed(
         uuid=uuid,
         client=client,
-        page_number=page_number,
-        page_size=page_size,
-        offset=offset,
-        limit=limit,
-        sort_name=sort_name,
-        sort_order=sort_order,
     ).parsed
 
 
@@ -183,42 +120,24 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTagsForPolicySortOrder] = UNSET,
-) -> Response[Union[Any, list["Tag"]]]:
+) -> Response[Any | list[Tag]]:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTagsForPolicySortOrder]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['Tag']]]
+        Response[Any | list[Tag]]
     """
 
     kwargs = _get_kwargs(
         uuid=uuid,
-        page_number=page_number,
-        page_size=page_size,
-        offset=offset,
-        limit=limit,
-        sort_name=sort_name,
-        sort_order=sort_order,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -230,43 +149,25 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTagsForPolicySortOrder] = UNSET,
-) -> Optional[Union[Any, list["Tag"]]]:
+) -> Any | list[Tag] | None:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         uuid (UUID):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTagsForPolicySortOrder]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['Tag']]
+        Any | list[Tag]
     """
 
     return (
         await asyncio_detailed(
             uuid=uuid,
             client=client,
-            page_number=page_number,
-            page_size=page_size,
-            offset=offset,
-            limit=limit,
-            sort_name=sort_name,
-            sort_order=sort_order,
         )
     ).parsed

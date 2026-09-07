@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -13,13 +14,14 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     name: str,
     *,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTaggedProjectsSortOrder] = UNSET,
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetTaggedProjectsSortOrder | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageNumber"] = page_number
@@ -32,7 +34,7 @@ def _get_kwargs(
 
     params["sortName"] = sort_name
 
-    json_sort_order: Union[Unset, str] = UNSET
+    json_sort_order: str | Unset = UNSET
     if not isinstance(sort_order, Unset):
         json_sort_order = sort_order.value
 
@@ -43,7 +45,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/tag/{name}/project".format(
-            name=name,
+            name=quote(str(name), safe=""),
         ),
         "params": params,
     }
@@ -52,8 +54,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[list["TaggedProjectListResponseItem"]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> list[TaggedProjectListResponseItem] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -73,8 +75,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[list["TaggedProjectListResponseItem"]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[list[TaggedProjectListResponseItem]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -87,32 +89,32 @@ def sync_detailed(
     name: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTaggedProjectsSortOrder] = UNSET,
-) -> Response[list["TaggedProjectListResponseItem"]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetTaggedProjectsSortOrder | Unset = UNSET,
+) -> Response[list[TaggedProjectListResponseItem]]:
     """Returns a list of all projects assigned to the given tag.
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         name (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTaggedProjectsSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetTaggedProjectsSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['TaggedProjectListResponseItem']]
+        Response[list[TaggedProjectListResponseItem]]
     """
 
     kwargs = _get_kwargs(
@@ -136,32 +138,32 @@ def sync(
     name: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTaggedProjectsSortOrder] = UNSET,
-) -> Optional[list["TaggedProjectListResponseItem"]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetTaggedProjectsSortOrder | Unset = UNSET,
+) -> list[TaggedProjectListResponseItem] | None:
     """Returns a list of all projects assigned to the given tag.
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         name (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTaggedProjectsSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetTaggedProjectsSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['TaggedProjectListResponseItem']
+        list[TaggedProjectListResponseItem]
     """
 
     return sync_detailed(
@@ -180,32 +182,32 @@ async def asyncio_detailed(
     name: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTaggedProjectsSortOrder] = UNSET,
-) -> Response[list["TaggedProjectListResponseItem"]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetTaggedProjectsSortOrder | Unset = UNSET,
+) -> Response[list[TaggedProjectListResponseItem]]:
     """Returns a list of all projects assigned to the given tag.
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         name (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTaggedProjectsSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetTaggedProjectsSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['TaggedProjectListResponseItem']]
+        Response[list[TaggedProjectListResponseItem]]
     """
 
     kwargs = _get_kwargs(
@@ -227,32 +229,32 @@ async def asyncio(
     name: str,
     *,
     client: AuthenticatedClient,
-    page_number: Union[Unset, str] = "1",
-    page_size: Union[Unset, str] = "100",
-    offset: Union[Unset, str] = UNSET,
-    limit: Union[Unset, str] = UNSET,
-    sort_name: Union[Unset, str] = UNSET,
-    sort_order: Union[Unset, GetTaggedProjectsSortOrder] = UNSET,
-) -> Optional[list["TaggedProjectListResponseItem"]]:
+    page_number: str | Unset = "1",
+    page_size: str | Unset = "100",
+    offset: str | Unset = UNSET,
+    limit: str | Unset = UNSET,
+    sort_name: str | Unset = UNSET,
+    sort_order: GetTaggedProjectsSortOrder | Unset = UNSET,
+) -> list[TaggedProjectListResponseItem] | None:
     """Returns a list of all projects assigned to the given tag.
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
 
     Args:
         name (str):
-        page_number (Union[Unset, str]):  Default: '1'.
-        page_size (Union[Unset, str]):  Default: '100'.
-        offset (Union[Unset, str]):
-        limit (Union[Unset, str]):
-        sort_name (Union[Unset, str]):
-        sort_order (Union[Unset, GetTaggedProjectsSortOrder]):
+        page_number (str | Unset):  Default: '1'.
+        page_size (str | Unset):  Default: '100'.
+        offset (str | Unset):
+        limit (str | Unset):
+        sort_name (str | Unset):
+        sort_order (GetTaggedProjectsSortOrder | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['TaggedProjectListResponseItem']
+        list[TaggedProjectListResponseItem]
     """
 
     return (

@@ -1,15 +1,16 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.license_ import License
+from ...models.concise_license_response import ConciseLicenseResponse
 from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v1/license/concise",
@@ -19,13 +20,13 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, list["License"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | list[ConciseLicenseResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = License.from_dict(response_200_item_data)
+            response_200_item = ConciseLicenseResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -42,8 +43,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, list["License"]]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | list[ConciseLicenseResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -55,7 +56,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["License"]]]:
+) -> Response[Any | list[ConciseLicenseResponse]]:
     """Returns a concise listing of all licenses
 
     Raises:
@@ -63,7 +64,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['License']]]
+        Response[Any | list[ConciseLicenseResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -78,7 +79,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["License"]]]:
+) -> Any | list[ConciseLicenseResponse] | None:
     """Returns a concise listing of all licenses
 
     Raises:
@@ -86,7 +87,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['License']]
+        Any | list[ConciseLicenseResponse]
     """
 
     return sync_detailed(
@@ -97,7 +98,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, list["License"]]]:
+) -> Response[Any | list[ConciseLicenseResponse]]:
     """Returns a concise listing of all licenses
 
     Raises:
@@ -105,7 +106,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, list['License']]]
+        Response[Any | list[ConciseLicenseResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -118,7 +119,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, list["License"]]]:
+) -> Any | list[ConciseLicenseResponse] | None:
     """Returns a concise listing of all licenses
 
     Raises:
@@ -126,7 +127,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, list['License']]
+        Any | list[ConciseLicenseResponse]
     """
 
     return (

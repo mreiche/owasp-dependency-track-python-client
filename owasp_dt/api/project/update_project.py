@@ -1,17 +1,18 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.problem_details import ProblemDetails
 from ...models.project import Project
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: Project,
+    body: Project | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,7 +21,8 @@ def _get_kwargs(
         "url": "/v1/project",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -29,19 +31,24 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, Project]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | ProblemDetails | Project | None:
     if response.status_code == 200:
         response_200 = Project.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 400:
+        response_400 = cast(Any, None)
+        return response_400
 
     if response.status_code == 401:
         response_401 = cast(Any, None)
         return response_401
 
     if response.status_code == 403:
-        response_403 = cast(Any, None)
+        response_403 = ProblemDetails.from_dict(response.json())
+
         return response_403
 
     if response.status_code == 404:
@@ -59,8 +66,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, Project]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | ProblemDetails | Project]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,21 +79,28 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: Project,
-) -> Response[Union[Any, Project]]:
+    body: Project | Unset = UNSET,
+) -> Response[Any | ProblemDetails | Project]:
     """Updates a project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>
+      To re-parent the project, set <code>parent</code> to an object containing
+      the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to
+      <code>null</code>) to leave the parent unchanged. Providing <code>parent</code>
+      without a non-null <code>uuid</code> is rejected with 400.
+    </p>
+    <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Project):
+        body (Project | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Project]]
+        Response[Any | ProblemDetails | Project]
     """
 
     kwargs = _get_kwargs(
@@ -103,21 +117,28 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: Project,
-) -> Optional[Union[Any, Project]]:
+    body: Project | Unset = UNSET,
+) -> Any | ProblemDetails | Project | None:
     """Updates a project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>
+      To re-parent the project, set <code>parent</code> to an object containing
+      the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to
+      <code>null</code>) to leave the parent unchanged. Providing <code>parent</code>
+      without a non-null <code>uuid</code> is rejected with 400.
+    </p>
+    <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Project):
+        body (Project | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Project]
+        Any | ProblemDetails | Project
     """
 
     return sync_detailed(
@@ -129,21 +150,28 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: Project,
-) -> Response[Union[Any, Project]]:
+    body: Project | Unset = UNSET,
+) -> Response[Any | ProblemDetails | Project]:
     """Updates a project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>
+      To re-parent the project, set <code>parent</code> to an object containing
+      the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to
+      <code>null</code>) to leave the parent unchanged. Providing <code>parent</code>
+      without a non-null <code>uuid</code> is rejected with 400.
+    </p>
+    <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Project):
+        body (Project | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, Project]]
+        Response[Any | ProblemDetails | Project]
     """
 
     kwargs = _get_kwargs(
@@ -158,21 +186,28 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: Project,
-) -> Optional[Union[Any, Project]]:
+    body: Project | Unset = UNSET,
+) -> Any | ProblemDetails | Project | None:
     """Updates a project
 
-     <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong></p>
+     <p>
+      To re-parent the project, set <code>parent</code> to an object containing
+      the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to
+      <code>null</code>) to leave the parent unchanged. Providing <code>parent</code>
+      without a non-null <code>uuid</code> is rejected with 400.
+    </p>
+    <p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or
+    <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (Project):
+        body (Project | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, Project]
+        Any | ProblemDetails | Project
     """
 
     return (

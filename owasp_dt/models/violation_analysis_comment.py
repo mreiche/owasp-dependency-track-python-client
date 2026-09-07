@@ -1,9 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import (
-    Any,
-    TypeVar,
-    Union,
-)
+from typing import Any, Self, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,20 +15,20 @@ T = TypeVar("T", bound="ViolationAnalysisComment")
 class ViolationAnalysisComment:
     """
     Attributes:
-        timestamp (int): UNIX epoch timestamp in milliseconds
         comment (str):
-        commenter (Union[Unset, str]):
+        timestamp (int): UNIX epoch timestamp in milliseconds
+        commenter (str | Unset):
     """
 
-    timestamp: int
     comment: str
-    commenter: Union[Unset, str] = UNSET
+    timestamp: int
+    commenter: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        timestamp = self.timestamp
-
         comment = self.comment
+
+        timestamp = self.timestamp
 
         commenter = self.commenter
 
@@ -38,8 +36,8 @@ class ViolationAnalysisComment:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "timestamp": timestamp,
                 "comment": comment,
+                "timestamp": timestamp,
             }
         )
         if commenter is not UNSET:
@@ -48,17 +46,17 @@ class ViolationAnalysisComment:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        timestamp = d.pop("timestamp")
-
         comment = d.pop("comment")
+
+        timestamp = d.pop("timestamp")
 
         commenter = d.pop("commenter", UNSET)
 
         violation_analysis_comment = cls(
-            timestamp=timestamp,
             comment=comment,
+            timestamp=timestamp,
             commenter=commenter,
         )
 

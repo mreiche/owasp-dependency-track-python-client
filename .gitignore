@@ -1,7 +1,7 @@
 .idea
 build
 owasp_dependency_track_client.egg-info
-openapi.json
 test-results
 .coverage
 .DS_Store
+openapi-v1.json

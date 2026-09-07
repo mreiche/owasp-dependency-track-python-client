@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -14,11 +15,12 @@ def _get_kwargs(
     rule_uuid: UUID,
     team_uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/notification/rule/{rule_uuid}/team/{team_uuid}".format(
-            rule_uuid=rule_uuid,
-            team_uuid=team_uuid,
+            rule_uuid=quote(str(rule_uuid), safe=""),
+            team_uuid=quote(str(team_uuid), safe=""),
         ),
     }
 
@@ -26,8 +28,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, NotificationRule]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | NotificationRule | None:
     if response.status_code == 200:
         response_200 = NotificationRule.from_dict(response.json())
 
@@ -52,8 +54,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, NotificationRule]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | NotificationRule]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -67,10 +69,11 @@ def sync_detailed(
     team_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, NotificationRule]]:
+) -> Response[Any | NotificationRule]:
     """Removes a team from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -81,7 +84,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationRule]]
+        Response[Any | NotificationRule]
     """
 
     kwargs = _get_kwargs(
@@ -101,10 +104,11 @@ def sync(
     team_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, NotificationRule]]:
+) -> Any | NotificationRule | None:
     """Removes a team from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -115,7 +119,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationRule]
+        Any | NotificationRule
     """
 
     return sync_detailed(
@@ -130,10 +134,11 @@ async def asyncio_detailed(
     team_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, NotificationRule]]:
+) -> Response[Any | NotificationRule]:
     """Removes a team from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -144,7 +149,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, NotificationRule]]
+        Response[Any | NotificationRule]
     """
 
     kwargs = _get_kwargs(
@@ -162,10 +167,11 @@ async def asyncio(
     team_uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, NotificationRule]]:
+) -> Any | NotificationRule | None:
     """Removes a team from a notification rule
 
-     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong></p>
+     <p>Requires permission <strong>SYSTEM_CONFIGURATION</strong> or
+    <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
         rule_uuid (UUID):
@@ -176,7 +182,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, NotificationRule]
+        Any | NotificationRule
     """
 
     return (

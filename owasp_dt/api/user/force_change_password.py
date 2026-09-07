@@ -1,17 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.force_change_password_body import ForceChangePasswordBody
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ForceChangePasswordBody,
+    body: ForceChangePasswordBody | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -20,8 +20,8 @@ def _get_kwargs(
         "url": "/v1/user/forceChangePassword",
     }
 
-    _kwargs["data"] = body.to_dict()
-
+    if not isinstance(body, Unset):
+        _kwargs["data"] = body.to_dict()
     headers["Content-Type"] = "application/x-www-form-urlencoded"
 
     _kwargs["headers"] = headers
@@ -29,8 +29,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 200:
         return None
 
@@ -47,7 +47,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -60,16 +60,15 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ForceChangePasswordBody,
+    body: ForceChangePasswordBody | Unset = UNSET,
 ) -> Response[Any]:
     """Asserts login credentials and upon successful authentication, verifies passwords match and changes
     users password
 
-     Upon a successful login, a JSON Web Token will be returned in the response body. This functionality
-    requires authentication to be enabled.
+     Upon a successful login, a bearer token will be returned in the response body.
 
     Args:
-        body (ForceChangePasswordBody):
+        body (ForceChangePasswordBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -93,16 +92,15 @@ def sync_detailed(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ForceChangePasswordBody,
+    body: ForceChangePasswordBody | Unset = UNSET,
 ) -> Response[Any]:
     """Asserts login credentials and upon successful authentication, verifies passwords match and changes
     users password
 
-     Upon a successful login, a JSON Web Token will be returned in the response body. This functionality
-    requires authentication to be enabled.
+     Upon a successful login, a bearer token will be returned in the response body.
 
     Args:
-        body (ForceChangePasswordBody):
+        body (ForceChangePasswordBody | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

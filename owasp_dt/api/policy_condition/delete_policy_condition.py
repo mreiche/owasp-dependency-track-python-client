@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx
@@ -12,10 +13,11 @@ from ...types import Response
 def _get_kwargs(
     uuid: UUID,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/policy/condition/{uuid}".format(
-            uuid=uuid,
+            uuid=quote(str(uuid), safe=""),
         ),
     }
 
@@ -23,8 +25,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Any]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | None:
     if response.status_code == 204:
         return None
 
@@ -41,7 +43,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+    *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -56,9 +58,12 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Deletes a policy condition
+    """Deletes a policy condition from an existing policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
         uuid (UUID):
@@ -87,9 +92,12 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Deletes a policy condition
+    """Deletes a policy condition from an existing policy
 
-     <p>Requires permission <strong>POLICY_MANAGEMENT</strong></p>
+     <p>
+      Requires permission <strong>POLICY_MANAGEMENT</strong>
+      or <strong>POLICY_MANAGEMENT_UPDATE</strong>
+    </p>
 
     Args:
         uuid (UUID):
