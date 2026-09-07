@@ -2,7 +2,7 @@ from typing import Generator, Callable, TypeVar
 
 from owasp_dt import Client
 from owasp_dt.api.project_property import create_property_1, update_property
-from owasp_dt.models import ProjectPropertyResponse, UpdateProjectPropertyRequest, CreateProjectPropertyRequest
+from owasp_dt.models import UpdateProjectPropertyRequest, CreateProjectPropertyRequest
 from owasp_dt.types import Response
 from test import config
 
