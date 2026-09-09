@@ -21,6 +21,11 @@ __test_project = SimpleNamespace(
     upload_token=None,
 )
 
+@pytest.mark.depends(on=[
+    'test/test_violations.py::test_create_violation_policy',
+    'test/test_vulnerabilities.py::test_get_vulnerabilities',
+    'test/test_trivy.py::test_configure_trivy_scanner'
+])
 def test_upload_first_sbom(client: Client):
     with open(test.base_dir / "files/test.sbom.xml") as sbom_io:
         sbom_file = File(payload=sbom_io.read())
@@ -63,11 +68,7 @@ def test_first_components_present(client_v2: Client):
     components_page = resp.parsed
     assert components_page.total.count == 39
 
-@pytest.mark.depends(on=[
-    'test_first_components_present',
-    'test/test_vulnerabilities.py::test_get_vulnerabilities',
-    'test/test_trivy.py::test_configure_trivy_scanner'
-])
+@pytest.mark.depends(on=['test_first_components_present'])
 def test_first_vulnerability_present(client: Client):
     #__test_project.uuid = "4a13cada-77d5-457f-b1d2-c2c06f6c20a9"
     resp = get_vulnerabilities_by_project.sync_detailed(client=client, uuid=__test_project.uuid)
