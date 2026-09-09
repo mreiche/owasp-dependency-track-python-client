@@ -15205,7 +15205,6 @@
           }
         },
         "required": [
-          "projectUuid",
           "token"
         ]
       },
@@ -16707,9 +16706,7 @@
           },
           "attribution": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": true
           },
           "component": {
             "type": "object",
@@ -17275,7 +17272,6 @@
         },
         "required": [
           "hasChildren",
-          "lastBomImport",
           "name",
           "uuid"
         ]

@@ -1,4 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/owasp-dependency-track-client.svg)](https://badge.fury.io/py/owasp-dependency-track-client)
+[![Test](https://github.com/mreiche/owasp-dependency-track-python-client/actions/workflows/test.yml/badge.svg)](https://github.com/mreiche/owasp-dependency-track-python-client/actions/workflows/test.yml)
 
 # OWASP Dependency Track Python API client
 

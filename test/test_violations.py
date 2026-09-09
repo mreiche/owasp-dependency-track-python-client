@@ -21,7 +21,7 @@ def test_mit_license(client: owasp_dt.Client):
     test.retry(_test_mit_license, 600)
 
 @pytest.mark.depends(on=['test_mit_license'])
-def test_create_test_policy(client: owasp_dt.Client):
+def test_create_violation_policy(client: owasp_dt.Client):
     policy = Policy(
         uuid="",
         name="Forbid MIT license",
@@ -46,7 +46,7 @@ def test_create_test_policy(client: owasp_dt.Client):
     assert resp.status_code == 201
 
 
-@pytest.mark.depends(on=['test_create_test_policy', 'test/test_upload.py::test_upload_sbom'])
+@pytest.mark.depends(on=['test/test_upload.py::test_upload_first_sbom'])
 def test_get_violations(client: owasp_dt.Client):
     def _get_violations():
         resp = get_violations.sync_detailed(client=client, page_size=1)
@@ -56,7 +56,7 @@ def test_get_violations(client: owasp_dt.Client):
     test.retry(_get_violations, 600)
 
 
-@pytest.mark.depends(on=['test/test_projects.py::test_search_project_by_name', 'test/test_upload.py::test_get_scan_status'])
+@pytest.mark.depends(on=['test/test_projects.py::test_search_project_by_name'])
 def test_get_project_violations(client: owasp_dt.Client):
     resp = get_violations_by_project.sync_detailed(client=client, uuid=test.project_uuid)
     violations = resp.parsed

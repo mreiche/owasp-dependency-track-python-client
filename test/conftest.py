@@ -1,13 +1,12 @@
 import pytest
 
-from test import api
-
+from owasp_dt import utils
 
 @pytest.fixture(scope="session")
 def client():
-    yield api.create_client_from_env()
+    yield utils.create_client_from_env()
 
 
 @pytest.fixture(scope="session")
 def client_v2():
-    yield api.create_client_from_env("/api/v2")
+    yield utils.create_client_from_env("/api/v2")

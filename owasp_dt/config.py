@@ -1,6 +1,8 @@
 import os
-from typing import Callable
+from collections.abc import Callable
+
 type Mapper = Callable[[str], any]
+
 
 def reqenv(key: str, mapper: Mapper = None):
     def raise_error():
@@ -9,7 +11,7 @@ def reqenv(key: str, mapper: Mapper = None):
     return getenv(key, raise_error, mapper)
 
 
-def getenv(key: str, default: any|Callable = None, mapper: Mapper = None):
+def getenv(key: str, default: any | Callable = None, mapper: Mapper = None):
     val = os.getenv(key, "")
 
     if mapper:
@@ -22,6 +24,7 @@ def getenv(key: str, default: any|Callable = None, mapper: Mapper = None):
             val = default
 
     return val
+
 
 def parse_true(param: any) -> bool:
     return str(param).lower() in ["1", "on", "true", "yes"]

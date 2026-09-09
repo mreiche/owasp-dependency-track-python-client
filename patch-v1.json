@@ -1,7 +1,7 @@
 {
   "components": {
     "schemas": {
-      "Analysis" : {
+      "Analysis": {
         "required": []
       },
       "Project": {
@@ -15,6 +15,10 @@
       "Finding": {
         "type": "object",
         "properties": {
+          "attribution": {
+            "type": "object",
+            "additionalProperties": true
+          },
           "component": {
             "type": "object",
             "additionalProperties": true,
@@ -53,57 +57,57 @@
             "additionalProperties": true,
             "properties": {
               "uuid": {
-                "type" : "string"
+                "type": "string"
               },
               "source": {
-                "type" : "string"
+                "type": "string"
               },
               "vulnId": {
-                "type" : "string"
+                "type": "string"
               },
               "description": {
-                "type" : "string"
+                "type": "string"
               },
               "cvssV2BaseScore": {
                 "type": "number"
               },
               "cvssV3BaseScore": {
-                "type" : "number"
+                "type": "number"
               },
               "severity": {
-                "type" : "string"
+                "type": "string"
               },
               "severityRank": {
-                "type" : "integer"
+                "type": "integer"
               },
               "epssScore": {
-                "type" : "number"
+                "type": "number"
               },
               "epssPercentile": {
-                "type" : "number"
+                "type": "number"
               },
               "cweId": {
-                "type" : "integer"
+                "type": "integer"
               },
               "cweName": {
-                "type" : "string"
+                "type": "string"
               },
               "cwes": {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/Cwe"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Cwe"
                 }
               },
               "recommendation": {
-                "type" : "string"
+                "type": "string"
               },
               "published": {
-                "type" : "integer"
+                "type": "integer"
               },
               "aliases": {
                 "type": "array",
                 "items": {
-                  "$ref" : "#/components/schemas/VulnerabilityAlias"
+                  "$ref": "#/components/schemas/VulnerabilityAlias"
                 }
               }
             }
@@ -113,11 +117,18 @@
             "additionalProperties": true,
             "properties": {
               "state": {
-                "type" : "string",
-                "enum" : [ "EXPLOITABLE", "IN_TRIAGE", "FALSE_POSITIVE", "NOT_AFFECTED", "RESOLVED", "NOT_SET" ]
+                "type": "string",
+                "enum": [
+                  "EXPLOITABLE",
+                  "IN_TRIAGE",
+                  "FALSE_POSITIVE",
+                  "NOT_AFFECTED",
+                  "RESOLVED",
+                  "NOT_SET"
+                ]
               },
-              "isSuppressed" : {
-                "type" : "boolean"
+              "isSuppressed": {
+                "type": "boolean"
               }
             }
           }
@@ -139,6 +150,18 @@
       "Component": {
         "required": [
           "name"
+        ]
+      },
+      "ListProjectsResponseItem": {
+        "required": [
+          "hasChildren",
+          "name",
+          "uuid"
+        ]
+      },
+      "BomUploadResponse": {
+        "required": [
+          "token"
         ]
       }
     }

@@ -33,7 +33,6 @@ class ListProjectsResponseItem:
     """
     Attributes:
         has_children (bool): Whether the project has child projects
-        last_bom_import (int): UNIX epoch timestamp in milliseconds
         name (str):
         uuid (UUID):
         active (bool | Unset):
@@ -48,6 +47,7 @@ class ListProjectsResponseItem:
         group (str | Unset):
         inactive_since (int | Unset): UNIX epoch timestamp in milliseconds
         is_latest (bool | Unset):
+        last_bom_import (int | Unset): UNIX epoch timestamp in milliseconds
         last_bom_import_format (str | Unset):
         last_inherited_risk_score (float | Unset):
         last_vulnerability_analysis (int | Unset): UNIX epoch timestamp in milliseconds
@@ -64,7 +64,6 @@ class ListProjectsResponseItem:
     """
 
     has_children: bool
-    last_bom_import: int
     name: str
     uuid: UUID
     active: bool | Unset = UNSET
@@ -79,6 +78,7 @@ class ListProjectsResponseItem:
     group: str | Unset = UNSET
     inactive_since: int | Unset = UNSET
     is_latest: bool | Unset = UNSET
+    last_bom_import: int | Unset = UNSET
     last_bom_import_format: str | Unset = UNSET
     last_inherited_risk_score: float | Unset = UNSET
     last_vulnerability_analysis: int | Unset = UNSET
@@ -96,8 +96,6 @@ class ListProjectsResponseItem:
 
     def to_dict(self) -> dict[str, Any]:
         has_children = self.has_children
-
-        last_bom_import = self.last_bom_import
 
         name = self.name
 
@@ -142,6 +140,8 @@ class ListProjectsResponseItem:
         inactive_since = self.inactive_since
 
         is_latest = self.is_latest
+
+        last_bom_import = self.last_bom_import
 
         last_bom_import_format = self.last_bom_import_format
 
@@ -189,7 +189,6 @@ class ListProjectsResponseItem:
         field_dict.update(
             {
                 "hasChildren": has_children,
-                "lastBomImport": last_bom_import,
                 "name": name,
                 "uuid": uuid,
             }
@@ -218,6 +217,8 @@ class ListProjectsResponseItem:
             field_dict["inactiveSince"] = inactive_since
         if is_latest is not UNSET:
             field_dict["isLatest"] = is_latest
+        if last_bom_import is not UNSET:
+            field_dict["lastBomImport"] = last_bom_import
         if last_bom_import_format is not UNSET:
             field_dict["lastBomImportFormat"] = last_bom_import_format
         if last_inherited_risk_score is not UNSET:
@@ -261,8 +262,6 @@ class ListProjectsResponseItem:
 
         d = dict(src_dict)
         has_children = d.pop("hasChildren")
-
-        last_bom_import = d.pop("lastBomImport")
 
         name = d.pop("name")
 
@@ -325,6 +324,8 @@ class ListProjectsResponseItem:
 
         is_latest = d.pop("isLatest", UNSET)
 
+        last_bom_import = d.pop("lastBomImport", UNSET)
+
         last_bom_import_format = d.pop("lastBomImportFormat", UNSET)
 
         last_inherited_risk_score = d.pop("lastInheritedRiskScore", UNSET)
@@ -385,7 +386,6 @@ class ListProjectsResponseItem:
 
         list_projects_response_item = cls(
             has_children=has_children,
-            last_bom_import=last_bom_import,
             name=name,
             uuid=uuid,
             active=active,
@@ -400,6 +400,7 @@ class ListProjectsResponseItem:
             group=group,
             inactive_since=inactive_since,
             is_latest=is_latest,
+            last_bom_import=last_bom_import,
             last_bom_import_format=last_bom_import_format,
             last_inherited_risk_score=last_inherited_risk_score,
             last_vulnerability_analysis=last_vulnerability_analysis,
