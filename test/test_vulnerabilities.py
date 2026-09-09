@@ -47,7 +47,7 @@ def test_get_vulnerabilities(client: owasp_dt.Client):
     test.retry(_get_vulnerabilities, 600)
 
 
-@pytest.mark.depends(on=["test_get_vulnerabilities", 'test/test_upload.py::test_upload_sbom'])
+@pytest.mark.depends(on=["test_get_vulnerabilities", 'test/test_upload.py::test_upload_first_sbom'])
 @pytest.mark.xfail(reason="https://github.com/DependencyTrack/dependency-track/issues/5401")
 def test_get_vulnerability_metrics(client: owasp_dt.Client):
     def _get_vulnerability_metrics():

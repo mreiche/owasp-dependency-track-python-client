@@ -6,7 +6,7 @@ from owasp_dt.api.metrics import get_project_current_metrics
 from owasp_dt.api.project import get_projects
 
 
-@pytest.mark.depends(on=['test/test_upload.py::test_get_scan_status'])
+@pytest.mark.depends(on=['test/test_upload.py::test_upload_first_sbom'])
 def test_search_project_by_name(client: owasp_dt.Client):
     resp = get_projects.sync_detailed(client=client, name=test.project_name)
     projects = resp.parsed
