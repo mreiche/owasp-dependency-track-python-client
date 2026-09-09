@@ -15,6 +15,10 @@
       "Finding": {
         "type": "object",
         "properties": {
+          "attribution": {
+            "type": "object",
+            "additionalProperties": true
+          },
           "component": {
             "type": "object",
             "additionalProperties": true,

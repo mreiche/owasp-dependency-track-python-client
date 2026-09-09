@@ -16706,9 +16706,7 @@
           },
           "attribution": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": true
           },
           "component": {
             "type": "object",
