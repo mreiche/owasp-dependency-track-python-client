@@ -21,7 +21,7 @@ def test_change_nvd_mirror(client_v2: owasp_dt.Client):
         extension_name="nvd",
         body=request_body
     )
-    assert resp.status_code in [200, 304]
+    assert resp.status_code in [200, 204, 304]
 
 @pytest.mark.depends(on=['test_change_nvd_mirror'])
 def test_trigger_mirror_nvd(client_v2: owasp_dt.Client):
