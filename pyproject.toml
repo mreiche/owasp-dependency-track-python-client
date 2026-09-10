@@ -34,3 +34,8 @@ test = [
 where = ["."]
 include = ["owasp_dt*", "owasp_dt_v2*"]
 exclude = ["test*", "tmp*"]
+
+[project.urls]
+Homepage = "https://github.com/reiche-world/owasp-dependency-track-python-client"
+Repository = "https://github.com/reiche-world/owasp-dependency-track-python-client"
+"Bug Tracker" = "https://github.com/reiche-world/owasp-dependency-track-python-client/issues"
