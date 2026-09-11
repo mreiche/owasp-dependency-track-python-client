@@ -1,6 +1,6 @@
-[![PyPI version](https://badge.fury.io/py/owasp-dependency-track-client.svg)](https://badge.fury.io/py/owasp-dependency-track-client)
 [![Code Coverage Status](https://codecov.io/github/mreiche/owasp-dependency-track-python-client/branch/main/graph/badge.svg)](https://app.codecov.io/github/mreiche/owasp-dependency-track-python-client)
 [![Test](https://github.com/mreiche/owasp-dependency-track-python-client/actions/workflows/test.yml/badge.svg)](https://github.com/mreiche/owasp-dependency-track-python-client/actions/workflows/test.yml)
+[![PyPI version](https://badge.fury.io/py/owasp-dependency-track-client.svg)](https://badge.fury.io/py/owasp-dependency-track-client)
 
 # OWASP Dependency Track Python API client
 
