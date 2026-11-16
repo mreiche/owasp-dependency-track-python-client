@@ -25,7 +25,7 @@ test = [
     "pytest-depends==1.0.1",
     "pytest-cov==7.1.0",
     "dotenv==0.9.9",
-    "openapi-python-client==0.29.1",
+    "openapi-python-client==0.30.0",
     "tinystream==0.1.18",
     "is_empty==1.0.1",
 ]
