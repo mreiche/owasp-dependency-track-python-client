@@ -5,8 +5,8 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.mapped_ldap_group import MappedLdapGroup
 from ...models.mapped_ldap_group_request import MappedLdapGroupRequest
+from ...models.mapped_ldap_group_response import MappedLdapGroupResponse
 from ...types import UNSET, Response, Unset
 
 
@@ -32,9 +32,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | MappedLdapGroup | None:
+) -> Any | MappedLdapGroupResponse | None:
     if response.status_code == 200:
-        response_200 = MappedLdapGroup.from_dict(response.json())
+        response_200 = MappedLdapGroupResponse.from_dict(response.json())
 
         return response_200
 
@@ -58,7 +58,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | MappedLdapGroup]:
+) -> Response[Any | MappedLdapGroupResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -71,7 +71,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: MappedLdapGroupRequest | Unset = UNSET,
-) -> Response[Any | MappedLdapGroup]:
+) -> Response[Any | MappedLdapGroupResponse]:
     """Adds a mapping
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -85,7 +85,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | MappedLdapGroup]
+        Response[Any | MappedLdapGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -103,7 +103,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: MappedLdapGroupRequest | Unset = UNSET,
-) -> Any | MappedLdapGroup | None:
+) -> Any | MappedLdapGroupResponse | None:
     """Adds a mapping
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -117,7 +117,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | MappedLdapGroup
+        Any | MappedLdapGroupResponse
     """
 
     return sync_detailed(
@@ -130,7 +130,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: MappedLdapGroupRequest | Unset = UNSET,
-) -> Response[Any | MappedLdapGroup]:
+) -> Response[Any | MappedLdapGroupResponse]:
     """Adds a mapping
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -144,7 +144,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | MappedLdapGroup]
+        Response[Any | MappedLdapGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -160,7 +160,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: MappedLdapGroupRequest | Unset = UNSET,
-) -> Any | MappedLdapGroup | None:
+) -> Any | MappedLdapGroupResponse | None:
     """Adds a mapping
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -174,7 +174,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | MappedLdapGroup
+        Any | MappedLdapGroupResponse
     """
 
     return (

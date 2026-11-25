@@ -30,6 +30,7 @@ class Policy:
         violation_state (PolicyViolationState):
         global_ (bool | Unset):
         include_children (bool | Unset):
+        invert_tag_match (bool | Unset):
         only_latest_project_version (bool | Unset):
         policy_conditions (list[PolicyCondition] | Unset):
         projects (list[Project] | Unset):
@@ -42,6 +43,7 @@ class Policy:
     violation_state: PolicyViolationState
     global_: bool | Unset = UNSET
     include_children: bool | Unset = UNSET
+    invert_tag_match: bool | Unset = UNSET
     only_latest_project_version: bool | Unset = UNSET
     policy_conditions: list[PolicyCondition] | Unset = UNSET
     projects: list[Project] | Unset = UNSET
@@ -60,6 +62,8 @@ class Policy:
         global_ = self.global_
 
         include_children = self.include_children
+
+        invert_tag_match = self.invert_tag_match
 
         only_latest_project_version = self.only_latest_project_version
 
@@ -98,6 +102,8 @@ class Policy:
             field_dict["global"] = global_
         if include_children is not UNSET:
             field_dict["includeChildren"] = include_children
+        if invert_tag_match is not UNSET:
+            field_dict["invertTagMatch"] = invert_tag_match
         if only_latest_project_version is not UNSET:
             field_dict["onlyLatestProjectVersion"] = only_latest_project_version
         if policy_conditions is not UNSET:
@@ -127,6 +133,8 @@ class Policy:
         global_ = d.pop("global", UNSET)
 
         include_children = d.pop("includeChildren", UNSET)
+
+        invert_tag_match = d.pop("invertTagMatch", UNSET)
 
         only_latest_project_version = d.pop("onlyLatestProjectVersion", UNSET)
 
@@ -166,6 +174,7 @@ class Policy:
             violation_state=violation_state,
             global_=global_,
             include_children=include_children,
+            invert_tag_match=invert_tag_match,
             only_latest_project_version=only_latest_project_version,
             policy_conditions=policy_conditions,
             projects=projects,

@@ -6,62 +6,59 @@ from typing import Any, Self, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="AnalysisComment")
+T = TypeVar("T", bound="CelExpressionError")
 
 
 @_attrs_define
-class AnalysisComment:
+class CelExpressionError:
     """
     Attributes:
-        comment (str):
-        timestamp (int): UNIX epoch timestamp in milliseconds
-        commenter (str | Unset):
+        line (int): Line number where the error occurred
+        column (int): Column number where the error occurred
+        message (str): Description of the error
     """
 
-    comment: str
-    timestamp: int
-    commenter: str | Unset = UNSET
+    line: int
+    column: int
+    message: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        comment = self.comment
+        line = self.line
 
-        timestamp = self.timestamp
+        column = self.column
 
-        commenter = self.commenter
+        message = self.message
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "comment": comment,
-                "timestamp": timestamp,
+                "line": line,
+                "column": column,
+                "message": message,
             }
         )
-        if commenter is not UNSET:
-            field_dict["commenter"] = commenter
 
         return field_dict
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        comment = d.pop("comment")
+        line = d.pop("line")
 
-        timestamp = d.pop("timestamp")
+        column = d.pop("column")
 
-        commenter = d.pop("commenter", UNSET)
+        message = d.pop("message")
 
-        analysis_comment = cls(
-            comment=comment,
-            timestamp=timestamp,
-            commenter=commenter,
+        cel_expression_error = cls(
+            line=line,
+            column=column,
+            message=message,
         )
 
-        analysis_comment.additional_properties = d
-        return analysis_comment
+        cel_expression_error.additional_properties = d
+        return cel_expression_error
 
     @property
     def additional_keys(self) -> list[str]:

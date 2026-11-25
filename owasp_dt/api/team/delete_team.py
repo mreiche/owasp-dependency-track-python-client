@@ -5,13 +5,13 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.team import Team
+from ...models.delete_team_request import DeleteTeamRequest
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: Team | Unset = UNSET,
+    body: DeleteTeamRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -61,7 +61,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: Team | Unset = UNSET,
+    body: DeleteTeamRequest | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a team
 
@@ -69,7 +69,7 @@ def sync_detailed(
     <strong>ACCESS_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (Team | Unset):
+        body (DeleteTeamRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -93,7 +93,7 @@ def sync_detailed(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: Team | Unset = UNSET,
+    body: DeleteTeamRequest | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a team
 
@@ -101,7 +101,7 @@ async def asyncio_detailed(
     <strong>ACCESS_MANAGEMENT_DELETE</strong></p>
 
     Args:
-        body (Team | Unset):
+        body (DeleteTeamRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

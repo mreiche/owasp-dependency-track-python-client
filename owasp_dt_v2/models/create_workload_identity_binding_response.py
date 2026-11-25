@@ -2,41 +2,32 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Any, Self, TypeVar
+from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="VulnPolicyConditionError")
+T = TypeVar("T", bound="CreateWorkloadIdentityBindingResponse")
 
 
 @_attrs_define
-class VulnPolicyConditionError:
+class CreateWorkloadIdentityBindingResponse:
     """
     Attributes:
-        line (int): Line number where the error occurred
-        column (int): Column number where the error occurred
-        message (str): Description of the error
+        uuid (UUID): The identifier of the created binding.
     """
 
-    line: int
-    column: int
-    message: str
+    uuid: UUID
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        line = self.line
-
-        column = self.column
-
-        message = self.message
+        uuid = str(self.uuid)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "line": line,
-                "column": column,
-                "message": message,
+                "uuid": uuid,
             }
         )
 
@@ -45,20 +36,14 @@ class VulnPolicyConditionError:
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        line = d.pop("line")
+        uuid = UUID(d.pop("uuid"))
 
-        column = d.pop("column")
-
-        message = d.pop("message")
-
-        vuln_policy_condition_error = cls(
-            line=line,
-            column=column,
-            message=message,
+        create_workload_identity_binding_response = cls(
+            uuid=uuid,
         )
 
-        vuln_policy_condition_error.additional_properties = d
-        return vuln_policy_condition_error
+        create_workload_identity_binding_response.additional_properties = d
+        return create_workload_identity_binding_response
 
     @property
     def additional_keys(self) -> list[str]:

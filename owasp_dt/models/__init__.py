@@ -8,18 +8,21 @@ from .affected_component_version_type import AffectedComponentVersionType
 from .affected_project import AffectedProject
 from .affected_version_attribution import AffectedVersionAttribution
 from .affected_version_attribution_source import AffectedVersionAttributionSource
-from .analysis import Analysis
-from .analysis_analysis_justification import AnalysisAnalysisJustification
-from .analysis_analysis_response import AnalysisAnalysisResponse
-from .analysis_analysis_state import AnalysisAnalysisState
-from .analysis_comment import AnalysisComment
 from .analysis_request import AnalysisRequest
 from .analysis_request_analysis_justification import (
     AnalysisRequestAnalysisJustification,
 )
 from .analysis_request_analysis_response import AnalysisRequestAnalysisResponse
 from .analysis_request_analysis_state import AnalysisRequestAnalysisState
-from .analysis_severity import AnalysisSeverity
+from .analysis_trail_response import AnalysisTrailResponse
+from .analysis_trail_response_analysis_justification import (
+    AnalysisTrailResponseAnalysisJustification,
+)
+from .analysis_trail_response_analysis_response import (
+    AnalysisTrailResponseAnalysisResponse,
+)
+from .analysis_trail_response_analysis_state import AnalysisTrailResponseAnalysisState
+from .analysis_trail_response_severity import AnalysisTrailResponseSeverity
 from .api_key import ApiKey
 from .available_teams_sort_order import AvailableTeamsSortOrder
 from .bom_submit_request import BomSubmitRequest
@@ -54,6 +57,7 @@ from .create_notification_publisher_request import CreateNotificationPublisherRe
 from .create_notification_rule_request import CreateNotificationRuleRequest
 from .create_notification_rule_request_level import CreateNotificationRuleRequestLevel
 from .create_notification_rule_request_scope import CreateNotificationRuleRequestScope
+from .create_oidc_group_request import CreateOidcGroupRequest
 from .create_policy_condition_request import CreatePolicyConditionRequest
 from .create_policy_condition_request_operator import (
     CreatePolicyConditionRequestOperator,
@@ -81,7 +85,10 @@ from .cvss_score_response import CvssScoreResponse
 from .cwe import Cwe
 from .data_classification import DataClassification
 from .data_classification_direction import DataClassificationDirection
+from .delete_notification_rule_request import DeleteNotificationRuleRequest
 from .delete_project_property_request import DeleteProjectPropertyRequest
+from .delete_team_request import DeleteTeamRequest
+from .delete_user_request import DeleteUserRequest
 from .dependency_graph_response import DependencyGraphResponse
 from .dependency_metrics import DependencyMetrics
 from .epss import Epss
@@ -178,8 +185,10 @@ from .list_projects_response_item_collection_logic import (
 from .managed_user import ManagedUser
 from .mapped_ldap_group import MappedLdapGroup
 from .mapped_ldap_group_request import MappedLdapGroupRequest
+from .mapped_ldap_group_response import MappedLdapGroupResponse
 from .mapped_oidc_group import MappedOidcGroup
 from .mapped_oidc_group_request import MappedOidcGroupRequest
+from .mapped_oidc_group_response import MappedOidcGroupResponse
 from .notification_publisher import NotificationPublisher
 from .notification_publisher_response import NotificationPublisherResponse
 from .notification_rule import NotificationRule
@@ -188,6 +197,7 @@ from .notification_rule_notify_on_item import NotificationRuleNotifyOnItem
 from .notification_rule_scope import NotificationRuleScope
 from .notification_rule_trigger_type import NotificationRuleTriggerType
 from .oidc_group import OidcGroup
+from .oidc_group_response import OidcGroupResponse
 from .oidc_user import OidcUser
 from .organizational_contact import OrganizationalContact
 from .organizational_entity import OrganizationalEntity
@@ -230,11 +240,13 @@ from .score import Score
 from .score_business_impact import ScoreBusinessImpact
 from .score_likelihood import ScoreLikelihood
 from .score_technical_impact import ScoreTechnicalImpact
+from .service_account import ServiceAccount
 from .service_component import ServiceComponent
 from .tag import Tag
 from .tag_list_response_item import TagListResponseItem
 from .tag_operation_problem_details import TagOperationProblemDetails
 from .tag_operation_problem_details_errors import TagOperationProblemDetailsErrors
+from .tag_response import TagResponse
 from .tagged_collection_project_list_response_item import (
     TaggedCollectionProjectListResponseItem,
 )
@@ -259,6 +271,7 @@ from .update_notification_rule_request_notify_on_item import (
     UpdateNotificationRuleRequestNotifyOnItem,
 )
 from .update_notification_rule_request_scope import UpdateNotificationRuleRequestScope
+from .update_oidc_group_request import UpdateOidcGroupRequest
 from .update_policy_condition_request import UpdatePolicyConditionRequest
 from .update_policy_condition_request_operator import (
     UpdatePolicyConditionRequestOperator,
@@ -308,16 +321,15 @@ __all__ = (
     "AffectedProject",
     "AffectedVersionAttribution",
     "AffectedVersionAttributionSource",
-    "Analysis",
-    "AnalysisAnalysisJustification",
-    "AnalysisAnalysisResponse",
-    "AnalysisAnalysisState",
-    "AnalysisComment",
     "AnalysisRequest",
     "AnalysisRequestAnalysisJustification",
     "AnalysisRequestAnalysisResponse",
     "AnalysisRequestAnalysisState",
-    "AnalysisSeverity",
+    "AnalysisTrailResponse",
+    "AnalysisTrailResponseAnalysisJustification",
+    "AnalysisTrailResponseAnalysisResponse",
+    "AnalysisTrailResponseAnalysisState",
+    "AnalysisTrailResponseSeverity",
     "ApiKey",
     "AvailableTeamsSortOrder",
     "BomSubmitRequest",
@@ -348,6 +360,7 @@ __all__ = (
     "CreateNotificationRuleRequest",
     "CreateNotificationRuleRequestLevel",
     "CreateNotificationRuleRequestScope",
+    "CreateOidcGroupRequest",
     "CreatePolicyConditionRequest",
     "CreatePolicyConditionRequestOperator",
     "CreatePolicyConditionRequestSubject",
@@ -363,7 +376,10 @@ __all__ = (
     "Cwe",
     "DataClassification",
     "DataClassificationDirection",
+    "DeleteNotificationRuleRequest",
     "DeleteProjectPropertyRequest",
+    "DeleteTeamRequest",
+    "DeleteUserRequest",
     "DependencyGraphResponse",
     "DependencyMetrics",
     "Epss",
@@ -440,8 +456,10 @@ __all__ = (
     "ManagedUser",
     "MappedLdapGroup",
     "MappedLdapGroupRequest",
+    "MappedLdapGroupResponse",
     "MappedOidcGroup",
     "MappedOidcGroupRequest",
+    "MappedOidcGroupResponse",
     "NotificationPublisher",
     "NotificationPublisherResponse",
     "NotificationRule",
@@ -450,6 +468,7 @@ __all__ = (
     "NotificationRuleScope",
     "NotificationRuleTriggerType",
     "OidcGroup",
+    "OidcGroupResponse",
     "OidcUser",
     "OrganizationalContact",
     "OrganizationalEntity",
@@ -488,11 +507,13 @@ __all__ = (
     "ScoreBusinessImpact",
     "ScoreLikelihood",
     "ScoreTechnicalImpact",
+    "ServiceAccount",
     "ServiceComponent",
     "Tag",
     "TagListResponseItem",
     "TagOperationProblemDetails",
     "TagOperationProblemDetailsErrors",
+    "TagResponse",
     "TaggedCollectionProjectListResponseItem",
     "TaggedPolicyListResponseItem",
     "TaggedProjectListResponseItem",
@@ -511,6 +532,7 @@ __all__ = (
     "UpdateNotificationRuleRequestLevel",
     "UpdateNotificationRuleRequestNotifyOnItem",
     "UpdateNotificationRuleRequestScope",
+    "UpdateOidcGroupRequest",
     "UpdatePolicyConditionRequest",
     "UpdatePolicyConditionRequestOperator",
     "UpdatePolicyConditionRequestSubject",

@@ -1,5 +1,6 @@
 """Contains all the data models used in inputs/outputs"""
 
+from .cel_expression_error import CelExpressionError
 from .classifier import Classifier
 from .clone_project_include import CloneProjectInclude
 from .clone_project_request import CloneProjectRequest
@@ -7,9 +8,26 @@ from .clone_project_response import CloneProjectResponse
 from .component_project import ComponentProject
 from .constraint_violation_error import ConstraintViolationError
 from .create_component_request import CreateComponentRequest
+from .create_oauth_token_request import CreateOauthTokenRequest
+from .create_oauth_token_response import CreateOauthTokenResponse
 from .create_secret_request import CreateSecretRequest
+from .create_service_account_api_key_request import CreateServiceAccountApiKeyRequest
+from .create_service_account_api_key_response import CreateServiceAccountApiKeyResponse
+from .create_service_account_request import CreateServiceAccountRequest
 from .create_vuln_policy_request import CreateVulnPolicyRequest
 from .create_vuln_policy_response_201 import CreateVulnPolicyResponse201
+from .create_workload_identity_binding_request import (
+    CreateWorkloadIdentityBindingRequest,
+)
+from .create_workload_identity_binding_response import (
+    CreateWorkloadIdentityBindingResponse,
+)
+from .create_workload_identity_provider_request import (
+    CreateWorkloadIdentityProviderRequest,
+)
+from .create_workload_identity_provider_request_jwks import (
+    CreateWorkloadIdentityProviderRequestJwks,
+)
 from .dependency_metrics import DependencyMetrics
 from .extension_config_schema import ExtensionConfigSchema
 from .extension_test_check import ExtensionTestCheck
@@ -34,6 +52,7 @@ from .list_workflow_run_events_response_item import ListWorkflowRunEventsRespons
 from .list_workflow_run_events_response_item_event import (
     ListWorkflowRunEventsResponseItemEvent,
 )
+from .oauth_token_error import OauthTokenError
 from .organizational_contact import OrganizationalContact
 from .organizational_entity import OrganizationalEntity
 from .package_artifact_metadata import PackageArtifactMetadata
@@ -43,6 +62,9 @@ from .problem_details import ProblemDetails
 from .project_state import ProjectState
 from .scope import Scope
 from .secret_metadata import SecretMetadata
+from .service_account import ServiceAccount
+from .service_account_api_key import ServiceAccountApiKey
+from .service_account_team import ServiceAccountTeam
 from .sort_direction import SortDirection
 from .system_capabilities_response import SystemCapabilitiesResponse
 from .system_capabilities_response_capabilities import (
@@ -62,8 +84,15 @@ from .total_count_type import TotalCountType
 from .update_extension_config_request import UpdateExtensionConfigRequest
 from .update_extension_config_request_config import UpdateExtensionConfigRequestConfig
 from .update_secret_request import UpdateSecretRequest
+from .update_service_account_request import UpdateServiceAccountRequest
 from .update_task_queue_request import UpdateTaskQueueRequest
 from .update_vuln_policy_request import UpdateVulnPolicyRequest
+from .update_workload_identity_provider_request import (
+    UpdateWorkloadIdentityProviderRequest,
+)
+from .update_workload_identity_provider_request_jwks import (
+    UpdateWorkloadIdentityProviderRequestJwks,
+)
 from .vuln_data_source_mirror_status import VulnDataSourceMirrorStatus
 from .vuln_data_source_mirror_status_status import VulnDataSourceMirrorStatusStatus
 from .vuln_policy_analysis import VulnPolicyAnalysis
@@ -72,7 +101,6 @@ from .vuln_policy_analysis_state import VulnPolicyAnalysisState
 from .vuln_policy_analysis_vendor_response import VulnPolicyAnalysisVendorResponse
 from .vuln_policy_bundle_sync_status import VulnPolicyBundleSyncStatus
 from .vuln_policy_bundle_sync_status_status import VulnPolicyBundleSyncStatusStatus
-from .vuln_policy_condition_error import VulnPolicyConditionError
 from .vuln_policy_operation_mode import VulnPolicyOperationMode
 from .vuln_policy_rating import VulnPolicyRating
 from .vuln_policy_rating_method import VulnPolicyRatingMethod
@@ -81,8 +109,12 @@ from .vuln_policy_source import VulnPolicySource
 from .workflow_run_metadata import WorkflowRunMetadata
 from .workflow_run_metadata_labels import WorkflowRunMetadataLabels
 from .workflow_run_status import WorkflowRunStatus
+from .workload_identity_binding import WorkloadIdentityBinding
+from .workload_identity_provider import WorkloadIdentityProvider
+from .workload_identity_provider_type import WorkloadIdentityProviderType
 
 __all__ = (
+    "CelExpressionError",
     "Classifier",
     "CloneProjectInclude",
     "CloneProjectRequest",
@@ -90,9 +122,18 @@ __all__ = (
     "ComponentProject",
     "ConstraintViolationError",
     "CreateComponentRequest",
+    "CreateOauthTokenRequest",
+    "CreateOauthTokenResponse",
     "CreateSecretRequest",
+    "CreateServiceAccountApiKeyRequest",
+    "CreateServiceAccountApiKeyResponse",
+    "CreateServiceAccountRequest",
     "CreateVulnPolicyRequest",
     "CreateVulnPolicyResponse201",
+    "CreateWorkloadIdentityBindingRequest",
+    "CreateWorkloadIdentityBindingResponse",
+    "CreateWorkloadIdentityProviderRequest",
+    "CreateWorkloadIdentityProviderRequestJwks",
     "DependencyMetrics",
     "ExtensionConfigSchema",
     "ExtensionTestCheck",
@@ -115,6 +156,7 @@ __all__ = (
     "ListVulnPolicyBundlesResponseItem",
     "ListWorkflowRunEventsResponseItem",
     "ListWorkflowRunEventsResponseItemEvent",
+    "OauthTokenError",
     "OrganizationalContact",
     "OrganizationalEntity",
     "PackageArtifactMetadata",
@@ -124,6 +166,9 @@ __all__ = (
     "ProjectState",
     "Scope",
     "SecretMetadata",
+    "ServiceAccount",
+    "ServiceAccountApiKey",
+    "ServiceAccountTeam",
     "SortDirection",
     "SystemCapabilitiesResponse",
     "SystemCapabilitiesResponseCapabilities",
@@ -139,8 +184,11 @@ __all__ = (
     "UpdateExtensionConfigRequest",
     "UpdateExtensionConfigRequestConfig",
     "UpdateSecretRequest",
+    "UpdateServiceAccountRequest",
     "UpdateTaskQueueRequest",
     "UpdateVulnPolicyRequest",
+    "UpdateWorkloadIdentityProviderRequest",
+    "UpdateWorkloadIdentityProviderRequestJwks",
     "VulnDataSourceMirrorStatus",
     "VulnDataSourceMirrorStatusStatus",
     "VulnPolicyAnalysis",
@@ -149,7 +197,6 @@ __all__ = (
     "VulnPolicyAnalysisVendorResponse",
     "VulnPolicyBundleSyncStatus",
     "VulnPolicyBundleSyncStatusStatus",
-    "VulnPolicyConditionError",
     "VulnPolicyOperationMode",
     "VulnPolicyRating",
     "VulnPolicyRatingMethod",
@@ -158,4 +205,7 @@ __all__ = (
     "WorkflowRunMetadata",
     "WorkflowRunMetadataLabels",
     "WorkflowRunStatus",
+    "WorkloadIdentityBinding",
+    "WorkloadIdentityProvider",
+    "WorkloadIdentityProviderType",
 )

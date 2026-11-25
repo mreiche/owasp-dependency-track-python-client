@@ -5,13 +5,14 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.oidc_group import OidcGroup
+from ...models.oidc_group_response import OidcGroupResponse
+from ...models.update_oidc_group_request import UpdateOidcGroupRequest
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: OidcGroup | Unset = UNSET,
+    body: UpdateOidcGroupRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -31,9 +32,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | OidcGroup | None:
+) -> Any | OidcGroupResponse | None:
     if response.status_code == 200:
-        response_200 = OidcGroup.from_dict(response.json())
+        response_200 = OidcGroupResponse.from_dict(response.json())
 
         return response_200
 
@@ -49,7 +50,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | OidcGroup]:
+) -> Response[Any | OidcGroupResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -61,22 +62,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: OidcGroup | Unset = UNSET,
-) -> Response[Any | OidcGroup]:
+    body: UpdateOidcGroupRequest | Unset = UNSET,
+) -> Response[Any | OidcGroupResponse]:
     """Updates group
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
     <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (OidcGroup | Unset):
+        body (UpdateOidcGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | OidcGroup]
+        Response[Any | OidcGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -93,22 +94,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: OidcGroup | Unset = UNSET,
-) -> Any | OidcGroup | None:
+    body: UpdateOidcGroupRequest | Unset = UNSET,
+) -> Any | OidcGroupResponse | None:
     """Updates group
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
     <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (OidcGroup | Unset):
+        body (UpdateOidcGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | OidcGroup
+        Any | OidcGroupResponse
     """
 
     return sync_detailed(
@@ -120,22 +121,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: OidcGroup | Unset = UNSET,
-) -> Response[Any | OidcGroup]:
+    body: UpdateOidcGroupRequest | Unset = UNSET,
+) -> Response[Any | OidcGroupResponse]:
     """Updates group
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
     <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (OidcGroup | Unset):
+        body (UpdateOidcGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | OidcGroup]
+        Response[Any | OidcGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -150,22 +151,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: OidcGroup | Unset = UNSET,
-) -> Any | OidcGroup | None:
+    body: UpdateOidcGroupRequest | Unset = UNSET,
+) -> Any | OidcGroupResponse | None:
     """Updates group
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
     <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>
 
     Args:
-        body (OidcGroup | Unset):
+        body (UpdateOidcGroupRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | OidcGroup
+        Any | OidcGroupResponse
     """
 
     return (

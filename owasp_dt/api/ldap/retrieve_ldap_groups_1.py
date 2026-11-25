@@ -7,7 +7,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.mapped_ldap_group import MappedLdapGroup
+from ...models.mapped_ldap_group_response import MappedLdapGroupResponse
 from ...types import Response
 
 
@@ -27,12 +27,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[MappedLdapGroup] | None:
+) -> Any | list[MappedLdapGroupResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = MappedLdapGroup.from_dict(response_200_item_data)
+            response_200_item = MappedLdapGroupResponse.from_dict(
+                response_200_item_data
+            )
 
             response_200.append(response_200_item)
 
@@ -54,7 +56,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[MappedLdapGroup]]:
+) -> Response[Any | list[MappedLdapGroupResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -67,7 +69,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[MappedLdapGroup]]:
+) -> Response[Any | list[MappedLdapGroupResponse]]:
     """Returns the DNs of all groups mapped to the specified team
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -81,7 +83,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[MappedLdapGroup]]
+        Response[Any | list[MappedLdapGroupResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -99,7 +101,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | list[MappedLdapGroup] | None:
+) -> Any | list[MappedLdapGroupResponse] | None:
     """Returns the DNs of all groups mapped to the specified team
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -113,7 +115,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[MappedLdapGroup]
+        Any | list[MappedLdapGroupResponse]
     """
 
     return sync_detailed(
@@ -126,7 +128,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[MappedLdapGroup]]:
+) -> Response[Any | list[MappedLdapGroupResponse]]:
     """Returns the DNs of all groups mapped to the specified team
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -140,7 +142,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[MappedLdapGroup]]
+        Response[Any | list[MappedLdapGroupResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -156,7 +158,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | list[MappedLdapGroup] | None:
+) -> Any | list[MappedLdapGroupResponse] | None:
     """Returns the DNs of all groups mapped to the specified team
 
      <p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or
@@ -170,7 +172,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[MappedLdapGroup]
+        Any | list[MappedLdapGroupResponse]
     """
 
     return (

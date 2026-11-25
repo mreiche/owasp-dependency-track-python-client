@@ -17,6 +17,7 @@ class ApiKey:
     Attributes:
         comment (str | Unset):
         created (int | Unset): UNIX epoch timestamp in milliseconds
+        expires_at (int | Unset): UNIX epoch timestamp in milliseconds
         key (str | Unset):
         last_used (int | Unset): UNIX epoch timestamp in milliseconds
         legacy (bool | Unset):
@@ -26,6 +27,7 @@ class ApiKey:
 
     comment: str | Unset = UNSET
     created: int | Unset = UNSET
+    expires_at: int | Unset = UNSET
     key: str | Unset = UNSET
     last_used: int | Unset = UNSET
     legacy: bool | Unset = UNSET
@@ -37,6 +39,8 @@ class ApiKey:
         comment = self.comment
 
         created = self.created
+
+        expires_at = self.expires_at
 
         key = self.key
 
@@ -55,6 +59,8 @@ class ApiKey:
             field_dict["comment"] = comment
         if created is not UNSET:
             field_dict["created"] = created
+        if expires_at is not UNSET:
+            field_dict["expiresAt"] = expires_at
         if key is not UNSET:
             field_dict["key"] = key
         if last_used is not UNSET:
@@ -75,6 +81,8 @@ class ApiKey:
 
         created = d.pop("created", UNSET)
 
+        expires_at = d.pop("expiresAt", UNSET)
+
         key = d.pop("key", UNSET)
 
         last_used = d.pop("lastUsed", UNSET)
@@ -88,6 +96,7 @@ class ApiKey:
         api_key = cls(
             comment=comment,
             created=created,
+            expires_at=expires_at,
             key=key,
             last_used=last_used,
             legacy=legacy,

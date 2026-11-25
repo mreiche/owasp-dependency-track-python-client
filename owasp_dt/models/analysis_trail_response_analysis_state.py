@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class AnalysisAnalysisState(StrEnum):
+class AnalysisTrailResponseAnalysisState(StrEnum):
     EXPLOITABLE = "EXPLOITABLE"
     FALSE_POSITIVE = "FALSE_POSITIVE"
     IN_TRIAGE = "IN_TRIAGE"

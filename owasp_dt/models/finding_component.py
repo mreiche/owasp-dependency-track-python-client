@@ -21,6 +21,7 @@ class FindingComponent:
         version (str | Unset):
         purl (str | Unset):
         project (str | Unset):
+        has_occurrences (bool | Unset):
         project_name (str | Unset):
         project_version (str | Unset):
         latest_version (str | Unset):
@@ -32,6 +33,7 @@ class FindingComponent:
     version: str | Unset = UNSET
     purl: str | Unset = UNSET
     project: str | Unset = UNSET
+    has_occurrences: bool | Unset = UNSET
     project_name: str | Unset = UNSET
     project_version: str | Unset = UNSET
     latest_version: str | Unset = UNSET
@@ -49,6 +51,8 @@ class FindingComponent:
         purl = self.purl
 
         project = self.project
+
+        has_occurrences = self.has_occurrences
 
         project_name = self.project_name
 
@@ -71,6 +75,8 @@ class FindingComponent:
             field_dict["purl"] = purl
         if project is not UNSET:
             field_dict["project"] = project
+        if has_occurrences is not UNSET:
+            field_dict["hasOccurrences"] = has_occurrences
         if project_name is not UNSET:
             field_dict["projectName"] = project_name
         if project_version is not UNSET:
@@ -95,6 +101,8 @@ class FindingComponent:
 
         project = d.pop("project", UNSET)
 
+        has_occurrences = d.pop("hasOccurrences", UNSET)
+
         project_name = d.pop("projectName", UNSET)
 
         project_version = d.pop("projectVersion", UNSET)
@@ -108,6 +116,7 @@ class FindingComponent:
             version=version,
             purl=purl,
             project=project,
+            has_occurrences=has_occurrences,
             project_name=project_name,
             project_version=project_version,
             latest_version=latest_version,

@@ -6,64 +6,73 @@ from typing import TYPE_CHECKING, Any, Self, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.analysis_analysis_justification import AnalysisAnalysisJustification
-from ..models.analysis_analysis_response import AnalysisAnalysisResponse
-from ..models.analysis_analysis_state import AnalysisAnalysisState
-from ..models.analysis_severity import AnalysisSeverity
+from ..models.analysis_trail_response_analysis_justification import (
+    AnalysisTrailResponseAnalysisJustification,
+)
+from ..models.analysis_trail_response_analysis_response import (
+    AnalysisTrailResponseAnalysisResponse,
+)
+from ..models.analysis_trail_response_analysis_state import (
+    AnalysisTrailResponseAnalysisState,
+)
+from ..models.analysis_trail_response_severity import AnalysisTrailResponseSeverity
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.analysis_comment import AnalysisComment
+    from ..models.comment import Comment
 
 
-T = TypeVar("T", bound="Analysis")
+T = TypeVar("T", bound="AnalysisTrailResponse")
 
 
 @_attrs_define
-class Analysis:
+class AnalysisTrailResponse:
     """
     Attributes:
-        analysis_comments (list[AnalysisComment] | Unset):
-        analysis_details (str | Unset):
-        analysis_justification (AnalysisAnalysisJustification | Unset):
-        analysis_response (AnalysisAnalysisResponse | Unset):
-        analysis_state (AnalysisAnalysisState | Unset):
-        cvss_v2_score (float | Unset):
-        cvss_v2_vector (str | Unset):
-        cvss_v3_score (float | Unset):
-        cvss_v3_vector (str | Unset):
-        cvss_v4_score (float | Unset):
-        cvss_v4_vector (str | Unset):
-        is_suppressed (bool | Unset):
-        owasp_score (float | Unset):
-        owasp_vector (str | Unset):
-        severity (AnalysisSeverity | Unset):
+        analysis_comments (list[Comment]): Audit trail of analysis comments
+        analysis_state (AnalysisTrailResponseAnalysisState): The state of the analysis decision
+        is_suppressed (bool): Whether the finding is suppressed
+        analysis_details (str | Unset): Free-form details of the analysis decision
+        analysis_justification (AnalysisTrailResponseAnalysisJustification | Unset): The justification of the analysis
+            decision
+        analysis_response (AnalysisTrailResponseAnalysisResponse | Unset): The vendor response to the vulnerability
+        cvss_v2_score (float | Unset): CVSS v2 score assigned by the analysis
+        cvss_v2_vector (str | Unset): CVSS v2 vector assigned by the analysis
+        cvss_v3_score (float | Unset): CVSS v3 score assigned by the analysis
+        cvss_v3_vector (str | Unset): CVSS v3 vector assigned by the analysis
+        cvss_v4_score (float | Unset): CVSS v4 score assigned by the analysis
+        cvss_v4_vector (str | Unset): CVSS v4 vector assigned by the analysis
+        owasp_score (float | Unset): OWASP Risk Rating score assigned by the analysis
+        owasp_vector (str | Unset): OWASP Risk Rating vector assigned by the analysis
+        severity (AnalysisTrailResponseSeverity | Unset): Severity assigned by the analysis
     """
 
-    analysis_comments: list[AnalysisComment] | Unset = UNSET
+    analysis_comments: list[Comment]
+    analysis_state: AnalysisTrailResponseAnalysisState
+    is_suppressed: bool
     analysis_details: str | Unset = UNSET
-    analysis_justification: AnalysisAnalysisJustification | Unset = UNSET
-    analysis_response: AnalysisAnalysisResponse | Unset = UNSET
-    analysis_state: AnalysisAnalysisState | Unset = UNSET
+    analysis_justification: AnalysisTrailResponseAnalysisJustification | Unset = UNSET
+    analysis_response: AnalysisTrailResponseAnalysisResponse | Unset = UNSET
     cvss_v2_score: float | Unset = UNSET
     cvss_v2_vector: str | Unset = UNSET
     cvss_v3_score: float | Unset = UNSET
     cvss_v3_vector: str | Unset = UNSET
     cvss_v4_score: float | Unset = UNSET
     cvss_v4_vector: str | Unset = UNSET
-    is_suppressed: bool | Unset = UNSET
     owasp_score: float | Unset = UNSET
     owasp_vector: str | Unset = UNSET
-    severity: AnalysisSeverity | Unset = UNSET
+    severity: AnalysisTrailResponseSeverity | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        analysis_comments: list[dict[str, Any]] | Unset = UNSET
-        if not isinstance(self.analysis_comments, Unset):
-            analysis_comments = []
-            for analysis_comments_item_data in self.analysis_comments:
-                analysis_comments_item = analysis_comments_item_data.to_dict()
-                analysis_comments.append(analysis_comments_item)
+        analysis_comments = []
+        for analysis_comments_item_data in self.analysis_comments:
+            analysis_comments_item = analysis_comments_item_data.to_dict()
+            analysis_comments.append(analysis_comments_item)
+
+        analysis_state = self.analysis_state.value
+
+        is_suppressed = self.is_suppressed
 
         analysis_details = self.analysis_details
 
@@ -74,10 +83,6 @@ class Analysis:
         analysis_response: str | Unset = UNSET
         if not isinstance(self.analysis_response, Unset):
             analysis_response = self.analysis_response.value
-
-        analysis_state: str | Unset = UNSET
-        if not isinstance(self.analysis_state, Unset):
-            analysis_state = self.analysis_state.value
 
         cvss_v2_score = self.cvss_v2_score
 
@@ -91,8 +96,6 @@ class Analysis:
 
         cvss_v4_vector = self.cvss_v4_vector
 
-        is_suppressed = self.is_suppressed
-
         owasp_score = self.owasp_score
 
         owasp_vector = self.owasp_vector
@@ -103,17 +106,19 @@ class Analysis:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if analysis_comments is not UNSET:
-            field_dict["analysisComments"] = analysis_comments
+        field_dict.update(
+            {
+                "analysisComments": analysis_comments,
+                "analysisState": analysis_state,
+                "isSuppressed": is_suppressed,
+            }
+        )
         if analysis_details is not UNSET:
             field_dict["analysisDetails"] = analysis_details
         if analysis_justification is not UNSET:
             field_dict["analysisJustification"] = analysis_justification
         if analysis_response is not UNSET:
             field_dict["analysisResponse"] = analysis_response
-        if analysis_state is not UNSET:
-            field_dict["analysisState"] = analysis_state
         if cvss_v2_score is not UNSET:
             field_dict["cvssV2Score"] = cvss_v2_score
         if cvss_v2_vector is not UNSET:
@@ -126,8 +131,6 @@ class Analysis:
             field_dict["cvssV4Score"] = cvss_v4_score
         if cvss_v4_vector is not UNSET:
             field_dict["cvssV4Vector"] = cvss_v4_vector
-        if is_suppressed is not UNSET:
-            field_dict["isSuppressed"] = is_suppressed
         if owasp_score is not UNSET:
             field_dict["owaspScore"] = owasp_score
         if owasp_vector is not UNSET:
@@ -139,44 +142,39 @@ class Analysis:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.analysis_comment import AnalysisComment
+        from ..models.comment import Comment
 
         d = dict(src_dict)
-        _analysis_comments = d.pop("analysisComments", UNSET)
-        analysis_comments: list[AnalysisComment] | Unset = UNSET
-        if _analysis_comments is not UNSET:
-            analysis_comments = []
-            for analysis_comments_item_data in _analysis_comments:
-                analysis_comments_item = AnalysisComment.from_dict(
-                    analysis_comments_item_data
-                )
+        analysis_comments = []
+        _analysis_comments = d.pop("analysisComments")
+        for analysis_comments_item_data in _analysis_comments:
+            analysis_comments_item = Comment.from_dict(analysis_comments_item_data)
 
-                analysis_comments.append(analysis_comments_item)
+            analysis_comments.append(analysis_comments_item)
+
+        analysis_state = AnalysisTrailResponseAnalysisState(d.pop("analysisState"))
+
+        is_suppressed = d.pop("isSuppressed")
 
         analysis_details = d.pop("analysisDetails", UNSET)
 
         _analysis_justification = d.pop("analysisJustification", UNSET)
-        analysis_justification: AnalysisAnalysisJustification | Unset
+        analysis_justification: AnalysisTrailResponseAnalysisJustification | Unset
         if isinstance(_analysis_justification, Unset):
             analysis_justification = UNSET
         else:
-            analysis_justification = AnalysisAnalysisJustification(
+            analysis_justification = AnalysisTrailResponseAnalysisJustification(
                 _analysis_justification
             )
 
         _analysis_response = d.pop("analysisResponse", UNSET)
-        analysis_response: AnalysisAnalysisResponse | Unset
+        analysis_response: AnalysisTrailResponseAnalysisResponse | Unset
         if isinstance(_analysis_response, Unset):
             analysis_response = UNSET
         else:
-            analysis_response = AnalysisAnalysisResponse(_analysis_response)
-
-        _analysis_state = d.pop("analysisState", UNSET)
-        analysis_state: AnalysisAnalysisState | Unset
-        if isinstance(_analysis_state, Unset):
-            analysis_state = UNSET
-        else:
-            analysis_state = AnalysisAnalysisState(_analysis_state)
+            analysis_response = AnalysisTrailResponseAnalysisResponse(
+                _analysis_response
+            )
 
         cvss_v2_score = d.pop("cvssV2Score", UNSET)
 
@@ -190,39 +188,37 @@ class Analysis:
 
         cvss_v4_vector = d.pop("cvssV4Vector", UNSET)
 
-        is_suppressed = d.pop("isSuppressed", UNSET)
-
         owasp_score = d.pop("owaspScore", UNSET)
 
         owasp_vector = d.pop("owaspVector", UNSET)
 
         _severity = d.pop("severity", UNSET)
-        severity: AnalysisSeverity | Unset
+        severity: AnalysisTrailResponseSeverity | Unset
         if isinstance(_severity, Unset):
             severity = UNSET
         else:
-            severity = AnalysisSeverity(_severity)
+            severity = AnalysisTrailResponseSeverity(_severity)
 
-        analysis = cls(
+        analysis_trail_response = cls(
             analysis_comments=analysis_comments,
+            analysis_state=analysis_state,
+            is_suppressed=is_suppressed,
             analysis_details=analysis_details,
             analysis_justification=analysis_justification,
             analysis_response=analysis_response,
-            analysis_state=analysis_state,
             cvss_v2_score=cvss_v2_score,
             cvss_v2_vector=cvss_v2_vector,
             cvss_v3_score=cvss_v3_score,
             cvss_v3_vector=cvss_v3_vector,
             cvss_v4_score=cvss_v4_score,
             cvss_v4_vector=cvss_v4_vector,
-            is_suppressed=is_suppressed,
             owasp_score=owasp_score,
             owasp_vector=owasp_vector,
             severity=severity,
         )
 
-        analysis.additional_properties = d
-        return analysis
+        analysis_trail_response.additional_properties = d
+        return analysis_trail_response
 
     @property
     def additional_keys(self) -> list[str]:

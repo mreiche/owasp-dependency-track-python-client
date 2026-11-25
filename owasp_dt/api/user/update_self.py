@@ -12,8 +12,11 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     body: ManagedUser | Unset = UNSET,
+    authorization: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
+    if not isinstance(authorization, Unset):
+        headers["Authorization"] = authorization
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -66,10 +69,12 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ManagedUser | Unset = UNSET,
+    authorization: str | Unset = UNSET,
 ) -> Response[Any | ManagedUser]:
     """Updates information about the current logged in user.
 
     Args:
+        authorization (str | Unset):
         body (ManagedUser | Unset):
 
     Raises:
@@ -82,6 +87,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        authorization=authorization,
     )
 
     response = client.get_httpx_client().request(
@@ -95,10 +101,12 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ManagedUser | Unset = UNSET,
+    authorization: str | Unset = UNSET,
 ) -> Any | ManagedUser | None:
     """Updates information about the current logged in user.
 
     Args:
+        authorization (str | Unset):
         body (ManagedUser | Unset):
 
     Raises:
@@ -112,6 +120,7 @@ def sync(
     return sync_detailed(
         client=client,
         body=body,
+        authorization=authorization,
     ).parsed
 
 
@@ -119,10 +128,12 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ManagedUser | Unset = UNSET,
+    authorization: str | Unset = UNSET,
 ) -> Response[Any | ManagedUser]:
     """Updates information about the current logged in user.
 
     Args:
+        authorization (str | Unset):
         body (ManagedUser | Unset):
 
     Raises:
@@ -135,6 +146,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        authorization=authorization,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -146,10 +158,12 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ManagedUser | Unset = UNSET,
+    authorization: str | Unset = UNSET,
 ) -> Any | ManagedUser | None:
     """Updates information about the current logged in user.
 
     Args:
+        authorization (str | Unset):
         body (ManagedUser | Unset):
 
     Raises:
@@ -164,5 +178,6 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             body=body,
+            authorization=authorization,
         )
     ).parsed

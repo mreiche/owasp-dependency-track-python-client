@@ -1,4 +1,4 @@
-"""A client library for accessing OWASP Dependency-Track (Server v5.1.0)"""
+"""A client library for accessing OWASP Dependency-Track (Server v5.2.2)"""
 
 from .client import AuthenticatedClient, Client
 

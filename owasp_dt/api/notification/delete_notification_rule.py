@@ -5,13 +5,13 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.notification_rule import NotificationRule
+from ...models.delete_notification_rule_request import DeleteNotificationRuleRequest
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: NotificationRule | Unset = UNSET,
+    body: DeleteNotificationRuleRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -61,7 +61,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: NotificationRule | Unset = UNSET,
+    body: DeleteNotificationRuleRequest | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a notification rule
 
@@ -69,7 +69,7 @@ def sync_detailed(
     <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
-        body (NotificationRule | Unset):
+        body (DeleteNotificationRuleRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -93,7 +93,7 @@ def sync_detailed(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: NotificationRule | Unset = UNSET,
+    body: DeleteNotificationRuleRequest | Unset = UNSET,
 ) -> Response[Any]:
     """Deletes a notification rule
 
@@ -101,7 +101,7 @@ async def asyncio_detailed(
     <strong>SYSTEM_CONFIGURATION_DELETE</strong></p>
 
     Args:
-        body (NotificationRule | Unset):
+        body (DeleteNotificationRuleRequest | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

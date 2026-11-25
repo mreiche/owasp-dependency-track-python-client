@@ -15,6 +15,9 @@
       "Finding": {
         "type": "object",
         "properties": {
+          "matrix": {
+            "type": "string"
+          },
           "attribution": {
             "type": "object",
             "additionalProperties": true
@@ -40,6 +43,9 @@
               },
               "project": {
                 "type": "string"
+              },
+              "hasOccurrences": {
+                "type": "boolean"
               },
               "projectName": {
                 "type": "string"
@@ -68,11 +74,23 @@
               "description": {
                 "type": "string"
               },
+              "references": {
+                "type": "string"
+              },
               "cvssV2BaseScore": {
                 "type": "number"
               },
               "cvssV3BaseScore": {
                 "type": "number"
+              },
+              "cvssV3Vector": {
+                "type": "string"
+              },
+              "cvssV4Score": {
+                "type": "number"
+              },
+              "cvssV4Vector": {
+                "type": "string"
               },
               "severity": {
                 "type": "string"
@@ -86,13 +104,10 @@
               "epssPercentile": {
                 "type": "number"
               },
-              "cweId": {
-                "type": "integer"
+              "isKev": {
+                "type": "boolean"
               },
-              "cweName": {
-                "type": "string"
-              },
-              "cwes": {
+              "_cwes": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Cwe"
