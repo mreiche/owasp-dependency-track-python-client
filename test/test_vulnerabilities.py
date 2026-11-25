@@ -4,6 +4,7 @@ import owasp_dt
 import test
 from owasp_dt.api.metrics import get_vulnerability_metrics
 from owasp_dt.api.vulnerability import get_all_vulnerabilities
+from owasp_dt.models import Vulnerability
 from owasp_dt_v2.api.extensions import update_extension_config
 from owasp_dt_v2.api.vuln_data_sources import trigger_vuln_data_source_mirror_run
 from owasp_dt_v2.models import UpdateExtensionConfigRequest, UpdateExtensionConfigRequestConfig
@@ -35,8 +36,14 @@ def test_get_vulnerabilities(client: owasp_dt.Client):
         resp = get_all_vulnerabilities.sync_detailed(client=client, page_size=1)
         vulnerabilities = resp.parsed
         assert len(vulnerabilities) > 0
+        assert_vulnerability_model(vulnerabilities[0])
     test.retry(_get_vulnerabilities, 600)
 
+
+def assert_vulnerability_model(vulnerability: Vulnerability):
+    assert vulnerability.cvss_v2_base_score > 0
+    assert vulnerability.cvss_v3_base_score > 0
+    assert vulnerability.cvss_v4_score > 0
 
 @pytest.mark.depends(on=['test/test_upload.py::test_upload_first_sbom'])
 @pytest.mark.xfail(reason="https://github.com/DependencyTrack/dependency-track/issues/5401")
