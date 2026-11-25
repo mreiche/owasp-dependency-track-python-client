@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from ..models.mapped_oidc_group import MappedOidcGroup
     from ..models.oidc_user import OidcUser
     from ..models.permission import Permission
+    from ..models.service_account import ServiceAccount
 
 
 T = TypeVar("T", bound="Team")
@@ -35,6 +36,7 @@ class Team:
         mapped_oidc_groups (list[MappedOidcGroup] | Unset):
         oidc_users (list[OidcUser] | Unset):
         permissions (list[Permission] | Unset):
+        service_accounts (list[ServiceAccount] | Unset):
     """
 
     name: str
@@ -46,6 +48,7 @@ class Team:
     mapped_oidc_groups: list[MappedOidcGroup] | Unset = UNSET
     oidc_users: list[OidcUser] | Unset = UNSET
     permissions: list[Permission] | Unset = UNSET
+    service_accounts: list[ServiceAccount] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -102,6 +105,13 @@ class Team:
                 permissions_item = permissions_item_data.to_dict()
                 permissions.append(permissions_item)
 
+        service_accounts: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.service_accounts, Unset):
+            service_accounts = []
+            for service_accounts_item_data in self.service_accounts:
+                service_accounts_item = service_accounts_item_data.to_dict()
+                service_accounts.append(service_accounts_item)
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -124,6 +134,8 @@ class Team:
             field_dict["oidcUsers"] = oidc_users
         if permissions is not UNSET:
             field_dict["permissions"] = permissions
+        if service_accounts is not UNSET:
+            field_dict["serviceAccounts"] = service_accounts
 
         return field_dict
 
@@ -136,6 +148,7 @@ class Team:
         from ..models.mapped_oidc_group import MappedOidcGroup
         from ..models.oidc_user import OidcUser
         from ..models.permission import Permission
+        from ..models.service_account import ServiceAccount
 
         d = dict(src_dict)
         name = d.pop("name")
@@ -209,6 +222,17 @@ class Team:
 
                 permissions.append(permissions_item)
 
+        _service_accounts = d.pop("serviceAccounts", UNSET)
+        service_accounts: list[ServiceAccount] | Unset = UNSET
+        if _service_accounts is not UNSET:
+            service_accounts = []
+            for service_accounts_item_data in _service_accounts:
+                service_accounts_item = ServiceAccount.from_dict(
+                    service_accounts_item_data
+                )
+
+                service_accounts.append(service_accounts_item)
+
         team = cls(
             name=name,
             uuid=uuid,
@@ -219,6 +243,7 @@ class Team:
             mapped_oidc_groups=mapped_oidc_groups,
             oidc_users=oidc_users,
             permissions=permissions,
+            service_accounts=service_accounts,
         )
 
         team.additional_properties = d

@@ -42,7 +42,8 @@ def _parse_response(
         return response_403
 
     if response.status_code == 404:
-        response_404 = cast(Any, None)
+        response_404 = ProblemDetails.from_dict(response.json())
+
         return response_404
 
     if client.raise_on_unexpected_status:

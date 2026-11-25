@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class AnalysisAnalysisJustification(StrEnum):
+class AnalysisTrailResponseAnalysisJustification(StrEnum):
     CODE_NOT_PRESENT = "CODE_NOT_PRESENT"
     CODE_NOT_REACHABLE = "CODE_NOT_REACHABLE"
     NOT_SET = "NOT_SET"

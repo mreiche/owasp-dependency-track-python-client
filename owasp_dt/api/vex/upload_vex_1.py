@@ -58,6 +58,11 @@ def _parse_response(
         response_404 = cast(Any, None)
         return response_404
 
+    if response.status_code == 413:
+        response_413 = ProblemDetails.from_dict(response.json())
+
+        return response_413
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:

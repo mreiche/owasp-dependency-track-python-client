@@ -5,8 +5,8 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.analysis import Analysis
 from ...models.analysis_request import AnalysisRequest
+from ...models.analysis_trail_response import AnalysisTrailResponse
 from ...models.problem_details import ProblemDetails
 from ...types import UNSET, Response, Unset
 
@@ -33,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Analysis | Any | ProblemDetails | None:
+) -> AnalysisTrailResponse | Any | ProblemDetails | None:
     if response.status_code == 200:
-        response_200 = Analysis.from_dict(response.json())
+        response_200 = AnalysisTrailResponse.from_dict(response.json())
 
         return response_200
 
@@ -60,7 +60,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Analysis | Any | ProblemDetails]:
+) -> Response[AnalysisTrailResponse | Any | ProblemDetails]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,7 +73,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: AnalysisRequest | Unset = UNSET,
-) -> Response[Analysis | Any | ProblemDetails]:
+) -> Response[AnalysisTrailResponse | Any | ProblemDetails]:
     """Records an analysis decision
 
      <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></strong> or
@@ -87,7 +87,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Analysis | Any | ProblemDetails]
+        Response[AnalysisTrailResponse | Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -105,7 +105,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: AnalysisRequest | Unset = UNSET,
-) -> Analysis | Any | ProblemDetails | None:
+) -> AnalysisTrailResponse | Any | ProblemDetails | None:
     """Records an analysis decision
 
      <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></strong> or
@@ -119,7 +119,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Analysis | Any | ProblemDetails
+        AnalysisTrailResponse | Any | ProblemDetails
     """
 
     return sync_detailed(
@@ -132,7 +132,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: AnalysisRequest | Unset = UNSET,
-) -> Response[Analysis | Any | ProblemDetails]:
+) -> Response[AnalysisTrailResponse | Any | ProblemDetails]:
     """Records an analysis decision
 
      <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></strong> or
@@ -146,7 +146,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Analysis | Any | ProblemDetails]
+        Response[AnalysisTrailResponse | Any | ProblemDetails]
     """
 
     kwargs = _get_kwargs(
@@ -162,7 +162,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: AnalysisRequest | Unset = UNSET,
-) -> Analysis | Any | ProblemDetails | None:
+) -> AnalysisTrailResponse | Any | ProblemDetails | None:
     """Records an analysis decision
 
      <p>Requires permission <strong>VULNERABILITY_ANALYSIS</strong></strong> or
@@ -176,7 +176,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Analysis | Any | ProblemDetails
+        AnalysisTrailResponse | Any | ProblemDetails
     """
 
     return (

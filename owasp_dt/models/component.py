@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, Self, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -41,7 +41,7 @@ class Component:
         classifier (ComponentClassifier | Unset):
         copyright_ (str | Unset):
         cpe (str | Unset):
-        dependency_graph (list[str] | Unset):
+        dependency_graph (list[UUID] | Unset):
         description (str | Unset):
         direct_dependencies (str | Unset):
         expand_dependency_graph (bool | Unset):
@@ -94,7 +94,7 @@ class Component:
     classifier: ComponentClassifier | Unset = UNSET
     copyright_: str | Unset = UNSET
     cpe: str | Unset = UNSET
-    dependency_graph: list[str] | Unset = UNSET
+    dependency_graph: list[UUID] | Unset = UNSET
     description: str | Unset = UNSET
     direct_dependencies: str | Unset = UNSET
     expand_dependency_graph: bool | Unset = UNSET
@@ -173,7 +173,10 @@ class Component:
 
         dependency_graph: list[str] | Unset = UNSET
         if not isinstance(self.dependency_graph, Unset):
-            dependency_graph = self.dependency_graph
+            dependency_graph = []
+            for dependency_graph_item_data in self.dependency_graph:
+                dependency_graph_item = str(dependency_graph_item_data)
+                dependency_graph.append(dependency_graph_item)
 
         description = self.description
 
@@ -452,7 +455,14 @@ class Component:
 
         cpe = d.pop("cpe", UNSET)
 
-        dependency_graph = cast(list[str], d.pop("dependencyGraph", UNSET))
+        _dependency_graph = d.pop("dependencyGraph", UNSET)
+        dependency_graph: list[UUID] | Unset = UNSET
+        if _dependency_graph is not UNSET:
+            dependency_graph = []
+            for dependency_graph_item_data in _dependency_graph:
+                dependency_graph_item = UUID(dependency_graph_item_data)
+
+                dependency_graph.append(dependency_graph_item)
 
         description = d.pop("description", UNSET)
 

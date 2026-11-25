@@ -7,7 +7,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.tag import Tag
+from ...models.tag_response import TagResponse
 from ...types import Response
 
 
@@ -27,12 +27,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | list[Tag] | None:
+) -> Any | list[TagResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = Tag.from_dict(response_200_item_data)
+            response_200_item = TagResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -50,7 +50,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | list[Tag]]:
+) -> Response[Any | list[TagResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,7 +63,7 @@ def sync_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[Tag]]:
+) -> Response[Any | list[TagResponse]]:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -76,7 +76,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Tag]]
+        Response[Any | list[TagResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -94,7 +94,7 @@ def sync(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | list[Tag] | None:
+) -> Any | list[TagResponse] | None:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -107,7 +107,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Tag]
+        Any | list[TagResponse]
     """
 
     return sync_detailed(
@@ -120,7 +120,7 @@ async def asyncio_detailed(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | list[Tag]]:
+) -> Response[Any | list[TagResponse]]:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -133,7 +133,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | list[Tag]]
+        Response[Any | list[TagResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -149,7 +149,7 @@ async def asyncio(
     uuid: UUID,
     *,
     client: AuthenticatedClient,
-) -> Any | list[Tag] | None:
+) -> Any | list[TagResponse] | None:
     """Returns a list of all tags associated with a given policy
 
      <p>Requires permission <strong>VIEW_PORTFOLIO</strong></p>
@@ -162,7 +162,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | list[Tag]
+        Any | list[TagResponse]
     """
 
     return (

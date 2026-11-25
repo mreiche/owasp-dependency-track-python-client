@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class AnalysisSeverity(StrEnum):
+class AnalysisTrailResponseSeverity(StrEnum):
     CRITICAL = "CRITICAL"
     HIGH = "HIGH"
     INFO = "INFO"

@@ -10,9 +10,9 @@
       "name": "Apache-2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "title": "OWASP Dependency-Track (Server v5.1.0)",
+    "title": "OWASP Dependency-Track (Server v5.2.2)",
     "version": "1.0.0",
-    "x-server-version": "5.1.0"
+    "x-server-version": "5.2.2"
   },
   "servers": [
     {
@@ -194,7 +194,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -309,7 +310,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Analysis"
+                  "$ref": "#/components/schemas/AnalysisTrailResponse"
                 }
               }
             },
@@ -362,7 +363,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Analysis"
+                  "$ref": "#/components/schemas/AnalysisTrailResponse"
                 }
               }
             },
@@ -651,6 +652,16 @@
           },
           "404": {
             "description": "The project could not be found"
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "The uploaded document is too large"
           }
         },
         "security": [
@@ -1148,7 +1159,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -1258,7 +1270,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -1463,6 +1476,13 @@
             "description": "Access to the requested project is forbidden"
           },
           "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
             "description": "- The UUID of the project could not be found\n- The UUID of the component could not be found"
           }
         },
@@ -1534,7 +1554,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -1718,6 +1739,13 @@
             "description": "Access to the requested project is forbidden"
           },
           "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
             "description": "The UUID of the component could not be found"
           }
         },
@@ -1853,7 +1881,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -2421,7 +2450,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -2734,7 +2764,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -3038,7 +3069,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -3326,7 +3358,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -3674,7 +3707,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MappedLdapGroup"
+                  "$ref": "#/components/schemas/MappedLdapGroupResponse"
                 }
               }
             },
@@ -3768,7 +3801,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MappedLdapGroup"
+                    "$ref": "#/components/schemas/MappedLdapGroupResponse"
                   }
                 }
               }
@@ -3849,7 +3882,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -4123,7 +4157,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -5429,7 +5464,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotificationRule"
+                "$ref": "#/components/schemas/DeleteNotificationRuleRequest"
               }
             }
           }
@@ -5511,7 +5546,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -6010,7 +6046,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OidcGroup"
+                    "$ref": "#/components/schemas/OidcGroupResponse"
                   }
                 }
               }
@@ -6041,7 +6077,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OidcGroup"
+                "$ref": "#/components/schemas/UpdateOidcGroupRequest"
               }
             }
           }
@@ -6051,7 +6087,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OidcGroup"
+                  "$ref": "#/components/schemas/OidcGroupResponse"
                 }
               }
             },
@@ -6081,7 +6117,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OidcGroup"
+                "$ref": "#/components/schemas/CreateOidcGroupRequest"
               }
             }
           }
@@ -6091,7 +6127,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OidcGroup"
+                  "$ref": "#/components/schemas/OidcGroupResponse"
                 }
               }
             },
@@ -6276,7 +6312,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MappedOidcGroup"
+                  "$ref": "#/components/schemas/MappedOidcGroupResponse"
                 }
               }
             },
@@ -6814,7 +6850,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -7370,7 +7407,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -7449,7 +7487,7 @@
         ]
       },
       "post": {
-        "description": "<p>\n  To re-parent the project, set <code>parent</code> to an object containing\n  the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to\n  <code>null</code>) to leave the parent unchanged. Providing <code>parent</code>\n  without a non-null <code>uuid</code> is rejected with 400.\n</p>\n<p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>",
+        "description": "<p>\n  To re-parent the project, set <code>parent</code> to an object containing\n  the new parent's <code>uuid</code>. Omit <code>parent</code> (or set it to\n  <code>null</code>) to remove the parent. Providing <code>parent</code>\n  without a non-null <code>uuid</code> is rejected with 400.\n</p>\n<p>Requires permission <strong>PORTFOLIO_MANAGEMENT</strong> or <strong>PORTFOLIO_MANAGEMENT_UPDATE</strong></p>",
         "operationId": "updateProject",
         "requestBody": {
           "content": {
@@ -7660,7 +7698,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -7856,7 +7895,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -8020,7 +8060,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -8307,7 +8348,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -8432,7 +8474,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -8759,7 +8802,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -8890,7 +8934,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -9045,7 +9090,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -9437,7 +9483,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -9675,7 +9722,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -9896,7 +9944,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -10238,7 +10287,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -10342,7 +10392,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Tag"
+                    "$ref": "#/components/schemas/TagResponse"
                   }
                 }
               }
@@ -10430,7 +10480,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -10597,7 +10648,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -10825,7 +10877,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -11053,7 +11106,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -11281,7 +11335,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -11341,7 +11396,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Team"
+                "$ref": "#/components/schemas/DeleteTeamRequest"
               }
             }
           }
@@ -11423,7 +11478,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -11808,7 +11864,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -12010,7 +12067,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LdapUser"
+                "$ref": "#/components/schemas/DeleteUserRequest"
               }
             }
           }
@@ -12225,7 +12282,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ManagedUser"
+                "$ref": "#/components/schemas/DeleteUserRequest"
               }
             }
           }
@@ -12300,6 +12357,15 @@
       "post": {
         "description": "<p>Requires permission <strong>ACCESS_MANAGEMENT</strong> or <strong>ACCESS_MANAGEMENT_UPDATE</strong></p>",
         "operationId": "updateManagedUser",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12458,7 +12524,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OidcUser"
+                "$ref": "#/components/schemas/DeleteUserRequest"
               }
             }
           }
@@ -12660,6 +12726,15 @@
       },
       "post": {
         "operationId": "updateSelf",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12920,6 +12995,16 @@
           },
           "404": {
             "description": "The project could not be found"
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "The uploaded document is too large"
           }
         },
         "security": [
@@ -13132,7 +13217,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -13433,7 +13519,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -13564,7 +13651,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -13695,7 +13783,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           }
@@ -13883,7 +13972,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -14283,7 +14373,8 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ]
             }
           },
@@ -14907,116 +14998,6 @@
           "lastSeen"
         ]
       },
-      "Analysis": {
-        "type": "object",
-        "properties": {
-          "analysisComments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnalysisComment"
-            }
-          },
-          "analysisDetails": {
-            "type": "string"
-          },
-          "analysisJustification": {
-            "type": "string",
-            "enum": [
-              "CODE_NOT_PRESENT",
-              "CODE_NOT_REACHABLE",
-              "REQUIRES_CONFIGURATION",
-              "REQUIRES_DEPENDENCY",
-              "REQUIRES_ENVIRONMENT",
-              "PROTECTED_BY_COMPILER",
-              "PROTECTED_AT_RUNTIME",
-              "PROTECTED_AT_PERIMETER",
-              "PROTECTED_BY_MITIGATING_CONTROL",
-              "NOT_SET"
-            ]
-          },
-          "analysisResponse": {
-            "type": "string",
-            "enum": [
-              "CAN_NOT_FIX",
-              "WILL_NOT_FIX",
-              "UPDATE",
-              "ROLLBACK",
-              "WORKAROUND_AVAILABLE",
-              "NOT_SET"
-            ]
-          },
-          "analysisState": {
-            "type": "string",
-            "enum": [
-              "EXPLOITABLE",
-              "IN_TRIAGE",
-              "FALSE_POSITIVE",
-              "NOT_AFFECTED",
-              "RESOLVED",
-              "NOT_SET"
-            ]
-          },
-          "cvssV2Score": {
-            "type": "number"
-          },
-          "cvssV2Vector": {
-            "type": "string"
-          },
-          "cvssV3Score": {
-            "type": "number"
-          },
-          "cvssV3Vector": {
-            "type": "string"
-          },
-          "cvssV4Score": {
-            "type": "number"
-          },
-          "cvssV4Vector": {
-            "type": "string"
-          },
-          "isSuppressed": {
-            "type": "boolean"
-          },
-          "owaspScore": {
-            "type": "number"
-          },
-          "owaspVector": {
-            "type": "string"
-          },
-          "severity": {
-            "type": "string",
-            "enum": [
-              "CRITICAL",
-              "HIGH",
-              "MEDIUM",
-              "LOW",
-              "INFO",
-              "UNASSIGNED"
-            ]
-          }
-        },
-        "required": []
-      },
-      "AnalysisComment": {
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string"
-          },
-          "commenter": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer",
-            "format": "int64",
-            "description": "UNIX epoch timestamp in milliseconds"
-          }
-        },
-        "required": [
-          "comment",
-          "timestamp"
-        ]
-      },
       "AnalysisRequest": {
         "type": "object",
         "properties": {
@@ -15090,6 +15071,115 @@
           "vulnerability"
         ]
       },
+      "AnalysisTrailResponse": {
+        "type": "object",
+        "properties": {
+          "analysisComments": {
+            "type": "array",
+            "description": "Audit trail of analysis comments",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "analysisDetails": {
+            "type": "string",
+            "description": "Free-form details of the analysis decision"
+          },
+          "analysisJustification": {
+            "type": "string",
+            "description": "The justification of the analysis decision",
+            "enum": [
+              "CODE_NOT_PRESENT",
+              "CODE_NOT_REACHABLE",
+              "REQUIRES_CONFIGURATION",
+              "REQUIRES_DEPENDENCY",
+              "REQUIRES_ENVIRONMENT",
+              "PROTECTED_BY_COMPILER",
+              "PROTECTED_AT_RUNTIME",
+              "PROTECTED_AT_PERIMETER",
+              "PROTECTED_BY_MITIGATING_CONTROL",
+              "NOT_SET"
+            ]
+          },
+          "analysisResponse": {
+            "type": "string",
+            "description": "The vendor response to the vulnerability",
+            "enum": [
+              "CAN_NOT_FIX",
+              "WILL_NOT_FIX",
+              "UPDATE",
+              "ROLLBACK",
+              "WORKAROUND_AVAILABLE",
+              "NOT_SET"
+            ]
+          },
+          "analysisState": {
+            "type": "string",
+            "description": "The state of the analysis decision",
+            "enum": [
+              "EXPLOITABLE",
+              "IN_TRIAGE",
+              "FALSE_POSITIVE",
+              "NOT_AFFECTED",
+              "RESOLVED",
+              "NOT_SET"
+            ]
+          },
+          "cvssV2Score": {
+            "type": "number",
+            "description": "CVSS v2 score assigned by the analysis"
+          },
+          "cvssV2Vector": {
+            "type": "string",
+            "description": "CVSS v2 vector assigned by the analysis"
+          },
+          "cvssV3Score": {
+            "type": "number",
+            "description": "CVSS v3 score assigned by the analysis"
+          },
+          "cvssV3Vector": {
+            "type": "string",
+            "description": "CVSS v3 vector assigned by the analysis"
+          },
+          "cvssV4Score": {
+            "type": "number",
+            "description": "CVSS v4 score assigned by the analysis"
+          },
+          "cvssV4Vector": {
+            "type": "string",
+            "description": "CVSS v4 vector assigned by the analysis"
+          },
+          "isSuppressed": {
+            "type": "boolean",
+            "description": "Whether the finding is suppressed"
+          },
+          "owaspScore": {
+            "type": "number",
+            "description": "OWASP Risk Rating score assigned by the analysis"
+          },
+          "owaspVector": {
+            "type": "string",
+            "description": "OWASP Risk Rating vector assigned by the analysis"
+          },
+          "severity": {
+            "type": "string",
+            "description": "Severity assigned by the analysis",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW",
+              "INFO",
+              "UNASSIGNED"
+            ]
+          }
+        },
+        "required": [
+          "analysisComments",
+          "analysisState",
+          "isSuppressed"
+        ]
+      },
       "ApiKey": {
         "type": "object",
         "properties": {
@@ -15099,6 +15189,11 @@
             "minLength": 0
           },
           "created": {
+            "type": "integer",
+            "format": "int64",
+            "description": "UNIX epoch timestamp in milliseconds"
+          },
+          "expiresAt": {
             "type": "integer",
             "format": "int64",
             "description": "UNIX epoch timestamp in milliseconds"
@@ -15369,7 +15464,8 @@
           "dependencyGraph": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "uniqueItems": true
           },
@@ -16154,6 +16250,21 @@
           "scope"
         ]
       },
+      "CreateOidcGroupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the group to create",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "[\\P{Cc}]+"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "CreatePolicyConditionRequest": {
         "type": "object",
         "properties": {
@@ -16425,6 +16536,19 @@
           }
         }
       },
+      "DeleteNotificationRuleRequest": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the notification rule to delete"
+          }
+        },
+        "required": [
+          "uuid"
+        ]
+      },
       "DeleteProjectPropertyRequest": {
         "type": "object",
         "properties": {
@@ -16446,6 +16570,32 @@
         "required": [
           "groupName",
           "propertyName"
+        ]
+      },
+      "DeleteTeamRequest": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the team to delete"
+          }
+        },
+        "required": [
+          "uuid"
+        ]
+      },
+      "DeleteUserRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username of the user to delete",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "username"
         ]
       },
       "DependencyGraphResponse": {
@@ -16730,6 +16880,9 @@
               "project": {
                 "type": "string"
               },
+              "hasOccurrences": {
+                "type": "boolean"
+              },
               "projectName": {
                 "type": "string"
               },
@@ -16760,11 +16913,23 @@
               "description": {
                 "type": "string"
               },
+              "references": {
+                "type": "string"
+              },
               "cvssV2BaseScore": {
                 "type": "number"
               },
               "cvssV3BaseScore": {
                 "type": "number"
+              },
+              "cvssV3Vector": {
+                "type": "string"
+              },
+              "cvssV4Score": {
+                "type": "number"
+              },
+              "cvssV4Vector": {
+                "type": "string"
               },
               "severity": {
                 "type": "string"
@@ -16778,13 +16943,10 @@
               "epssPercentile": {
                 "type": "number"
               },
-              "cweId": {
-                "type": "integer"
+              "isKev": {
+                "type": "boolean"
               },
-              "cweName": {
-                "type": "string"
-              },
-              "cwes": {
+              "_cwes": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Cwe"
@@ -17371,6 +17533,24 @@
           "team"
         ]
       },
+      "MappedLdapGroupResponse": {
+        "type": "object",
+        "properties": {
+          "dn": {
+            "type": "string",
+            "description": "Distinguished name of the mapped LDAP group"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the mapping"
+          }
+        },
+        "required": [
+          "dn",
+          "uuid"
+        ]
+      },
       "MappedOidcGroup": {
         "type": "object",
         "properties": {
@@ -17401,6 +17581,23 @@
         "required": [
           "group",
           "team"
+        ]
+      },
+      "MappedOidcGroupResponse": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "$ref": "#/components/schemas/OidcGroupResponse"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the mapping"
+          }
+        },
+        "required": [
+          "group",
+          "uuid"
         ]
       },
       "NotificationPublisher": {
@@ -17643,6 +17840,24 @@
           "uuid"
         ]
       },
+      "OidcGroupResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the group"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the group"
+          }
+        },
+        "required": [
+          "name",
+          "uuid"
+        ]
+      },
       "OidcUser": {
         "type": "object",
         "properties": {
@@ -17776,6 +17991,9 @@
             "type": "boolean"
           },
           "includeChildren": {
+            "type": "boolean"
+          },
+          "invertTagMatch": {
             "type": "boolean"
           },
           "name": {
@@ -18768,6 +18986,41 @@
           }
         }
       },
+      "ServiceAccount": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "[\\P{Cc}]+"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          },
+          "suspended": {
+            "type": "boolean"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "[\\P{Cc}]+"
+          }
+        },
+        "required": [
+          "username"
+        ]
+      },
       "ServiceComponent": {
         "type": "object",
         "properties": {
@@ -18943,6 +19196,18 @@
           "title"
         ]
       },
+      "TagResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the tag"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "TaggedCollectionProjectListResponseItem": {
         "type": "object",
         "properties": {
@@ -19077,6 +19342,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Permission"
+            }
+          },
+          "serviceAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccount"
             }
           },
           "uuid": {
@@ -19428,6 +19699,27 @@
           "level",
           "name",
           "scope",
+          "uuid"
+        ]
+      },
+      "UpdateOidcGroupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "New name of the group",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "[\\P{Cc}]+"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the group to update"
+          }
+        },
+        "required": [
+          "name",
           "uuid"
         ]
       },
@@ -20098,6 +20390,9 @@
         "required": [
           "measuredAt"
         ]
+      },
+      "Analysis": {
+        "required": []
       }
     },
     "securitySchemes": {
